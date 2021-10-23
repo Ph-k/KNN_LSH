@@ -18,7 +18,7 @@ HashItem HashTable::Find(HashItem item){
 }
 
 void HashTable::Traverse( void (*fun)(ItemType *) ){
-    for(int i=0; i<table_size; i++){
+    for(unsigned int i=0; i<table_size; i++){
         table[i].Traverse(fun);
         std::cout << std::endl;
     }

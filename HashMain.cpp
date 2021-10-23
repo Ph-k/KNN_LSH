@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include "HashTable.h"
 
 using namespace std;
@@ -19,4 +19,4 @@ int main(){
     }
 
     ht.Traverse(print);
-}
+}*/
