@@ -2,6 +2,11 @@
 #include <string.h>
 
 #include "FileReader.h"
+#include "HashTable.h"
+
+#include "Utilities.h"
+#include "Hhashing.h"
+
 
 using namespace std;
 
@@ -67,16 +72,12 @@ int main(int argc, char const *argv[]){
 
     FileReader io_files(input_file, query_file, output_file);
 
+    HashTable ht(10, 4, K, 128); // 128 shall not be hardcoded
+
     Point* p = io_files.ReadPoint();
     while( p != nullptr){
-        const vector<int>& Xs = p->getXs();
 
-        cout << p->getId() << ' ';
-        for (auto i: Xs)
-            cout << i << ' ';
-        cout << endl;
-
-        delete p;
+        ht.Insert(p);
 
         p = io_files.ReadPoint();
     }

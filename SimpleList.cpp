@@ -1,16 +1,17 @@
 #include "SimpleList.h"
 
 #include <iostream>
+#include "Point.h"
 
 struct ListNode{
-    ItemType item;
+    SimpleListItemType item;
     struct ListNode* next;
 };
 
 SimpleList::SimpleList(): head(nullptr){}
 
-int SimpleList::Push(ItemType item){
-    std::cout << "A list created!" << std::endl;
+int SimpleList::Push(SimpleListItemType item){
+    //std::cout << "A list created!" << std::endl;
     ListNode* newNode = new ListNode;
     if( newNode == nullptr ) return -1;
 
@@ -20,7 +21,7 @@ int SimpleList::Push(ItemType item){
     return 0;
 }
 
-int SimpleList::Pop(ItemType &item){
+int SimpleList::Pop(SimpleListItemType &item){
     if( head == nullptr ) return 1;
 
     item = head->item;
@@ -40,7 +41,7 @@ int SimpleList::Pop(){
     return 0;
 }
 
-int SimpleList::Find(ItemType item){
+int SimpleList::Find(SimpleListItemType item){
     ListNode* node = head;
     while(node != nullptr){
         if(node->item == item)
@@ -51,7 +52,7 @@ int SimpleList::Find(ItemType item){
     return 0;
 }
 
-void SimpleList::Traverse( void (*fun)(ItemType *) ){
+void SimpleList::Traverse( void (*fun)(SimpleListItemType *) ){
     ListNode* node = head;
     while(node != nullptr){
         fun( &(node->item) );
@@ -64,6 +65,7 @@ SimpleList::~SimpleList(){
     while(head != nullptr){
         temp = head;
         head = head->next;
+        delete temp->item;
         delete temp;
     }
 }

@@ -1,14 +1,14 @@
 #include <vector>
 #include <iostream>
-#include "Hhash.h"
+#include "Hhashing.h"
 
 class Ghash{
 	public:
 		Ghash(int w, int k, int TableSize, int vecSize);
 		~Ghash();
-		int hash();
+		unsigned int  hash(const std::vector<int> &p);
 	private:
-		std::vector<Hhash> hVec;
+		std::vector<Hhash*> hVec;
 		int w;
 		int k;
 		int TableSize;

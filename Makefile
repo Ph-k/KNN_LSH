@@ -17,7 +17,10 @@ DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLoc
 UtilitiesLocation = $(sourcePath)
 UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o  $(UtilitiesLocation)Point.o 
 
-AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects)
+HashFuncsLocation = $(sourcePath)
+HashFuncsObjects = $(HashFuncsLocation)Ghashing.o $(HashFuncsLocation)Hhashing.o
+
+AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(HashFuncsObjects)
 
 $(program): $(AllObjects)
 	$(CC) $(cflags) $(AllObjects) -o $@
