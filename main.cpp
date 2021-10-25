@@ -66,7 +66,9 @@ int main(int argc, char const *argv[]){
          << "\n\tradius: " << radius << endl;
 
 
-    Operator operations(input_file,query_file,output_file,4,K);
+    Operator operations(input_file,query_file,output_file,4,K,L);
+
+    operations.kNN_Search();
 
 
     return 0;

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include "Point.h"
+#include "Utilities.h"
+
+using namespace std;
 
 struct ListNode{
     SimpleListItemType item;
@@ -60,12 +63,43 @@ void SimpleList::Traverse( void (*fun)(SimpleListItemType *) ){
     }
 }
 
+int SimpleList::knn_search(int k, Point *q, struct PD* nearest){
+    ListNode* node = head;
+    float l1;
+    int i,j;
+
+    while(node != nullptr){
+        l1 = euclidean_distance(node->item,q);
+
+        for(i=0 ; i<k; i++){
+            if( nearest[i].p == nullptr ){
+                nearest[i].p = node->item;
+                nearest[i].distance = l1;
+                break;
+            }else if(nearest[i].distance > l1){
+                //Shifting arrey
+                for(j=k-1; j>i; j--){
+                    nearest[j].p = nearest[j-1].p;
+                    nearest[j].distance = nearest[j-1].distance;
+                }
+                nearest[i].p = node->item;
+                nearest[i].distance = l1;
+                break;
+            }
+        }
+
+        node = node->next;
+    }
+
+    return 0;
+}
+
 SimpleList::~SimpleList(){
     ListNode* temp;
     while(head != nullptr){
         temp = head;
         head = head->next;
-        delete temp->item;
+        //delete temp->item; for this program, items are points, which are deleted from the operator class
         delete temp;
     }
 }

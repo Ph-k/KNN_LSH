@@ -1,6 +1,8 @@
 #include "SimpleList.h"
 #include "Ghashing.h"
 
+#include <vector>
+
 class Point; // Forward declaration
 class Ghash;
 
@@ -12,6 +14,7 @@ class HashTable{
         int Insert(HashItem item);
         int Find(HashItem item);
         void Traverse( void (*fun)(HashItem *) );
+        int knn_search_bucket(int k, Point *q, struct PD* nearest);
         ~HashTable();
     private:
         SimpleList *table;

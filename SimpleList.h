@@ -1,3 +1,4 @@
+#include <vector>
 
 class Point; // Forward declaration
 
@@ -13,6 +14,7 @@ class SimpleList{
         int Pop();
         int Find(SimpleListItemType item);
         void Traverse( void (*fun)(SimpleListItemType *) );
+        int knn_search(int k, Point *q, struct PD* nearest);
         ~SimpleList();
     private:
         ListNode *head;
