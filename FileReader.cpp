@@ -4,13 +4,36 @@
 #include <string>
 
 using namespace std;
-#include <stdio.h>
+
 FileReader::FileReader(char const *input_f, char const *query_f, char const *output_f)
-:dimension(-1){
+{
     input_file.open(input_f);
     query_file.open(query_f);
     output_file.open(query_f);
-};
+
+    dimension = this->find_dimension_from_input(input_f);
+    if(dimension == -1) cout << "Error: invalid file format!" << endl;
+}
+
+int FileReader::find_dimension_from_input(char const *input_f){
+    ifstream input_fs;
+    input_fs.open(input_f);
+
+    string line,word;
+    if ( input_file.peek() != EOF ) 
+        getline(input_file, line);
+    else
+        return -1;
+
+    istringstream line_stream(line);
+
+    int s=0;
+
+    while(line_stream >> word)
+        s++;
+
+    return s-1;
+}
 
 Point* FileReader::ReadPoint(){
     //vector<int> *v = new vector<int>;
@@ -25,7 +48,7 @@ Point* FileReader::ReadPoint(){
 
     vector<int> *given_Xs = new vector<int>;
 
-    int s=0,Xnum;
+    int Xnum;
     string Xstring, *item_id = new string;
     line_stream >> *item_id;
     while (line_stream >> Xstring){
@@ -40,10 +63,7 @@ Point* FileReader::ReadPoint(){
         }
 
         given_Xs->push_back(Xnum);
-        s++;
     }
-
-    if(dimension==-1) dimension = s - 1;
 
     Point *p = new Point(given_Xs,item_id);
 

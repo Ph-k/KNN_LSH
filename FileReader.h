@@ -5,12 +5,15 @@
 
 #include "Point.h"
 
+#define WORD_SEPERATOR ' '
+
 class FileReader{
     private:
         std::ifstream input_file;
         std::ifstream query_file;
         std::ofstream output_file;
         int dimension;
+        int find_dimension_from_input(char const *input_f);
     public:
         FileReader(
             char const *input_f,

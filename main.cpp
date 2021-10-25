@@ -1,11 +1,7 @@
 #include <iostream>
 #include <string.h>
 
-#include "FileReader.h"
-#include "HashTable.h"
-
-#include "Utilities.h"
-#include "Hhashing.h"
+#include "Operator.h"
 
 
 using namespace std;
@@ -70,17 +66,7 @@ int main(int argc, char const *argv[]){
          << "\n\tradius: " << radius << endl;
 
 
-    FileReader io_files(input_file, query_file, output_file);
-
-    HashTable ht(10, 4, K, 128); // 128 shall not be hardcoded
-
-    Point* p = io_files.ReadPoint();
-    while( p != nullptr){
-
-        ht.Insert(p);
-
-        p = io_files.ReadPoint();
-    }
+    Operator operations(input_file,query_file,output_file,4,K);
 
 
     return 0;
