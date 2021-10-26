@@ -9,10 +9,18 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
 {
     input_file.open(input_f);
     query_file.open(query_f);
-    output_file.open(query_f);
+    output_file.open(output_f);
 
     dimension = this->find_dimension_from_input(input_f);
     if(dimension == -1) cout << "Error: invalid file format!" << endl;
+
+
+    Point *p = ReadPoint('q');
+    while( p != nullptr ){
+        pair<string, Point*> temp(p->getId(),p);
+        queries.insert( temp );
+        p = ReadPoint('q');
+    }
 }
 
 int FileReader::find_dimension_from_input(char const *input_f){
@@ -35,12 +43,24 @@ int FileReader::find_dimension_from_input(char const *input_f){
     return s-1;
 }
 
-Point* FileReader::ReadPoint(){
+Point* FileReader::ReadPoint(char file_mode){
     //vector<int> *v = new vector<int>;
 
+    ifstream *file = nullptr;
+    switch (file_mode){
+        case 'i':
+            file = &(this->input_file);
+            break;
+        case 'q':
+            file = &(this->query_file);
+            break;
+        default:
+            return nullptr;
+    } 
+
     string line;
-    if ( input_file.peek() != EOF ) 
-        getline(input_file, line);
+    if ( file->peek() != EOF ) 
+        getline(*file, line);
     else
         return nullptr;
 
@@ -70,9 +90,16 @@ Point* FileReader::ReadPoint(){
     return p;
 }
 
+Point* FileReader::getQuery(string id){
+    return queries.find(id)->second;
+}
+
 
 FileReader::~FileReader(){
     input_file.close();
-    input_file.close();
-    input_file.close();
+    query_file.close();
+    output_file.close();
+
+    for(auto it: queries)
+        delete it.second;
 }

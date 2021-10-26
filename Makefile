@@ -1,5 +1,5 @@
 CC = g++
-cflags = -Wall -g3
+cflags = -pg -Wall -g3
 
 valgrindFlags = --leak-check=full
 
@@ -15,7 +15,7 @@ DataStructuresLocation = $(sourcePath)
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
 
 UtilitiesLocation = $(sourcePath)
-UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o  $(UtilitiesLocation)Point.o $(UtilitiesLocation)Operator.o
+UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o  $(UtilitiesLocation)Point.o $(UtilitiesLocation)LSH.o
 
 HashFuncsLocation = $(sourcePath)
 HashFuncsObjects = $(HashFuncsLocation)Ghashing.o $(HashFuncsLocation)Hhashing.o

@@ -71,10 +71,12 @@ int SimpleList::knn_search(int k, Point *q, struct PD* nearest){
     while(node != nullptr){
         l1 = euclidean_distance(node->item,q);
 
-        for(i=0 ; i<k; i++){
+        for(i=0; i<k; i++){
             if( nearest[i].p == nullptr ){
                 nearest[i].p = node->item;
                 nearest[i].distance = l1;
+                break;
+            }else if(nearest[i].p == node->item){
                 break;
             }else if(nearest[i].distance > l1){
                 //Shifting arrey
@@ -82,6 +84,9 @@ int SimpleList::knn_search(int k, Point *q, struct PD* nearest){
                     nearest[j].p = nearest[j-1].p;
                     nearest[j].distance = nearest[j-1].distance;
                 }
+                //node->item->print();
+                /*cout << nearest[i].p << " vs " << node->item << ' ' << nearest[i].distance << "vs" << l1 << ' ' << endl;
+                nearest[i].p->print(); node->item->print();*/
                 nearest[i].p = node->item;
                 nearest[i].distance = l1;
                 break;
@@ -99,7 +104,7 @@ SimpleList::~SimpleList(){
     while(head != nullptr){
         temp = head;
         head = head->next;
-        //delete temp->item; for this program, items are points, which are deleted from the operator class
+        //delete temp->item; for this program, items are points, which are deleted from the LSH class
         delete temp;
     }
 }

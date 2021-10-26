@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string.h>
 
-#include "Operator.h"
+#include "LSH.h"
+#include "Point.h"
+#include "Utilities.h"
 
 
 using namespace std;
@@ -66,9 +68,19 @@ int main(int argc, char const *argv[]){
          << "\n\tradius: " << radius << endl;
 
 
-    Operator operations(input_file,query_file,output_file,4,K,L);
+    LSH operations(input_file,query_file,output_file,4,K,L);
 
-    operations.kNN_Search();
+    int j;
+    PD *knn;
+    for(i = 1; i <=100; i++){
+        string id = to_string(i);
+        knn = operations.kNN_Search(id,L,K);
+        cout << "query: " << i << endl;
+        for(j=0; j<K; j++){
+            //knn[j].p->print();
+            cout << '\t' << knn[j].distance << endl;
+        }
+    }
 
 
     return 0;
