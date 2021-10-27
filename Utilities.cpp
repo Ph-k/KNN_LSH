@@ -28,13 +28,17 @@ float euclidean_distance(Point *p1, Point *p2){
     const vector<int>& Xs_p1 = p1->getXs();
     const vector<int>& Xs_p2 = p2->getXs();
 
-    if(Xs_p1.size() != Xs_p2.size()) exit(1);
+    if(Xs_p1.size() != Xs_p2.size()) exit(1);//Consider removing it for speed
 
     float sum = 0;
-    long unsigned int i;
 
-    for(i=0; i<Xs_p1.size(); i++){
-        sum += (Xs_p2.at(i) - Xs_p1.at(i))*(Xs_p2.at(i) - Xs_p1.at(i));
+    auto p1_val = Xs_p1.begin();
+    auto p2_val = Xs_p2.begin();
+
+    while( p1_val != Xs_p1.end() || p2_val != Xs_p2.end() ){
+        sum += (*p2_val - *p1_val)*(*p2_val - *p1_val);
+	++p1_val;
+	++p2_val;
     }
 
     return sqrt(sum);

@@ -80,6 +80,7 @@ int main(int argc, char const *argv[]){
             //knn[j].p->print();
             cout << '\t' << knn[j].distance << endl;
         }
+        delete[] knn;
     }
 
 
