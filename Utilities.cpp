@@ -2,11 +2,15 @@
 #include "Point.h"
 
 #include <random>
+#include <time.h>
 
 using namespace std;
 
+static default_random_engine randomness;
+static bool seeded = false;
+
 vector<int>* uniform_vec(int dimensions){
-    default_random_engine randomness;
+    if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
     normal_distribution<float> normal_distribution(0.0,1.0);
 
     vector<int> *v = new vector<int>;
@@ -18,7 +22,7 @@ vector<int>* uniform_vec(int dimensions){
 }
 
 float random_float(int w){
-    default_random_engine randomness;
+    if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
     uniform_real_distribution<float> uniform_distribution(0.0,w);
 
     return uniform_distribution(randomness);

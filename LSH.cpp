@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "LSH.h"
 
 using namespace std;
@@ -40,15 +42,14 @@ PD *LSH::kNN_Search(string &id, int L, int k){
         b[i].distance = 0;
     }
 
-	for (i=0; i<L; i++){
-		hash_tables[0]->knn_search_bucket(k, q, b);
-        /*cout << "query: " << id << endl;
-        for(int j=0; j<k; j++){
-            cout << '\t' << b[j].distance << endl;
-        }*/
-	}
-	return b;
+    chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
+    for (i=0; i<L; i++){
+        hash_tables[0]->knn_search_bucket(k, q, b);
+    }
+
+    cout << (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count() << "microseconds" << endl;
+	return b;
 }
 
 LSH::~LSH(){

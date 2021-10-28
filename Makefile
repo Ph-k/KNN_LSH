@@ -1,5 +1,5 @@
 CC = g++
-cflags = -pg -Wall -g3
+cflags = -Wall -g3
 
 valgrindFlags = --leak-check=full
 

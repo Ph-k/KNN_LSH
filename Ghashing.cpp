@@ -1,7 +1,7 @@
 #include "Ghashing.h"
 #include "Utilities.h"
 
-#define M 4294967291 // 2^32 - 5
+#define M 200 // 2^32 - 5
 
 Ghash::Ghash(int w, int k, int TableSize, int vecSize)
 :w(w), k(k), TableSize(TableSize), vecSize(vecSize){
