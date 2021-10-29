@@ -25,5 +25,6 @@ class FileReader{
         Point* ReadPoint(char file='i');
         Point* getQuery(std::string id);
         inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
+        std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

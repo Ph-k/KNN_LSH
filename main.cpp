@@ -68,20 +68,22 @@ int main(int argc, char const *argv[]){
          << "\n\tradius: " << radius << endl;
 
 
-    LSH operations(input_file,query_file,output_file,4,K,L);
+    FileReader io_files(input_file,query_file,output_file);
+    LSH operations(io_files,4,K,L,1000);
 
-    int j;
-    PD *knn;
+    int j, time;
+    PD *knn = nullptr;
     for(i = 1; i <=100; i++){
         string id = to_string(i);
-        knn = operations.kNN_Search(id,L,K);
-        cout << "query: " << i << endl;
+        time = operations.kNN_Search(id,L,K,&knn);
+        io_files.outputStream() << "query: " << i << endl;
         for(j=0; j<K; j++){
             //knn[j].p->print();
-            cout << '\t' << knn[j].distance << endl;
+            io_files.outputStream() << '\t' << knn[j].distance << endl;
         }
-        delete[] knn;
+        io_files.outputStream() << "in " << time << " milliseconds" << endl;
     }
+    if(knn != nullptr) delete[] knn;
 
 
     return 0;

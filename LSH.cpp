@@ -5,10 +5,10 @@
 using namespace std;
 
 LSH::LSH(
-    char const *input_f, char const *query_f, char const *output_f,
+    FileReader &io_files_ref,
     int w, int k, int l, int hash_table_size
 /*good practice https://stackoverflow.com/questions/4162021/is-it-ok-to-call-a-function-in-constructor-initializer-list*/
-):io_files(input_f, query_f, output_f),L(l){
+):io_files(io_files_ref),L(l){
 
     this->hash_tables = new HashTable*[l];
     for(int i=0; i<l; i++){
@@ -29,27 +29,26 @@ LSH::LSH(
 
 }
 
-PD *LSH::kNN_Search(string &id, int L, int k){
+int LSH::kNN_Search(string &id, int L, int k, PD **b){
 
     Point *q = io_files.getQuery(id);
-    if( q == nullptr ) return nullptr;
+    if( q == nullptr ) return -1;
 
     int i;
-	PD *b = new PD[k];
+	if(*b == nullptr ) *b = new PD[k];
 
     for (i=0; i<k; i++){
-        b[i].p = nullptr;
-        b[i].distance = 0;
+        (*b)[i].p = nullptr;
+        (*b)[i].distance = 0;
     }
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
     for (i=0; i<L; i++){
-        hash_tables[0]->knn_search_bucket(k, q, b);
+        hash_tables[0]->knn_search_bucket(k, q, *b);
     }
 
-    cout << (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count() << "microseconds" << endl;
-	return b;
+    return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
 LSH::~LSH(){

@@ -21,6 +21,8 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
         queries.insert( temp );
         p = ReadPoint('q');
     }
+
+    cout << "A file manager created! " << endl;
 }
 
 int FileReader::find_dimension_from_input(char const *input_f){
