@@ -8,6 +8,8 @@
 
 #define WORD_SEPERATOR ' '
 
+struct PD; //FD
+
 class FileReader{
     private:
         std::ifstream input_file;
@@ -25,6 +27,7 @@ class FileReader{
         Point* ReadPoint(char file='i');
         Point* getQuery(std::string id);
         inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
+        int writeLshQuery(const std::string& query_id, PD *knn, int k, int time);
         std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

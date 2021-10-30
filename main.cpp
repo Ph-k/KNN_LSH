@@ -71,17 +71,16 @@ int main(int argc, char const *argv[]){
     FileReader io_files(input_file,query_file,output_file);
     LSH operations(io_files,4,K,L,1000);
 
-    int j, time;
+    int time;
     PD *knn = nullptr;
     for(i = 1; i <=100; i++){
         string id = to_string(i);
         time = operations.kNN_Search(id,L,K,&knn);
-        io_files.outputStream() << "query: " << i << endl;
-        for(j=0; j<K; j++){
+        /*for(j=0; j<K; j++){
             //knn[j].p->print();
             io_files.outputStream() << '\t' << knn[j].distance << endl;
-        }
-        io_files.outputStream() << "in " << time << " milliseconds" << endl;
+        }*/
+        io_files.writeLshQuery(id, knn, K, time);
     }
     if(knn != nullptr) delete[] knn;
 
