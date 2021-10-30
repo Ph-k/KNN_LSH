@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]){
     FileReader io_files(input_file,query_file,output_file);
     LSH operations(io_files,4,K,L,1000);
 
-    int time;
+    int time, j;
     PD *knn = nullptr;
     for(i = 1; i <=100; i++){
         string id = to_string(i);
@@ -79,8 +79,8 @@ int main(int argc, char const *argv[]){
         /*for(j=0; j<K; j++){
             //knn[j].p->print();
             io_files.outputStream() << '\t' << knn[j].distance << endl;
-        }
-        io_files.outputStream() << "in " << time << " milliseconds" << endl;
+        }*/
+        io_files.writeLshQuery(id, knn, K, time);
 
         time = operations.bruteForceNN(id,L,K,&knn);
         cout << "query: " << i << endl;

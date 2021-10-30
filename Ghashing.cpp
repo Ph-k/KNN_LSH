@@ -1,7 +1,7 @@
 #include "Ghashing.h"
 #include "Utilities.h"
 
-#define M 200 // 2^32 - 5
+#define M 200//4294967286 // 2^32 - 5
 
 Ghash::Ghash(int w, int k, int TableSize, int vecSize)
 :w(w), k(k), TableSize(TableSize), vecSize(vecSize){
@@ -20,7 +20,7 @@ Ghash::Ghash(int w, int k, int TableSize, int vecSize)
 	}
 }
 
-unsigned int Ghash::hash(const std::vector<int> &p){
+unsigned int Ghash::HashID(const std::vector<int> &p){
 
 	int i,r; // r random natural number
 	unsigned int  res=0;
@@ -29,7 +29,7 @@ unsigned int Ghash::hash(const std::vector<int> &p){
 		res += r*hVec[i]->hash(p);
 	}
 	res = res % M; // <----- MUST CORRECT TO CALC. MODULO INSTEAD OF REMAINDER
-	res = res % TableSize;
+	//res = res % TableSize;
 	return res;
 }
 

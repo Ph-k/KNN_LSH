@@ -1,600 +1,1300 @@
-query: 1
-	284.596
-	318.697
-	323.784
-	323.92
-in 5 milliseconds
-query: 2
-	277.373
-	287.861
-	295.041
-	297.631
-in 5 milliseconds
-query: 3
-	227.726
-	241.754
-	245.061
-	251.237
-in 6 milliseconds
-query: 4
-	216.843
-	260.569
-	260.703
-	266.053
-in 6 milliseconds
-query: 5
-	257.538
-	282.361
-	284.659
-	286.543
-in 6 milliseconds
-query: 6
-	300.525
-	325.369
-	325.768
-	327.562
-in 5 milliseconds
-query: 7
-	279.864
-	281.8
-	284.652
-	292.068
-in 6 milliseconds
-query: 8
-	220.744
-	221.393
-	227.475
-	240.608
-in 6 milliseconds
-query: 9
-	256.215
-	269.944
-	283.263
-	289.116
-in 6 milliseconds
-query: 10
-	265.4
-	268.777
-	285.543
-	294.739
-in 7 milliseconds
-query: 11
-	308.914
-	324.848
-	329.079
-	329.562
-in 7 milliseconds
-query: 12
-	227.337
-	228.952
-	232.682
-	234.29
-in 6 milliseconds
-query: 13
-	255.656
-	276.087
-	281.409
-	285.368
-in 5 milliseconds
-query: 14
-	256.739
-	274.509
-	275.036
-	276.123
-in 7 milliseconds
-query: 15
-	303.724
-	312.248
-	312.42
-	315.46
-in 7 milliseconds
-query: 16
-	253.683
-	283.049
-	285.046
-	287.432
-in 5 milliseconds
-query: 17
-	248.2
-	248.324
-	264.562
-	264.934
-in 6 milliseconds
-query: 18
-	260.852
-	263.676
-	267.866
-	269.273
-in 5 milliseconds
-query: 19
-	280.43
-	283.272
-	291.918
-	303.923
-in 5 milliseconds
-query: 20
-	230.213
-	239.552
-	244.461
-	246.368
-in 5 milliseconds
-query: 21
-	200.425
-	203.698
-	204.778
-	218.243
-in 7 milliseconds
-query: 22
-	87.7326
-	231.221
-	231.627
-	251.426
-in 6 milliseconds
-query: 23
-	175.642
-	209.75
-	212.344
-	221.057
-in 5 milliseconds
-query: 24
-	256.677
-	263.782
-	264.337
-	264.447
-in 7 milliseconds
-query: 25
-	251.086
-	253.087
-	261.947
-	266.122
-in 6 milliseconds
-query: 26
-	286.568
-	294.995
-	318.744
-	318.854
-in 7 milliseconds
-query: 27
-	183.442
-	224.326
-	258.538
-	259.981
-in 5 milliseconds
-query: 28
-	232.508
-	257.855
-	267.079
-	272.949
-in 7 milliseconds
-query: 29
-	235.932
-	264.057
-	267.511
-	269.204
-in 6 milliseconds
-query: 30
-	167.821
-	185.37
-	186.778
-	188.125
-in 6 milliseconds
-query: 31
-	265.377
-	287.204
-	288.934
-	289.865
-in 6 milliseconds
-query: 32
-	240.45
-	265.882
-	287.792
-	309.401
-in 6 milliseconds
-query: 33
-	232.768
-	254.167
-	256.94
-	260.373
-in 6 milliseconds
-query: 34
-	328.279
-	362.673
-	363.595
-	393.248
-in 4 milliseconds
-query: 35
-	262.463
-	279.761
-	289.576
-	291.729
-in 6 milliseconds
-query: 36
-	179.597
-	292.57
-	304.317
-	311.615
-in 7 milliseconds
-query: 37
-	111.459
-	140.136
-	304.667
-	306.183
-in 7 milliseconds
-query: 38
-	304.752
-	319.819
-	337.356
-	343.622
-in 7 milliseconds
-query: 39
-	177.302
-	302.739
-	321.678
-	331.637
-in 5 milliseconds
-query: 40
-	202.262
-	211.097
-	212.807
-	224.459
-in 6 milliseconds
-query: 41
-	272.428
-	280.212
-	292.542
-	296.803
-in 5 milliseconds
-query: 42
-	200.494
-	226.619
-	235.612
-	238.344
-in 6 milliseconds
-query: 43
-	277.953
-	282.312
-	297.157
-	298.354
-in 5 milliseconds
-query: 44
-	283.212
-	295.044
-	300.302
-	308.543
-in 5 milliseconds
-query: 45
-	260.615
-	260.898
-	267.015
-	274.758
-in 6 milliseconds
-query: 46
-	261.362
-	275.946
-	276.491
-	280.601
-in 6 milliseconds
-query: 47
-	99.6293
-	240.202
-	272.426
-	274.075
-in 5 milliseconds
-query: 48
-	314.474
-	348.049
-	349.837
-	352.725
-in 5 milliseconds
-query: 49
-	288.638
-	326.049
-	331.349
-	344.645
-in 6 milliseconds
-query: 50
-	215.016
-	222.477
-	233.159
-	240.774
-in 7 milliseconds
-query: 51
-	181.141
-	267.159
-	298.649
-	300.779
-in 7 milliseconds
-query: 52
-	130.813
-	255.816
-	262.315
-	282.864
-in 5 milliseconds
-query: 53
-	221.671
-	230.111
-	238.317
-	249.243
-in 7 milliseconds
-query: 54
-	261.031
-	276.005
-	282.213
-	282.85
-in 6 milliseconds
-query: 55
-	174.479
-	185.79
-	192.666
-	196.099
-in 4 milliseconds
-query: 56
-	184.043
-	246.702
-	247.752
-	250.938
-in 5 milliseconds
-query: 57
-	209.062
-	210.713
-	220.941
-	221.102
-in 6 milliseconds
-query: 58
-	211.688
-	220.518
-	237.71
-	247.988
-in 7 milliseconds
-query: 59
-	302.607
-	316.142
-	321.286
-	330.906
-in 6 milliseconds
-query: 60
-	114.416
-	117.149
-	170.643
-	192.268
-in 6 milliseconds
-query: 61
-	268.351
-	270.629
-	297.056
-	298.756
-in 7 milliseconds
-query: 62
-	140.357
-	151.993
-	271.798
-	282.844
-in 6 milliseconds
-query: 63
-	229.693
-	274.902
-	275.398
-	277.051
-in 7 milliseconds
-query: 64
-	94.9157
-	226.976
-	234.811
-	248.636
-in 5 milliseconds
-query: 65
-	259.609
-	263.405
-	301.788
-	310.957
-in 7 milliseconds
-query: 66
-	173.381
-	219.861
-	235.777
-	240.807
-in 7 milliseconds
-query: 67
-	299.838
-	300.015
-	307.2
-	323.96
-in 5 milliseconds
-query: 68
-	251.036
-	260.225
-	265.848
-	295.801
-in 6 milliseconds
-query: 69
-	206.894
-	220.043
-	235.835
-	237.312
-in 7 milliseconds
-query: 70
-	266.813
-	299.945
-	313.573
-	321.314
-in 7 milliseconds
-query: 71
-	80.3679
-	159.333
-	182.915
-	184.348
-in 7 milliseconds
-query: 72
-	252.331
-	272.754
-	279.473
-	297.899
-in 7 milliseconds
-query: 73
-	303.211
-	328.329
-	331.581
-	340.294
-in 7 milliseconds
-query: 74
-	308.479
-	326.071
-	338.09
-	341.246
-in 6 milliseconds
-query: 75
-	227.229
-	235.593
-	240
-	241.878
-in 7 milliseconds
-query: 76
-	294.258
-	299.314
-	315.309
-	318.046
-in 7 milliseconds
-query: 77
-	255.996
-	280.836
-	293.566
-	296.621
-in 6 milliseconds
-query: 78
-	339.941
-	342.016
-	353.984
-	362.974
-in 4 milliseconds
-query: 79
-	278.083
-	284.87
-	285.463
-	291.453
-in 6 milliseconds
-query: 80
-	183.363
-	216.758
-	231.528
-	244.88
-in 7 milliseconds
-query: 81
-	281.068
-	309.22
-	318.605
-	324.002
-in 7 milliseconds
-query: 82
-	323.552
-	333.96
-	334.819
-	337.062
-in 5 milliseconds
-query: 83
-	304.598
-	310.582
-	313.311
-	317.047
-in 6 milliseconds
-query: 84
-	181.607
-	252.779
-	255.734
-	289.645
-in 5 milliseconds
-query: 85
-	192.678
-	261.905
-	271.972
-	273.031
-in 5 milliseconds
-query: 86
-	346.298
-	395.349
-	412.368
-	417.692
-in 5 milliseconds
-query: 87
-	282.4
-	292.289
-	303.663
-	312.412
-in 6 milliseconds
-query: 88
-	231.208
-	284.146
-	325.913
-	326.656
-in 7 milliseconds
-query: 89
-	238.39
-	252.494
-	255.932
-	262.011
-in 5 milliseconds
-query: 90
-	191.523
-	206.422
-	214.779
-	227.763
-in 7 milliseconds
-query: 91
-	163.141
-	176.743
-	192.834
-	193.481
-in 7 milliseconds
-query: 92
-	318.824
-	340.409
-	353.123
-	353.427
-in 7 milliseconds
-query: 93
-	308.611
-	311.933
-	343.171
-	350.331
-in 7 milliseconds
-query: 94
-	234.774
-	271.682
-	271.693
-	276.686
-in 5 milliseconds
-query: 95
-	160.571
-	274.532
-	286.939
-	290.348
-in 6 milliseconds
-query: 96
-	340.425
-	343.827
-	345.378
-	359.475
-in 5 milliseconds
-query: 97
-	330.581
-	333.641
-	341.054
-	341.444
-in 6 milliseconds
-query: 98
-	233.532
-	315.869
-	333.177
-	341.359
-in 6 milliseconds
-query: 99
-	155.019
-	158.928
-	161.192
-	168.526
-in 7 milliseconds
-query: 100
-	184.613
-	337.064
-	341.152
-	343.869
-in 7 milliseconds
+Query: 1
+Nearest neighbor-1: 9542
+distanceLSH: 327.913
+tLSH:5ms
+Nearest neighbor-2: 3544
+distanceLSH: 328.095
+tLSH:5ms
+Nearest neighbor-3: 1065
+distanceLSH: 328.612
+tLSH:5ms
+Nearest neighbor-4: 1711
+distanceLSH: 331.497
+tLSH:5ms
+Query: 2
+Nearest neighbor-1: 9575
+distanceLSH: 259.913
+tLSH:6ms
+Nearest neighbor-2: 1323
+distanceLSH: 262.926
+tLSH:6ms
+Nearest neighbor-3: 3137
+distanceLSH: 264.932
+tLSH:6ms
+Nearest neighbor-4: 926
+distanceLSH: 277.168
+tLSH:6ms
+Query: 3
+Nearest neighbor-1: 6429
+distanceLSH: 254.994
+tLSH:6ms
+Nearest neighbor-2: 6361
+distanceLSH: 258.263
+tLSH:6ms
+Nearest neighbor-3: 5811
+distanceLSH: 261.708
+tLSH:6ms
+Nearest neighbor-4: 9721
+distanceLSH: 268.877
+tLSH:6ms
+Query: 4
+Nearest neighbor-1: 273
+distanceLSH: 260.703
+tLSH:7ms
+Nearest neighbor-2: 148
+distanceLSH: 266.053
+tLSH:7ms
+Nearest neighbor-3: 126
+distanceLSH: 273.115
+tLSH:7ms
+Nearest neighbor-4: 4095
+distanceLSH: 284.385
+tLSH:7ms
+Query: 5
+Nearest neighbor-1: 4765
+distanceLSH: 282.361
+tLSH:7ms
+Nearest neighbor-2: 5776
+distanceLSH: 284.659
+tLSH:7ms
+Nearest neighbor-3: 6497
+distanceLSH: 286.033
+tLSH:7ms
+Nearest neighbor-4: 5354
+distanceLSH: 286.543
+tLSH:7ms
+Query: 6
+Nearest neighbor-1: 1240
+distanceLSH: 287.503
+tLSH:6ms
+Nearest neighbor-2: 3228
+distanceLSH: 300.525
+tLSH:6ms
+Nearest neighbor-3: 805
+distanceLSH: 304.816
+tLSH:6ms
+Nearest neighbor-4: 2608
+distanceLSH: 311.488
+tLSH:6ms
+Query: 7
+Nearest neighbor-1: 8582
+distanceLSH: 256.105
+tLSH:7ms
+Nearest neighbor-2: 9702
+distanceLSH: 268.248
+tLSH:7ms
+Nearest neighbor-3: 3688
+distanceLSH: 273.562
+tLSH:7ms
+Nearest neighbor-4: 2639
+distanceLSH: 277.973
+tLSH:7ms
+Query: 8
+Nearest neighbor-1: 5448
+distanceLSH: 173.948
+tLSH:6ms
+Nearest neighbor-2: 6640
+distanceLSH: 220.744
+tLSH:6ms
+Nearest neighbor-3: 8860
+distanceLSH: 240.181
+tLSH:6ms
+Nearest neighbor-4: 5752
+distanceLSH: 241.994
+tLSH:6ms
+Query: 9
+Nearest neighbor-1: 1657
+distanceLSH: 278.643
+tLSH:6ms
+Nearest neighbor-2: 1563
+distanceLSH: 280.617
+tLSH:6ms
+Nearest neighbor-3: 7298
+distanceLSH: 286.869
+tLSH:6ms
+Nearest neighbor-4: 6827
+distanceLSH: 288.804
+tLSH:6ms
+Query: 10
+Nearest neighbor-1: 7886
+distanceLSH: 267.707
+tLSH:7ms
+Nearest neighbor-2: 1672
+distanceLSH: 269.247
+tLSH:7ms
+Nearest neighbor-3: 4716
+distanceLSH: 271.457
+tLSH:7ms
+Nearest neighbor-4: 1587
+distanceLSH: 274.27
+tLSH:7ms
+Query: 11
+Nearest neighbor-1: 497
+distanceLSH: 312.784
+tLSH:7ms
+Nearest neighbor-2: 2313
+distanceLSH: 331.979
+tLSH:7ms
+Nearest neighbor-3: 4251
+distanceLSH: 333.837
+tLSH:7ms
+Nearest neighbor-4: 6530
+distanceLSH: 336.675
+tLSH:7ms
+Query: 12
+Nearest neighbor-1: 4727
+distanceLSH: 225.109
+tLSH:7ms
+Nearest neighbor-2: 1360
+distanceLSH: 227.398
+tLSH:7ms
+Nearest neighbor-3: 1527
+distanceLSH: 229.024
+tLSH:7ms
+Nearest neighbor-4: 1661
+distanceLSH: 236.146
+tLSH:7ms
+Query: 13
+Nearest neighbor-1: 2114
+distanceLSH: 238.55
+tLSH:6ms
+Nearest neighbor-2: 3136
+distanceLSH: 263.283
+tLSH:6ms
+Nearest neighbor-3: 171
+distanceLSH: 264.331
+tLSH:6ms
+Nearest neighbor-4: 282
+distanceLSH: 272.967
+tLSH:6ms
+Query: 14
+Nearest neighbor-1: 3610
+distanceLSH: 244.677
+tLSH:6ms
+Nearest neighbor-2: 9716
+distanceLSH: 289.211
+tLSH:6ms
+Nearest neighbor-3: 1324
+distanceLSH: 289.342
+tLSH:6ms
+Nearest neighbor-4: 2290
+distanceLSH: 292.392
+tLSH:6ms
+Query: 15
+Nearest neighbor-1: 4152
+distanceLSH: 303.724
+tLSH:7ms
+Nearest neighbor-2: 4832
+distanceLSH: 310.521
+tLSH:7ms
+Nearest neighbor-3: 7003
+distanceLSH: 319.506
+tLSH:7ms
+Nearest neighbor-4: 2752
+distanceLSH: 320.033
+tLSH:7ms
+Query: 16
+Nearest neighbor-1: 3
+distanceLSH: 262.168
+tLSH:6ms
+Nearest neighbor-2: 234
+distanceLSH: 264.078
+tLSH:6ms
+Nearest neighbor-3: 6497
+distanceLSH: 272.432
+tLSH:6ms
+Nearest neighbor-4: 8989
+distanceLSH: 274.916
+tLSH:6ms
+Query: 17
+Nearest neighbor-1: 320
+distanceLSH: 260.931
+tLSH:6ms
+Nearest neighbor-2: 422
+distanceLSH: 265.324
+tLSH:6ms
+Nearest neighbor-3: 3625
+distanceLSH: 271.884
+tLSH:6ms
+Nearest neighbor-4: 289
+distanceLSH: 272.721
+tLSH:6ms
+Query: 18
+Nearest neighbor-1: 3646
+distanceLSH: 271.533
+tLSH:6ms
+Nearest neighbor-2: 485
+distanceLSH: 286.26
+tLSH:6ms
+Nearest neighbor-3: 150
+distanceLSH: 288.097
+tLSH:6ms
+Nearest neighbor-4: 1982
+distanceLSH: 288.113
+tLSH:6ms
+Query: 19
+Nearest neighbor-1: 1792
+distanceLSH: 274.341
+tLSH:6ms
+Nearest neighbor-2: 1639
+distanceLSH: 275.601
+tLSH:6ms
+Nearest neighbor-3: 1422
+distanceLSH: 276.921
+tLSH:6ms
+Nearest neighbor-4: 529
+distanceLSH: 280.696
+tLSH:6ms
+Query: 20
+Nearest neighbor-1: 1700
+distanceLSH: 224.751
+tLSH:6ms
+Nearest neighbor-2: 145
+distanceLSH: 239.552
+tLSH:6ms
+Nearest neighbor-3: 3138
+distanceLSH: 244.461
+tLSH:6ms
+Nearest neighbor-4: 1152
+distanceLSH: 246.386
+tLSH:6ms
+Query: 21
+Nearest neighbor-1: 6293
+distanceLSH: 227.688
+tLSH:5ms
+Nearest neighbor-2: 5461
+distanceLSH: 238.843
+tLSH:5ms
+Nearest neighbor-3: 537
+distanceLSH: 253.929
+tLSH:5ms
+Nearest neighbor-4: 2034
+distanceLSH: 261.847
+tLSH:5ms
+Query: 22
+Nearest neighbor-1: 8048
+distanceLSH: 220.42
+tLSH:6ms
+Nearest neighbor-2: 9601
+distanceLSH: 222.16
+tLSH:6ms
+Nearest neighbor-3: 9707
+distanceLSH: 251.237
+tLSH:6ms
+Nearest neighbor-4: 5166
+distanceLSH: 252.01
+tLSH:6ms
+Query: 23
+Nearest neighbor-1: 4958
+distanceLSH: 173.052
+tLSH:6ms
+Nearest neighbor-2: 5086
+distanceLSH: 208.514
+tLSH:6ms
+Nearest neighbor-3: 5653
+distanceLSH: 209.103
+tLSH:6ms
+Nearest neighbor-4: 4553
+distanceLSH: 209.75
+tLSH:6ms
+Query: 24
+Nearest neighbor-1: 7850
+distanceLSH: 260.042
+tLSH:5ms
+Nearest neighbor-2: 9420
+distanceLSH: 278.462
+tLSH:5ms
+Nearest neighbor-3: 4459
+distanceLSH: 279.564
+tLSH:5ms
+Nearest neighbor-4: 4625
+distanceLSH: 281.878
+tLSH:5ms
+Query: 25
+Nearest neighbor-1: 4916
+distanceLSH: 242.508
+tLSH:5ms
+Nearest neighbor-2: 5210
+distanceLSH: 253.087
+tLSH:5ms
+Nearest neighbor-3: 6507
+distanceLSH: 261.947
+tLSH:5ms
+Nearest neighbor-4: 9384
+distanceLSH: 265.14
+tLSH:5ms
+Query: 26
+Nearest neighbor-1: 6423
+distanceLSH: 288.806
+tLSH:6ms
+Nearest neighbor-2: 3007
+distanceLSH: 303.18
+tLSH:6ms
+Nearest neighbor-3: 154
+distanceLSH: 306.225
+tLSH:6ms
+Nearest neighbor-4: 5408
+distanceLSH: 308.063
+tLSH:6ms
+Query: 27
+Nearest neighbor-1: 4493
+distanceLSH: 220.018
+tLSH:6ms
+Nearest neighbor-2: 5407
+distanceLSH: 224.326
+tLSH:6ms
+Nearest neighbor-3: 4828
+distanceLSH: 244.516
+tLSH:6ms
+Nearest neighbor-4: 4830
+distanceLSH: 245.78
+tLSH:6ms
+Query: 28
+Nearest neighbor-1: 5964
+distanceLSH: 175.516
+tLSH:6ms
+Nearest neighbor-2: 5737
+distanceLSH: 238.969
+tLSH:6ms
+Nearest neighbor-3: 4657
+distanceLSH: 256.478
+tLSH:6ms
+Nearest neighbor-4: 8173
+distanceLSH: 266.039
+tLSH:6ms
+Query: 29
+Nearest neighbor-1: 4597
+distanceLSH: 265.371
+tLSH:5ms
+Nearest neighbor-2: 7444
+distanceLSH: 267.776
+tLSH:5ms
+Nearest neighbor-3: 9522
+distanceLSH: 273.825
+tLSH:5ms
+Nearest neighbor-4: 4626
+distanceLSH: 277.314
+tLSH:5ms
+Query: 30
+Nearest neighbor-1: 6407
+distanceLSH: 185.37
+tLSH:6ms
+Nearest neighbor-2: 6488
+distanceLSH: 188.125
+tLSH:6ms
+Nearest neighbor-3: 6126
+distanceLSH: 189.37
+tLSH:6ms
+Nearest neighbor-4: 6049
+distanceLSH: 201.122
+tLSH:6ms
+Query: 31
+Nearest neighbor-1: 1650
+distanceLSH: 273.96
+tLSH:7ms
+Nearest neighbor-2: 5381
+distanceLSH: 277.105
+tLSH:7ms
+Nearest neighbor-3: 4730
+distanceLSH: 287.204
+tLSH:7ms
+Nearest neighbor-4: 290
+distanceLSH: 287.911
+tLSH:7ms
+Query: 32
+Nearest neighbor-1: 1691
+distanceLSH: 318.707
+tLSH:6ms
+Nearest neighbor-2: 1225
+distanceLSH: 326.662
+tLSH:6ms
+Nearest neighbor-3: 1814
+distanceLSH: 329.339
+tLSH:6ms
+Nearest neighbor-4: 2442
+distanceLSH: 335.948
+tLSH:6ms
+Query: 33
+Nearest neighbor-1: 6509
+distanceLSH: 255.247
+tLSH:6ms
+Nearest neighbor-2: 7721
+distanceLSH: 263.253
+tLSH:6ms
+Nearest neighbor-3: 6952
+distanceLSH: 268.382
+tLSH:6ms
+Nearest neighbor-4: 585
+distanceLSH: 268.996
+tLSH:6ms
+Query: 34
+Nearest neighbor-1: 7278
+distanceLSH: 328.279
+tLSH:6ms
+Nearest neighbor-2: 9056
+distanceLSH: 348.505
+tLSH:6ms
+Nearest neighbor-3: 688
+distanceLSH: 359.63
+tLSH:6ms
+Nearest neighbor-4: 1194
+distanceLSH: 360.038
+tLSH:6ms
+Query: 35
+Nearest neighbor-1: 8863
+distanceLSH: 262.463
+tLSH:6ms
+Nearest neighbor-2: 6347
+distanceLSH: 272.189
+tLSH:6ms
+Nearest neighbor-3: 5716
+distanceLSH: 274.829
+tLSH:6ms
+Nearest neighbor-4: 1966
+distanceLSH: 276.319
+tLSH:6ms
+Query: 36
+Nearest neighbor-1: 6708
+distanceLSH: 179.597
+tLSH:6ms
+Nearest neighbor-2: 5377
+distanceLSH: 263.564
+tLSH:6ms
+Nearest neighbor-3: 5310
+distanceLSH: 306.178
+tLSH:6ms
+Nearest neighbor-4: 3614
+distanceLSH: 311.615
+tLSH:6ms
+Query: 37
+Nearest neighbor-1: 4315
+distanceLSH: 289.897
+tLSH:5ms
+Nearest neighbor-2: 1886
+distanceLSH: 313.086
+tLSH:5ms
+Nearest neighbor-3: 1759
+distanceLSH: 317.411
+tLSH:5ms
+Nearest neighbor-4: 3392
+distanceLSH: 318.061
+tLSH:5ms
+Query: 38
+Nearest neighbor-1: 2842
+distanceLSH: 304.752
+tLSH:6ms
+Nearest neighbor-2: 3810
+distanceLSH: 319.506
+tLSH:6ms
+Nearest neighbor-3: 7214
+distanceLSH: 319.819
+tLSH:6ms
+Nearest neighbor-4: 6359
+distanceLSH: 322.788
+tLSH:6ms
+Query: 39
+Nearest neighbor-1: 5178
+distanceLSH: 162.034
+tLSH:6ms
+Nearest neighbor-2: 753
+distanceLSH: 318.374
+tLSH:6ms
+Nearest neighbor-3: 9185
+distanceLSH: 319.266
+tLSH:6ms
+Nearest neighbor-4: 5163
+distanceLSH: 323.124
+tLSH:6ms
+Query: 40
+Nearest neighbor-1: 4693
+distanceLSH: 212.807
+tLSH:6ms
+Nearest neighbor-2: 3768
+distanceLSH: 222.751
+tLSH:6ms
+Nearest neighbor-3: 4866
+distanceLSH: 224.867
+tLSH:6ms
+Nearest neighbor-4: 6824
+distanceLSH: 235.393
+tLSH:6ms
+Query: 41
+Nearest neighbor-1: 4868
+distanceLSH: 188.197
+tLSH:6ms
+Nearest neighbor-2: 891
+distanceLSH: 282.678
+tLSH:6ms
+Nearest neighbor-3: 1400
+distanceLSH: 297.624
+tLSH:6ms
+Nearest neighbor-4: 3791
+distanceLSH: 303.397
+tLSH:6ms
+Query: 42
+Nearest neighbor-1: 4565
+distanceLSH: 203.605
+tLSH:6ms
+Nearest neighbor-2: 9170
+distanceLSH: 223.302
+tLSH:6ms
+Nearest neighbor-3: 6615
+distanceLSH: 223.663
+tLSH:6ms
+Nearest neighbor-4: 8307
+distanceLSH: 227.326
+tLSH:6ms
+Query: 43
+Nearest neighbor-1: 8106
+distanceLSH: 245.41
+tLSH:5ms
+Nearest neighbor-2: 59
+distanceLSH: 279.803
+tLSH:5ms
+Nearest neighbor-3: 5205
+distanceLSH: 282.312
+tLSH:5ms
+Nearest neighbor-4: 9385
+distanceLSH: 288.543
+tLSH:5ms
+Query: 44
+Nearest neighbor-1: 5904
+distanceLSH: 303.177
+tLSH:6ms
+Nearest neighbor-2: 1525
+distanceLSH: 303.241
+tLSH:6ms
+Nearest neighbor-3: 6528
+distanceLSH: 307.391
+tLSH:6ms
+Nearest neighbor-4: 2658
+distanceLSH: 307.909
+tLSH:6ms
+Query: 45
+Nearest neighbor-1: 5149
+distanceLSH: 267.015
+tLSH:6ms
+Nearest neighbor-2: 6213
+distanceLSH: 271.89
+tLSH:6ms
+Nearest neighbor-3: 4760
+distanceLSH: 288.057
+tLSH:6ms
+Nearest neighbor-4: 6570
+distanceLSH: 289.722
+tLSH:6ms
+Query: 46
+Nearest neighbor-1: 6086
+distanceLSH: 266.15
+tLSH:5ms
+Nearest neighbor-2: 7886
+distanceLSH: 286.892
+tLSH:5ms
+Nearest neighbor-3: 6680
+distanceLSH: 289.042
+tLSH:5ms
+Nearest neighbor-4: 4472
+distanceLSH: 291.371
+tLSH:5ms
+Query: 47
+Nearest neighbor-1: 9670
+distanceLSH: 215.715
+tLSH:6ms
+Nearest neighbor-2: 7852
+distanceLSH: 236.78
+tLSH:6ms
+Nearest neighbor-3: 5347
+distanceLSH: 256.248
+tLSH:6ms
+Nearest neighbor-4: 8607
+distanceLSH: 256.527
+tLSH:6ms
+Query: 48
+Nearest neighbor-1: 5642
+distanceLSH: 294.394
+tLSH:6ms
+Nearest neighbor-2: 2891
+distanceLSH: 321.33
+tLSH:6ms
+Nearest neighbor-3: 3718
+distanceLSH: 352.18
+tLSH:6ms
+Nearest neighbor-4: 3815
+distanceLSH: 352.52
+tLSH:6ms
+Query: 49
+Nearest neighbor-1: 5751
+distanceLSH: 215.634
+tLSH:6ms
+Nearest neighbor-2: 977
+distanceLSH: 288.638
+tLSH:6ms
+Nearest neighbor-3: 1580
+distanceLSH: 319.568
+tLSH:6ms
+Nearest neighbor-4: 6251
+distanceLSH: 324.379
+tLSH:6ms
+Query: 50
+Nearest neighbor-1: 106
+distanceLSH: 244.585
+tLSH:6ms
+Nearest neighbor-2: 4822
+distanceLSH: 246.059
+tLSH:6ms
+Nearest neighbor-3: 5048
+distanceLSH: 248.083
+tLSH:6ms
+Nearest neighbor-4: 4561
+distanceLSH: 253.379
+tLSH:6ms
+Query: 51
+Nearest neighbor-1: 8340
+distanceLSH: 291.155
+tLSH:5ms
+Nearest neighbor-2: 5560
+distanceLSH: 308.631
+tLSH:5ms
+Nearest neighbor-3: 8862
+distanceLSH: 310.744
+tLSH:5ms
+Nearest neighbor-4: 9325
+distanceLSH: 316.938
+tLSH:5ms
+Query: 52
+Nearest neighbor-1: 9998
+distanceLSH: 258.322
+tLSH:6ms
+Nearest neighbor-2: 8076
+distanceLSH: 276.138
+tLSH:6ms
+Nearest neighbor-3: 1876
+distanceLSH: 293.689
+tLSH:6ms
+Nearest neighbor-4: 7003
+distanceLSH: 294.528
+tLSH:6ms
+Query: 53
+Nearest neighbor-1: 8481
+distanceLSH: 220.749
+tLSH:6ms
+Nearest neighbor-2: 2257
+distanceLSH: 225.717
+tLSH:6ms
+Nearest neighbor-3: 1003
+distanceLSH: 230.111
+tLSH:6ms
+Nearest neighbor-4: 6479
+distanceLSH: 230.751
+tLSH:6ms
+Query: 54
+Nearest neighbor-1: 5121
+distanceLSH: 254.947
+tLSH:6ms
+Nearest neighbor-2: 5879
+distanceLSH: 276.005
+tLSH:6ms
+Nearest neighbor-3: 4964
+distanceLSH: 278.719
+tLSH:6ms
+Nearest neighbor-4: 4997
+distanceLSH: 279.902
+tLSH:6ms
+Query: 55
+Nearest neighbor-1: 7825
+distanceLSH: 175.824
+tLSH:6ms
+Nearest neighbor-2: 5401
+distanceLSH: 176.91
+tLSH:6ms
+Nearest neighbor-3: 6720
+distanceLSH: 194.286
+tLSH:6ms
+Nearest neighbor-4: 8741
+distanceLSH: 194.469
+tLSH:6ms
+Query: 56
+Nearest neighbor-1: 5831
+distanceLSH: 184.043
+tLSH:6ms
+Nearest neighbor-2: 6005
+distanceLSH: 197.474
+tLSH:6ms
+Nearest neighbor-3: 7508
+distanceLSH: 248.437
+tLSH:6ms
+Nearest neighbor-4: 7282
+distanceLSH: 252.089
+tLSH:6ms
+Query: 57
+Nearest neighbor-1: 4464
+distanceLSH: 225.302
+tLSH:5ms
+Nearest neighbor-2: 5721
+distanceLSH: 225.719
+tLSH:5ms
+Nearest neighbor-3: 2917
+distanceLSH: 226.87
+tLSH:5ms
+Nearest neighbor-4: 9458
+distanceLSH: 230.649
+tLSH:5ms
+Query: 58
+Nearest neighbor-1: 7375
+distanceLSH: 227.295
+tLSH:6ms
+Nearest neighbor-2: 9923
+distanceLSH: 237.71
+tLSH:6ms
+Nearest neighbor-3: 823
+distanceLSH: 253.065
+tLSH:6ms
+Nearest neighbor-4: 107
+distanceLSH: 265.336
+tLSH:6ms
+Query: 59
+Nearest neighbor-1: 9959
+distanceLSH: 316.142
+tLSH:6ms
+Nearest neighbor-2: 7654
+distanceLSH: 323.589
+tLSH:6ms
+Nearest neighbor-3: 4868
+distanceLSH: 339.052
+tLSH:6ms
+Nearest neighbor-4: 2222
+distanceLSH: 342.758
+tLSH:6ms
+Query: 60
+Nearest neighbor-1: 6835
+distanceLSH: 114.416
+tLSH:7ms
+Nearest neighbor-2: 6799
+distanceLSH: 168.425
+tLSH:7ms
+Nearest neighbor-3: 6821
+distanceLSH: 175.664
+tLSH:7ms
+Nearest neighbor-4: 7557
+distanceLSH: 191.721
+tLSH:7ms
+Query: 61
+Nearest neighbor-1: 5279
+distanceLSH: 170.309
+tLSH:6ms
+Nearest neighbor-2: 8721
+distanceLSH: 283.863
+tLSH:6ms
+Nearest neighbor-3: 7309
+distanceLSH: 287.618
+tLSH:6ms
+Nearest neighbor-4: 9618
+distanceLSH: 288.548
+tLSH:6ms
+Query: 62
+Nearest neighbor-1: 8565
+distanceLSH: 151.993
+tLSH:7ms
+Nearest neighbor-2: 5771
+distanceLSH: 286.131
+tLSH:7ms
+Nearest neighbor-3: 7518
+distanceLSH: 286.177
+tLSH:7ms
+Nearest neighbor-4: 9973
+distanceLSH: 288.085
+tLSH:7ms
+Query: 63
+Nearest neighbor-1: 5173
+distanceLSH: 244.583
+tLSH:5ms
+Nearest neighbor-2: 5775
+distanceLSH: 253.365
+tLSH:5ms
+Nearest neighbor-3: 5713
+distanceLSH: 268.799
+tLSH:5ms
+Nearest neighbor-4: 8267
+distanceLSH: 268.9
+tLSH:5ms
+Query: 64
+Nearest neighbor-1: 6441
+distanceLSH: 207.767
+tLSH:6ms
+Nearest neighbor-2: 9749
+distanceLSH: 227.528
+tLSH:6ms
+Nearest neighbor-3: 7998
+distanceLSH: 232.14
+tLSH:6ms
+Nearest neighbor-4: 9895
+distanceLSH: 239.883
+tLSH:6ms
+Query: 65
+Nearest neighbor-1: 6938
+distanceLSH: 240.697
+tLSH:6ms
+Nearest neighbor-2: 7083
+distanceLSH: 247.39
+tLSH:6ms
+Nearest neighbor-3: 6906
+distanceLSH: 260.561
+tLSH:6ms
+Nearest neighbor-4: 7347
+distanceLSH: 263.405
+tLSH:6ms
+Query: 66
+Nearest neighbor-1: 6406
+distanceLSH: 173.381
+tLSH:5ms
+Nearest neighbor-2: 7601
+distanceLSH: 238.596
+tLSH:5ms
+Nearest neighbor-3: 6411
+distanceLSH: 258.529
+tLSH:5ms
+Nearest neighbor-4: 8900
+distanceLSH: 265.023
+tLSH:5ms
+Query: 67
+Nearest neighbor-1: 5243
+distanceLSH: 247.917
+tLSH:6ms
+Nearest neighbor-2: 1766
+distanceLSH: 299.838
+tLSH:6ms
+Nearest neighbor-3: 6745
+distanceLSH: 304.88
+tLSH:6ms
+Nearest neighbor-4: 6104
+distanceLSH: 307.2
+tLSH:6ms
+Query: 68
+Nearest neighbor-1: 6019
+distanceLSH: 264.45
+tLSH:6ms
+Nearest neighbor-2: 8449
+distanceLSH: 284.359
+tLSH:6ms
+Nearest neighbor-3: 6793
+distanceLSH: 295.801
+tLSH:6ms
+Nearest neighbor-4: 1681
+distanceLSH: 310.359
+tLSH:6ms
+Query: 69
+Nearest neighbor-1: 5200
+distanceLSH: 201.311
+tLSH:6ms
+Nearest neighbor-2: 4226
+distanceLSH: 220.511
+tLSH:6ms
+Nearest neighbor-3: 9876
+distanceLSH: 224.873
+tLSH:6ms
+Nearest neighbor-4: 6823
+distanceLSH: 232.448
+tLSH:6ms
+Query: 70
+Nearest neighbor-1: 563
+distanceLSH: 299.945
+tLSH:6ms
+Nearest neighbor-2: 8191
+distanceLSH: 309.034
+tLSH:6ms
+Nearest neighbor-3: 1819
+distanceLSH: 310.021
+tLSH:6ms
+Nearest neighbor-4: 5512
+distanceLSH: 314.232
+tLSH:6ms
+Query: 71
+Nearest neighbor-1: 6125
+distanceLSH: 46.8188
+tLSH:6ms
+Nearest neighbor-2: 7487
+distanceLSH: 132.28
+tLSH:6ms
+Nearest neighbor-3: 7766
+distanceLSH: 149.305
+tLSH:6ms
+Nearest neighbor-4: 6328
+distanceLSH: 165.312
+tLSH:6ms
+Query: 72
+Nearest neighbor-1: 5827
+distanceLSH: 193.675
+tLSH:6ms
+Nearest neighbor-2: 5457
+distanceLSH: 289.024
+tLSH:6ms
+Nearest neighbor-3: 9122
+distanceLSH: 293.443
+tLSH:6ms
+Nearest neighbor-4: 4196
+distanceLSH: 305.062
+tLSH:6ms
+Query: 73
+Nearest neighbor-1: 3594
+distanceLSH: 328.329
+tLSH:6ms
+Nearest neighbor-2: 5939
+distanceLSH: 337.874
+tLSH:6ms
+Nearest neighbor-3: 4547
+distanceLSH: 339.463
+tLSH:6ms
+Nearest neighbor-4: 8500
+distanceLSH: 341.535
+tLSH:6ms
+Query: 74
+Nearest neighbor-1: 7745
+distanceLSH: 298.821
+tLSH:6ms
+Nearest neighbor-2: 1882
+distanceLSH: 301.392
+tLSH:6ms
+Nearest neighbor-3: 1851
+distanceLSH: 321.417
+tLSH:6ms
+Nearest neighbor-4: 3385
+distanceLSH: 322.546
+tLSH:6ms
+Query: 75
+Nearest neighbor-1: 2086
+distanceLSH: 222.187
+tLSH:6ms
+Nearest neighbor-2: 9525
+distanceLSH: 235.593
+tLSH:6ms
+Nearest neighbor-3: 5407
+distanceLSH: 239.875
+tLSH:6ms
+Nearest neighbor-4: 5911
+distanceLSH: 241.34
+tLSH:6ms
+Query: 76
+Nearest neighbor-1: 1235
+distanceLSH: 294.258
+tLSH:6ms
+Nearest neighbor-2: 5154
+distanceLSH: 319.103
+tLSH:6ms
+Nearest neighbor-3: 3177
+distanceLSH: 329.316
+tLSH:6ms
+Nearest neighbor-4: 9062
+distanceLSH: 330.912
+tLSH:6ms
+Query: 77
+Nearest neighbor-1: 7904
+distanceLSH: 251.257
+tLSH:6ms
+Nearest neighbor-2: 7368
+distanceLSH: 255.996
+tLSH:6ms
+Nearest neighbor-3: 3109
+distanceLSH: 285.184
+tLSH:6ms
+Nearest neighbor-4: 9251
+distanceLSH: 303.778
+tLSH:6ms
+Query: 78
+Nearest neighbor-1: 2093
+distanceLSH: 317.909
+tLSH:6ms
+Nearest neighbor-2: 3291
+distanceLSH: 320.893
+tLSH:6ms
+Nearest neighbor-3: 1412
+distanceLSH: 338.365
+tLSH:6ms
+Nearest neighbor-4: 7530
+distanceLSH: 339.941
+tLSH:6ms
+Query: 79
+Nearest neighbor-1: 9209
+distanceLSH: 226.868
+tLSH:5ms
+Nearest neighbor-2: 9793
+distanceLSH: 245.516
+tLSH:5ms
+Nearest neighbor-3: 4624
+distanceLSH: 254.876
+tLSH:5ms
+Nearest neighbor-4: 5235
+distanceLSH: 272.688
+tLSH:5ms
+Query: 80
+Nearest neighbor-1: 7081
+distanceLSH: 183.363
+tLSH:6ms
+Nearest neighbor-2: 7957
+distanceLSH: 241.7
+tLSH:6ms
+Nearest neighbor-3: 6971
+distanceLSH: 246.134
+tLSH:6ms
+Nearest neighbor-4: 7284
+distanceLSH: 248.765
+tLSH:6ms
+Query: 81
+Nearest neighbor-1: 9251
+distanceLSH: 304.181
+tLSH:6ms
+Nearest neighbor-2: 924
+distanceLSH: 324.002
+tLSH:6ms
+Nearest neighbor-3: 7719
+distanceLSH: 326.438
+tLSH:6ms
+Nearest neighbor-4: 2450
+distanceLSH: 328.766
+tLSH:6ms
+Query: 82
+Nearest neighbor-1: 3087
+distanceLSH: 276.819
+tLSH:7ms
+Nearest neighbor-2: 5180
+distanceLSH: 308.921
+tLSH:7ms
+Nearest neighbor-3: 266
+distanceLSH: 310.15
+tLSH:7ms
+Nearest neighbor-4: 1378
+distanceLSH: 311.415
+tLSH:7ms
+Query: 83
+Nearest neighbor-1: 8459
+distanceLSH: 312.456
+tLSH:7ms
+Nearest neighbor-2: 1358
+distanceLSH: 315.927
+tLSH:7ms
+Nearest neighbor-3: 3861
+distanceLSH: 322.346
+tLSH:7ms
+Nearest neighbor-4: 154
+distanceLSH: 325.082
+tLSH:7ms
+Query: 84
+Nearest neighbor-1: 8481
+distanceLSH: 237.668
+tLSH:6ms
+Nearest neighbor-2: 5052
+distanceLSH: 249.389
+tLSH:6ms
+Nearest neighbor-3: 6383
+distanceLSH: 255.734
+tLSH:6ms
+Nearest neighbor-4: 537
+distanceLSH: 278.677
+tLSH:6ms
+Query: 85
+Nearest neighbor-1: 5880
+distanceLSH: 250.466
+tLSH:5ms
+Nearest neighbor-2: 7051
+distanceLSH: 276.143
+tLSH:5ms
+Nearest neighbor-3: 4509
+distanceLSH: 286.815
+tLSH:5ms
+Nearest neighbor-4: 5407
+distanceLSH: 292.802
+tLSH:5ms
+Query: 86
+Nearest neighbor-1: 7020
+distanceLSH: 349.628
+tLSH:7ms
+Nearest neighbor-2: 6255
+distanceLSH: 361.699
+tLSH:7ms
+Nearest neighbor-3: 8179
+distanceLSH: 396.377
+tLSH:7ms
+Nearest neighbor-4: 4782
+distanceLSH: 408.799
+tLSH:7ms
+Query: 87
+Nearest neighbor-1: 5475
+distanceLSH: 281.778
+tLSH:6ms
+Nearest neighbor-2: 7326
+distanceLSH: 292.289
+tLSH:6ms
+Nearest neighbor-3: 3529
+distanceLSH: 327.368
+tLSH:6ms
+Nearest neighbor-4: 5927
+distanceLSH: 331.809
+tLSH:6ms
+Query: 88
+Nearest neighbor-1: 6141
+distanceLSH: 256.228
+tLSH:6ms
+Nearest neighbor-2: 5416
+distanceLSH: 284.146
+tLSH:6ms
+Nearest neighbor-3: 5813
+distanceLSH: 304.534
+tLSH:6ms
+Nearest neighbor-4: 6750
+distanceLSH: 305.493
+tLSH:6ms
+Query: 89
+Nearest neighbor-1: 7099
+distanceLSH: 75.08
+tLSH:5ms
+Nearest neighbor-2: 6902
+distanceLSH: 135.052
+tLSH:5ms
+Nearest neighbor-3: 5902
+distanceLSH: 201.517
+tLSH:5ms
+Nearest neighbor-4: 8999
+distanceLSH: 268.57
+tLSH:5ms
+Query: 90
+Nearest neighbor-1: 7119
+distanceLSH: 157.34
+tLSH:7ms
+Nearest neighbor-2: 6080
+distanceLSH: 191.523
+tLSH:7ms
+Nearest neighbor-3: 7266
+distanceLSH: 210.098
+tLSH:7ms
+Nearest neighbor-4: 5480
+distanceLSH: 223.152
+tLSH:7ms
+Query: 91
+Nearest neighbor-1: 9259
+distanceLSH: 50.4579
+tLSH:6ms
+Nearest neighbor-2: 4776
+distanceLSH: 188.531
+tLSH:6ms
+Nearest neighbor-3: 4741
+distanceLSH: 192.546
+tLSH:6ms
+Nearest neighbor-4: 4854
+distanceLSH: 193.481
+tLSH:6ms
+Query: 92
+Nearest neighbor-1: 3938
+distanceLSH: 314.189
+tLSH:6ms
+Nearest neighbor-2: 6871
+distanceLSH: 353.123
+tLSH:6ms
+Nearest neighbor-3: 8576
+distanceLSH: 366.444
+tLSH:6ms
+Nearest neighbor-4: 1892
+distanceLSH: 374.45
+tLSH:6ms
+Query: 93
+Nearest neighbor-1: 909
+distanceLSH: 305.943
+tLSH:6ms
+Nearest neighbor-2: 1375
+distanceLSH: 342.533
+tLSH:6ms
+Nearest neighbor-3: 2433
+distanceLSH: 350.808
+tLSH:6ms
+Nearest neighbor-4: 3973
+distanceLSH: 352.98
+tLSH:6ms
+Query: 94
+Nearest neighbor-1: 1089
+distanceLSH: 258.339
+tLSH:6ms
+Nearest neighbor-2: 6138
+distanceLSH: 272.932
+tLSH:6ms
+Nearest neighbor-3: 5762
+distanceLSH: 276.686
+tLSH:6ms
+Nearest neighbor-4: 5926
+distanceLSH: 278.392
+tLSH:6ms
+Query: 95
+Nearest neighbor-1: 8100
+distanceLSH: 236.377
+tLSH:4ms
+Nearest neighbor-2: 8120
+distanceLSH: 301.463
+tLSH:4ms
+Nearest neighbor-3: 6431
+distanceLSH: 305.082
+tLSH:4ms
+Nearest neighbor-4: 1766
+distanceLSH: 307.972
+tLSH:4ms
+Query: 96
+Nearest neighbor-1: 2266
+distanceLSH: 320.947
+tLSH:6ms
+Nearest neighbor-2: 2319
+distanceLSH: 334.513
+tLSH:6ms
+Nearest neighbor-3: 8547
+distanceLSH: 340.869
+tLSH:6ms
+Nearest neighbor-4: 9290
+distanceLSH: 359.475
+tLSH:6ms
+Query: 97
+Nearest neighbor-1: 267
+distanceLSH: 320.209
+tLSH:7ms
+Nearest neighbor-2: 3207
+distanceLSH: 327.278
+tLSH:7ms
+Nearest neighbor-3: 1381
+distanceLSH: 341.054
+tLSH:7ms
+Nearest neighbor-4: 7008
+distanceLSH: 343.904
+tLSH:7ms
+Query: 98
+Nearest neighbor-1: 5073
+distanceLSH: 311.304
+tLSH:6ms
+Nearest neighbor-2: 7468
+distanceLSH: 315.869
+tLSH:6ms
+Nearest neighbor-3: 6927
+distanceLSH: 316.427
+tLSH:6ms
+Nearest neighbor-4: 374
+distanceLSH: 325.272
+tLSH:6ms
+Query: 99
+Nearest neighbor-1: 5461
+distanceLSH: 137.43
+tLSH:6ms
+Nearest neighbor-2: 7415
+distanceLSH: 168.526
+tLSH:6ms
+Nearest neighbor-3: 8196
+distanceLSH: 174.319
+tLSH:6ms
+Nearest neighbor-4: 4912
+distanceLSH: 175.568
+tLSH:6ms
+Query: 100
+Nearest neighbor-1: 8083
+distanceLSH: 184.613
+tLSH:6ms
+Nearest neighbor-2: 9339
+distanceLSH: 337.064
+tLSH:6ms
+Nearest neighbor-3: 2429
+distanceLSH: 341.152
+tLSH:6ms
+Nearest neighbor-4: 3271
+distanceLSH: 344.91
+tLSH:6ms
