@@ -100,10 +100,17 @@ Point* FileReader::getQuery(string id){
 int FileReader::writeLshQuery(const string& query_id, PD *knn, int k, int time){
     output_file << "Query: " << query_id << '\n';
     for(int i=0; i<k; i++){
-        output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n';
-        output_file << "distanceLSH: " << knn[i].distance << '\n'; // note that distance is a float!!!
-        //output_file << "distanceTrue: " << knn[i].distance << '\n';
-        output_file << "tLSH:" << time << "ms" << endl; // note that time is an int
+        if( knn[i].p != nullptr ){
+            output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n';
+            output_file << "distanceLSH: " << knn[i].distance << '\n'; // note that distance is a float!!!
+            //output_file << "distanceTrue: " << knn[i].distance << '\n';
+            output_file << "tLSH:" << time << "ms" << endl; // note that time is an int
+        }else{
+            output_file << "Nearest neighbor-" << i+1 << ": none\n";
+            output_file << "distanceLSH: -\n"; // note that distance is a float!!!
+            //output_file << "distanceTrue: " << knn[i].distance << '\n';
+            output_file << "tLSH:" << time << "ms" << endl; // note that time is an int
+        }
     }
     return 0;
 }

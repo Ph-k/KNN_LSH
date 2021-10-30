@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <climits> // For INT_MAX
 
 class Point;
 
@@ -17,7 +16,7 @@ struct PointPointer{
 
 std::vector<int>* uniform_vec(int dimensions);
 
-float random_float(int w = INT_MAX);
+float random_float(float l=2, float h=6);
 
 float euclidean_distance(Point *p1, Point *p2);
 

@@ -23,9 +23,9 @@ vector<int>* uniform_vec(int dimensions){
 }
 
 // Choose random floating point number in the inerval (0,w] from uniform distribution
-float random_float(int w){
+float random_float(float l, float h){
     if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
-    uniform_real_distribution<float> uniform_distribution(0.0,w);
+    uniform_real_distribution<float> uniform_distribution(l,h);
 
     return uniform_distribution(randomness);
 }
