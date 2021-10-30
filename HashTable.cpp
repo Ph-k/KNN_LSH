@@ -13,15 +13,27 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize)
 }
 
 int HashTable::Insert(HashItem item){
-    return table[Ghashing.hash(item->getXs())].Push(item);
+    int hash_index = Ghashing.hash(item->getXs());
+    return table[hash_index].Push(item);
 }
 
 int HashTable::Find(HashItem item){
-    return table[Ghashing.hash(item->getXs())].Find(item);
+    int hash_index = Ghashing.hash(item->getXs());
+    return table[hash_index].Find(item);
 }
 
 int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest){
-    return table[Ghashing.hash(q->getXs())].knn_search(k,q, nearest);
+    int hash_index = Ghashing.hash(q->getXs());
+    return table[hash_index].knn_search(k,q, nearest);
+}
+
+int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
+    int res;
+
+    for (unsigned int i=0; i<table_size; i++){
+        res = table[i].knn_search(k,q, nearest);
+    }
+    return res;
 }
 
 void HashTable::Traverse( void (*fun)(HashItem *) ){

@@ -82,6 +82,14 @@ int main(int argc, char const *argv[]){
             io_files.outputStream() << '\t' << knn[j].distance << endl;
         }
         io_files.outputStream() << "in " << time << " milliseconds" << endl;
+
+        time = operations.bruteForceNN(id,L,K,&knn);
+        cout << "query: " << i << endl;
+        for(j=0; j<K; j++){
+            //knn[j].p->print();
+            cout << '\t' << knn[j].distance << endl;
+        }
+        cout << "in " << time << " milliseconds" << endl;
     }
     if(knn != nullptr) delete[] knn;
 

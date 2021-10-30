@@ -15,6 +15,7 @@ class HashTable{
         int Find(HashItem item);
         void Traverse( void (*fun)(HashItem *) );
         int knn_search_bucket(int k, Point *q, struct PD* nearest);
+        int bruteForceNN(int k, Point *q, struct PD* nearest);
         ~HashTable();
     private:
         SimpleList *table;

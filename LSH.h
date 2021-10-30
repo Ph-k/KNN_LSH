@@ -19,6 +19,7 @@ class LSH{
             int w, int k, int l, int hash_table_size=10
         );
         int kNN_Search(std::string &id, int L, int k, PD **b);
+        int bruteForceNN(std::string &id, int L, int k, PD **b);
         ~LSH();
 };
 

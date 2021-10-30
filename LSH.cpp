@@ -51,6 +51,26 @@ int LSH::kNN_Search(string &id, int L, int k, PD **b){
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
+int LSH::bruteForceNN(string &id, int L, int k, PD **b){
+
+    Point *q = io_files.getQuery(id);
+    if( q == nullptr ) return -1;
+
+    int i;
+    if(*b == nullptr ) *b = new PD[k];
+
+    for (i=0; i<k; i++){
+        (*b)[i].p = nullptr;
+        (*b)[i].distance = 0;
+    }
+
+    chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+
+    hash_tables[0]->bruteForceNN(k, q, *b);
+
+    return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
+}
+
 LSH::~LSH(){
     for(auto point :points)
         delete point;
