@@ -10,6 +10,11 @@ struct PD{
     float distance;
 };
 
+struct PointPointer{
+    Point *point;
+    int Id;
+};
+
 std::vector<int>* uniform_vec(int dimensions);
 
 float random_float(int w = INT_MAX);

@@ -1,8 +1,9 @@
 #include "SimpleList.h"
+#include "Utilities.h"
+#include "Ghashing.h"
 
 #include <iostream>
 #include "Point.h"
-#include "Utilities.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ int SimpleList::Pop(){
 int SimpleList::Find(SimpleListItemType item){
     ListNode* node = head;
     while(node != nullptr){
-        if(node->item == item)
+        if(node->item.point == item.point)
             return 1;
 
         node = node->next;
@@ -55,41 +56,43 @@ int SimpleList::Find(SimpleListItemType item){
     return 0;
 }
 
-void SimpleList::Traverse( void (*fun)(SimpleListItemType *) ){
+/*void SimpleList::Traverse( void (*fun)(SimpleListItemType *) ){
     ListNode* node = head;
     while(node != nullptr){
         fun( &(node->item) );
         node = node->next;
     }
-}
+}*/
 
-int SimpleList::knn_search(int k, Point *q, struct PD* nearest){
+int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool brute_force){
     ListNode* node = head;
     float l1;
     int i,j;
 
     while(node != nullptr){
-        l1 = euclidean_distance(node->item,q);
+        if(brute_force || Id_q == node->item.Id){
+            l1 = euclidean_distance(node->item.point,q);
 
-        for(i=0; i<k; i++){
-            if( nearest[i].p == nullptr ){
-                nearest[i].p = node->item;
-                nearest[i].distance = l1;
-                break;
-            }else if(nearest[i].p == node->item){
-                break;
-            }else if(nearest[i].distance > l1){
-                //Shifting arrey
-                for(j=k-1; j>i; j--){
-                    nearest[j].p = nearest[j-1].p;
-                    nearest[j].distance = nearest[j-1].distance;
+            for(i=0; i<k; i++){
+                if( nearest[i].p == nullptr ){
+                    nearest[i].p = node->item.point;
+                    nearest[i].distance = l1;
+                    break;
+                }else if(nearest[i].p == node->item.point){
+                    break;
+                }else if(nearest[i].distance > l1){
+                    //Shifting arrey
+                    for(j=k-1; j>i; j--){
+                        nearest[j].p = nearest[j-1].p;
+                        nearest[j].distance = nearest[j-1].distance;
+                    }
+                    //node->item->print();
+                    /*cout << nearest[i].p << " vs " << node->item << ' ' << nearest[i].distance << "vs" << l1 << ' ' << endl;
+                    nearest[i].p->print(); node->item->print();*/
+                    nearest[i].p = node->item.point;
+                    nearest[i].distance = l1;
+                    break;
                 }
-                //node->item->print();
-                /*cout << nearest[i].p << " vs " << node->item << ' ' << nearest[i].distance << "vs" << l1 << ' ' << endl;
-                nearest[i].p->print(); node->item->print();*/
-                nearest[i].p = node->item;
-                nearest[i].distance = l1;
-                break;
             }
         }
 
