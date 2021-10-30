@@ -17,3 +17,5 @@ float random_float(int w = INT_MAX);
 float euclidean_distance(Point *p1, Point *p2);
 
 int dot_product(const std::vector<int> &x,const std::vector<int> &y);
+
+long int modulo(long int a, long int b);

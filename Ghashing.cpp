@@ -22,14 +22,14 @@ Ghash::Ghash(int w, int k, int TableSize, int vecSize)
 
 unsigned int Ghash::HashID(const std::vector<int> &p){
 
-	int i,r; // r random natural number
+	int i,r; // r: random natural number
 	unsigned int  res=0;
 	for(i=0; i<k; i++){
 		r = random_float();
 		res += r*hVec[i]->hash(p);
+		res = int(modulo((long int)res, (long int)M));
 	}
-	res = res % M; // <----- MUST CORRECT TO CALC. MODULO INSTEAD OF REMAINDER
-	//res = res % TableSize;
+
 	return res;
 }
 

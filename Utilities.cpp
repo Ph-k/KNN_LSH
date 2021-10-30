@@ -9,6 +9,7 @@ using namespace std;
 static default_random_engine randomness;
 static bool seeded = false;
 
+// Create a vector object with floating numbers taken from the normal distribution
 vector<int>* uniform_vec(int dimensions){
     if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
     normal_distribution<float> normal_distribution(0.0,1.0);
@@ -21,6 +22,7 @@ vector<int>* uniform_vec(int dimensions){
     return v;
 }
 
+// Choose random floating point number in the inerval (0,w] from uniform distribution
 float random_float(int w){
     if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
     uniform_real_distribution<float> uniform_distribution(0.0,w);
@@ -48,6 +50,7 @@ float euclidean_distance(Point *p1, Point *p2){
     return sqrt(sum);
 }
 
+// Our own function to calculate dot product of two vector objects
 int dot_product(const vector<int> &x,const vector<int> &y){
 	if (x.size() != y.size())
 		exit(1);
@@ -56,4 +59,10 @@ int dot_product(const vector<int> &x,const vector<int> &y){
 	for (int i=0; i<n; i++)
 		dp += x[i]*y[i];
 	return dp;
+}
+
+long int modulo(long int a, long int b){
+
+    long int rem = a % b;
+    return (rem<0 ? rem+b : rem);
 }
