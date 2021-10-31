@@ -67,9 +67,3 @@ long int modulo(long int a, long int b){
     long int rem = a % b;
     return (rem<0 ? rem+b : rem);
 }
-
-void writeNeighborToOutput(Point* neighbor, void* FileReaderPointer ){
-    int i=0;
-    FileReader* io_files = (FileReader*)FileReaderPointer;
-    io_files->writeRangeNeighbor(neighbor->getId());
-}

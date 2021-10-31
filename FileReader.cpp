@@ -111,15 +111,19 @@ int FileReader::writeLshQuery(const string& query_id, PD *knn, PD* bruteForce, i
                         << "distanceLSH: -\n"
                         << "distanceTrue: " << bruteForce[i].distance << '\n'
                         << "tLSH:" << timeLSH << "ms" << '\n'
-                        << "tTrue:" << timeBF << "ms" << '\n'; 
+                        << "tTrue:" << timeBF << "ms" << endl; 
         }
     }
-    output_file << "R-near neighbors:" << endl;
+
     return 0;
 }
 
-int FileReader::writeRangeNeighbor(const string& neighbor_id){
-    output_file << neighbor_id << '\n';
+int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors){
+    output_file << "R-near neighbors:" << '\n';
+    for(auto neighbor: neighbors){
+        output_file << neighbor.second->getId() << '\n';
+    }
+    output_file << endl;
     return 0;
 }
 

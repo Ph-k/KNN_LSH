@@ -1,4 +1,5 @@
 #include <chrono>
+#include <unordered_map>
 
 #include "LSH.h"
 
@@ -71,7 +72,7 @@ int LSH::bruteForceNN(string &id, int L, int k, PD **b){
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int LSH::rangeSearch(string &id, int r, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem){
+int LSH::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_neighbors){
     Point *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
 
@@ -79,7 +80,7 @@ int LSH::rangeSearch(string &id, int r, void (*outputFunction)(Point *, void* pr
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
     for (i=0; i<L; i++){
-        hash_tables[0]->rangeSearchBucket(r, q, outputFunction, outputFunctionItem);
+        hash_tables[0]->rangeSearchBucket(r, q, r_neighbors);
     }
 
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();

@@ -1,4 +1,5 @@
 #include <vector>
+#include <unordered_map>
 
 class Point; // Forward declaration
 struct PointPointer;
@@ -16,7 +17,7 @@ class SimpleList{
         int Find(SimpleListItemType item);
         //void Traverse( void (*fun)(SimpleListItemType *) );
         int knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool brute_force = false);
-        int rangeSearch(int r, Point *q,  void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem );
+        int rangeSearch(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors);
         ~SimpleList();
     private:
         ListNode *head;

@@ -2,6 +2,7 @@
 #include "Ghashing.h"
 
 #include <vector>
+#include <unordered_map>
 
 class Point; // Forward declaration
 class Ghash;
@@ -16,7 +17,7 @@ class HashTable{
         //void Traverse( void (*fun)(HashItem *) );
         int knn_search_bucket(int k, Point *q, struct PD* nearest);
         int bruteForceNN(int k, Point *q, struct PD* nearest);
-        int rangeSearchBucket(int L, Point *q, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem);
+        int rangeSearchBucket(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors);
         ~HashTable();
     private:
         SimpleList *bucket;

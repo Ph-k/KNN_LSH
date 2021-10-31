@@ -3,7 +3,7 @@ cflags = -Wall -g3
 
 valgrindFlags = --leak-check=full
 
-pflags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 500 -k 4 -L 5
+pflags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
 
 program = lsh
 

@@ -3,6 +3,8 @@
 #include "Ghashing.h"
 
 #include <iostream>
+#include <unordered_map>
+
 #include "Point.h"
 
 using namespace std;
@@ -102,15 +104,15 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool b
     return 0;
 }
 
-int SimpleList::rangeSearch(int r, Point *q, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem ){
+int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_neighbors){
     ListNode* node = head;
     double l1;
 
     while(node != nullptr){
         l1 = euclidean_distance(node->item.point,q);
 
-        //cout << (l1 < r) << endl;
-        if(l1 < r)  (*outputFunction)(node->item.point,outputFunctionItem);
+        if(l1 < r && r_neighbors.find(node->item.point->getId()) == r_neighbors.end() )
+            r_neighbors[node->item.point->getId()]=node->item.point;
 
         node = node->next;
     }

@@ -43,10 +43,11 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
     return res;
 }
 
-int HashTable::rangeSearchBucket(int r, Point *q, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem){
+int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors){
+    r_neighbors.empty();
     int Id_q = Ghashing.HashID(q->getXs());
     int hash_index = Ghashing.Hash( Id_q );
-    return bucket[hash_index].rangeSearch(r, q, outputFunction, outputFunctionItem);
+    return bucket[hash_index].rangeSearch(r, q, r_neighbors);
 }
 
 /*void HashTable::Traverse( void (*fun)(HashItem *) ){

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <unordered_map>
 
 #include "LSH.h"
 #include "Point.h"
@@ -73,7 +74,8 @@ int main(int argc, char const *argv[]){
 
     double time_lsh, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
-    for(i = 1; i <=1; i++){
+    unordered_map<string, Point*> r_neighbors;
+    for(i = 1; i <=100; i++){
         string id = to_string(i);
 
         time_lsh = operations.kNN_Search(id,L,K,&knn);        
@@ -82,9 +84,12 @@ int main(int argc, char const *argv[]){
 
         io_files.writeLshQuery(id, knn, brute_force, K, time_lsh, time_brute_force);
 
-        operations.rangeSearch(id, radius, &writeNeighborToOutput, &io_files);
+        operations.rangeSearch(id, radius, r_neighbors);
+
+        io_files.writeRangeNeighbors(r_neighbors);
     }
     if(knn != nullptr) delete[] knn;
+    if(brute_force != nullptr) delete[] brute_force;
 
     return 0;
 }
