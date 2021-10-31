@@ -27,7 +27,8 @@ class FileReader{
         Point* ReadPoint(char file='i');
         Point* getQuery(std::string id);
         inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
-        int writeLshQuery(const std::string& query_id, PD *knn, int k, int time);
+        int writeLshQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF);
+        int writeRangeNeighbor(const std::string& neighbor_id);
         std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

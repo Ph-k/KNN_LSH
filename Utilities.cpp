@@ -1,3 +1,4 @@
+#include "FileReader.h"
 #include "Utilities.h"
 #include "Point.h"
 
@@ -30,13 +31,13 @@ float random_float(float l, float h){
     return uniform_distribution(randomness);
 }
 
-float euclidean_distance(Point *p1, Point *p2){
+double euclidean_distance(Point *p1, Point *p2){
     const vector<int>& Xs_p1 = p1->getXs();
     const vector<int>& Xs_p2 = p2->getXs();
 
     if(Xs_p1.size() != Xs_p2.size()) exit(1);//Consider removing it for speed
 
-    float sum = 0;
+    double sum = 0;
 
     auto p1_val = Xs_p1.begin();
     auto p2_val = Xs_p2.begin();
@@ -65,4 +66,10 @@ long int modulo(long int a, long int b){
 
     long int rem = a % b;
     return (rem<0 ? rem+b : rem);
+}
+
+void writeNeighborToOutput(Point* neighbor, void* FileReaderPointer ){
+    int i=0;
+    FileReader* io_files = (FileReader*)FileReaderPointer;
+    io_files->writeRangeNeighbor(neighbor->getId());
 }

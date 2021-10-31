@@ -20,6 +20,7 @@ class LSH{
         );
         int kNN_Search(std::string &id, int L, int k, PD **b);
         int bruteForceNN(std::string &id, int L, int k, PD **b);
+        int rangeSearch(std::string &id, int r, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem);
         ~LSH();
 };
 

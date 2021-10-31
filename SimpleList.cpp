@@ -66,7 +66,7 @@ int SimpleList::Find(SimpleListItemType item){
 
 int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool brute_force){
     ListNode* node = head;
-    float l1;
+    double l1;
     int i,j;
 
     while(node != nullptr){
@@ -95,6 +95,22 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool b
                 }
             }
         }
+
+        node = node->next;
+    }
+
+    return 0;
+}
+
+int SimpleList::rangeSearch(int r, Point *q, void (*outputFunction)(Point *, void* privateItem), void* outputFunctionItem ){
+    ListNode* node = head;
+    double l1;
+
+    while(node != nullptr){
+        l1 = euclidean_distance(node->item.point,q);
+
+        //cout << (l1 < r) << endl;
+        if(l1 < r)  (*outputFunction)(node->item.point,outputFunctionItem);
 
         node = node->next;
     }

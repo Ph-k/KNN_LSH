@@ -6,7 +6,7 @@ class Point;
 
 struct PD{
     Point *p;
-    float distance;
+    double distance;
 };
 
 struct PointPointer{
@@ -16,10 +16,12 @@ struct PointPointer{
 
 std::vector<int>* uniform_vec(int dimensions);
 
-float random_float(float l=2, float h=6);
+float random_float(float l=2.0, float h=6.0);
 
-float euclidean_distance(Point *p1, Point *p2);
+double euclidean_distance(Point *p1, Point *p2);
 
 int dot_product(const std::vector<int> &x,const std::vector<int> &y);
 
 long int modulo(long int a, long int b);
+
+void writeNeighborToOutput(Point* neighbor, void* FileReaderPointer );

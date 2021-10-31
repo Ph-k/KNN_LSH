@@ -69,29 +69,22 @@ int main(int argc, char const *argv[]){
 
 
     FileReader io_files(input_file,query_file,output_file);
-    LSH operations(io_files,4,K,L,1000);
+    LSH operations(io_files,300,K,L,1000);
 
-    int time, j;
-    PD *knn = nullptr;
-    for(i = 1; i <=100; i++){
+    double time_lsh, time_brute_force;
+    PD *knn = nullptr, *brute_force = nullptr;
+    for(i = 1; i <=1; i++){
         string id = to_string(i);
-        time = operations.kNN_Search(id,L,K,&knn);
-        /*for(j=0; j<K; j++){
-            //knn[j].p->print();
-            io_files.outputStream() << '\t' << knn[j].distance << endl;
-        }*/
-        io_files.writeLshQuery(id, knn, K, time);
 
-        time = operations.bruteForceNN(id,L,K,&knn);
-        cout << "query: " << i << endl;
-        for(j=0; j<K; j++){
-            //knn[j].p->print();
-            cout << '\t' << knn[j].distance << endl;
-        }
-        cout << "in " << time << " milliseconds" << endl;
+        time_lsh = operations.kNN_Search(id,L,K,&knn);        
+
+        time_brute_force = operations.bruteForceNN(id,L,K,&brute_force);
+
+        io_files.writeLshQuery(id, knn, brute_force, K, time_lsh, time_brute_force);
+
+        operations.rangeSearch(id, radius, &writeNeighborToOutput, &io_files);
     }
     if(knn != nullptr) delete[] knn;
-
 
     return 0;
 }
