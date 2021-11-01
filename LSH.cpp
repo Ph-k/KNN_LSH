@@ -46,7 +46,7 @@ int LSH::kNN_Search(string &id, int L, int k, PD **b){
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
     for (i=0; i<L; i++){
-        hash_tables[0]->knn_search_bucket(k, q, *b);
+        hash_tables[i]->knn_search_bucket(k, q, *b);
     }
 
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
@@ -80,7 +80,7 @@ int LSH::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_neighbo
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
     for (i=0; i<L; i++){
-        hash_tables[0]->rangeSearchBucket(r, q, r_neighbors);
+        hash_tables[i]->rangeSearchBucket(r, q, r_neighbors);
     }
 
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
