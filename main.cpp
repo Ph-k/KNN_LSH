@@ -70,7 +70,7 @@ int main(int argc, char const *argv[]){
 
 
     FileReader io_files(input_file,query_file,output_file);
-    LSH operations(io_files,300,K,L,1000);
+    LSH operations(io_files,150,K,L,1000);
 
     double time_lsh, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
