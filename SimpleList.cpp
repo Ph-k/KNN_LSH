@@ -1,6 +1,6 @@
 #include "SimpleList.h"
 #include "Utilities.h"
-#include "Ghashing.h"
+#include "HashLSH.h"
 
 #include <iostream>
 #include <unordered_map>

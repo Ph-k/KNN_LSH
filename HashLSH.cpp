@@ -1,9 +1,9 @@
-#include "Ghashing.h"
+#include "HashLSH.h"
 #include "Utilities.h"
 
 #define M 4294967291 // 2^32 - 5
 
-Ghash::Ghash(int w, int k, int TableSize, int vecSize)
+HashLSH::HashLSH(int w, int k, int TableSize, int vecSize)
 :w(w), k(k), TableSize(TableSize), vecSize(vecSize){
 
 	float t; // randomly selected integer 
@@ -18,7 +18,7 @@ Ghash::Ghash(int w, int k, int TableSize, int vecSize)
 	}
 }
 
-unsigned int Ghash::HashID(const std::vector<int> &p){
+unsigned int HashLSH::Hash(const std::vector<int> &p){
 
 	int i,r; // r: random natural number
 	unsigned int res=0;
@@ -31,7 +31,7 @@ unsigned int Ghash::HashID(const std::vector<int> &p){
 	return res;
 }
 
-Ghash::~Ghash(){
+HashLSH::~HashLSH(){
 	for(auto it: hVec)
 		delete it;
 }

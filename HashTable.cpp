@@ -15,10 +15,10 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize)
 }
 
 int HashTable::Insert(HashItem item){
-    int Id_p = Ghashing.HashID(item->getXs());
+    int Id_p = Ghashing.Hash(item->getXs());
     struct PointPointer pp = { item, Id_p };
     
-    int hash_index = Ghashing.Hash(pp.Id);
+    int hash_index = Ghashing.HashIndex(pp.Id);
 
     return bucket[hash_index].Push(pp);
 }
@@ -29,8 +29,8 @@ int HashTable::Insert(HashItem item){
 }*/
 
 int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest){
-    int Id_q = Ghashing.HashID(q->getXs());
-    int hash_index = Ghashing.Hash( Id_q );
+    int Id_q = Ghashing.Hash(q->getXs());
+    int hash_index = Ghashing.HashIndex( Id_q );
     return bucket[hash_index].knn_search(k, q, Id_q, nearest);
 }
 
@@ -45,8 +45,8 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
 
 int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors){
     r_neighbors.empty();
-    int Id_q = Ghashing.HashID(q->getXs());
-    int hash_index = Ghashing.Hash( Id_q );
+    int Id_q = Ghashing.Hash(q->getXs());
+    int hash_index = Ghashing.HashIndex( Id_q );
     return bucket[hash_index].rangeSearch(r, q, r_neighbors);
 }
 

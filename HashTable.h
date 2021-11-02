@@ -1,5 +1,5 @@
 #include "SimpleList.h"
-#include "Ghashing.h"
+#include "HashLSH.h"
 
 #include <vector>
 #include <unordered_map>
@@ -22,5 +22,5 @@ class HashTable{
     private:
         SimpleList *bucket;
         unsigned int table_size;
-        Ghash Ghashing;
+        HashLSH Ghashing;
 };
