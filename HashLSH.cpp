@@ -4,7 +4,7 @@
 #define M 4294967291 // 2^32 - 5
 
 HashLSH::HashLSH(int w, int k, int TableSize, int vecSize)
-:w(w), k(k), TableSize(TableSize), vecSize(vecSize){
+: HashInterface(w,k,TableSize,vecSize){
 
 	float t; // randomly selected integer 
 	std::vector<int>* rVec; //randomly selected vector of size vecSize

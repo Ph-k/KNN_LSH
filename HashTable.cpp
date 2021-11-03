@@ -7,18 +7,27 @@
 using namespace std;
 
 
-HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize)
-:table_size(given_table_size), Ghashing(w,k,given_table_size,vecSize)
+HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type)
+:table_size(given_table_size)
 {
+    switch (type){
+    case 'l':
+        hashing = new HashLSH(w,k,given_table_size,vecSize);
+        break;
+    default:
+        hashing = new HashLSH(w,k,given_table_size,vecSize); // hypercube goes here
+        break;
+    }
+
     this->bucket = new SimpleList[given_table_size];
     if(this->bucket == nullptr) perror("Not enough memory to create hashtable!");
 }
 
 int HashTable::Insert(HashItem item){
-    int Id_p = Ghashing.Hash(item->getXs());
+    int Id_p = hashing->Hash(item->getXs());
     struct PointPointer pp = { item, Id_p };
     
-    int hash_index = Ghashing.HashIndex(pp.Id);
+    int hash_index = hashing->HashIndex(pp.Id);
 
     return bucket[hash_index].Push(pp);
 }
@@ -29,8 +38,8 @@ int HashTable::Insert(HashItem item){
 }*/
 
 int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest){
-    int Id_q = Ghashing.Hash(q->getXs());
-    int hash_index = Ghashing.HashIndex( Id_q );
+    int Id_q = hashing->Hash(q->getXs());
+    int hash_index = hashing->HashIndex( Id_q );
     return bucket[hash_index].knn_search(k, q, Id_q, nearest);
 }
 
@@ -45,8 +54,8 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
 
 int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors){
     r_neighbors.empty();
-    int Id_q = Ghashing.Hash(q->getXs());
-    int hash_index = Ghashing.HashIndex( Id_q );
+    int Id_q = hashing->Hash(q->getXs());
+    int hash_index = hashing->HashIndex( Id_q );
     return bucket[hash_index].rangeSearch(r, q, r_neighbors);
 }
 
@@ -59,4 +68,5 @@ int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Poi
 
 HashTable::~HashTable(){
     delete[] bucket;
+    delete hashing;
 }

@@ -3,17 +3,11 @@
 #include "Hhashing.h"
 #include "HashInterface.hpp"
 
-class HashLSH{
+class HashLSH : public HashInterface{
 	public:
 		HashLSH(int w, int k, int TableSize, int vecSize);
 		~HashLSH();
 		unsigned int Hash(const std::vector<int> &p);
 		inline unsigned int HashIndex(unsigned int ID){return ID % TableSize;};
 		// inline int getSize(){return TableSize;};
-	private:
-		std::vector<Hhash*> hVec;
-		int w;
-		int k;
-		int TableSize;
-		int vecSize;
 };

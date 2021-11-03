@@ -13,7 +13,7 @@ LSH::LSH(
 
     this->hash_tables = new HashTable*[l];
     for(int i=0; i<l; i++){
-        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension());
+        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(),'l');
     }
 
     // We start by reading the input

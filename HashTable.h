@@ -11,7 +11,7 @@ class Ghash;
 
 class HashTable{
     public:
-        HashTable(unsigned int given_table_size, int w, int k, int vecSize);
+        HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type);
         int Insert(HashItem item);
         //int Find(HashItem item);
         //void Traverse( void (*fun)(HashItem *) );
@@ -22,5 +22,5 @@ class HashTable{
     private:
         SimpleList *bucket;
         unsigned int table_size;
-        HashLSH Ghashing;
+        HashInterface *hashing;
 };
