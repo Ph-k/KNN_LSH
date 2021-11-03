@@ -20,7 +20,10 @@ UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReade
 HashFuncsLocation = $(sourcePath)
 HashFuncsObjects = $(HashFuncsLocation)HashLSH.o $(HashFuncsLocation)Hhashing.o
 
-AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(HashFuncsObjects)
+InterfacesLocation = $(sourcePath)
+InterfacesObjects = $(InterfacesLocation)HashInterface.o
+
+AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(HashFuncsObjects) $(InterfacesObjects)
 
 $(program): $(AllObjects)
 	$(CC) $(cflags) $(AllObjects) -o $@
@@ -28,6 +31,7 @@ $(program): $(AllObjects)
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) -c $< -o $@
+
 
 run: $(program)
 	./$(program) $(pflags)
