@@ -18,7 +18,7 @@ UtilitiesLocation = $(sourcePath)
 UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o  $(UtilitiesLocation)Point.o $(UtilitiesLocation)LSH.o
 
 HashFuncsLocation = $(sourcePath)
-HashFuncsObjects = $(HashFuncsLocation)HashLSH.o $(HashFuncsLocation)Hhashing.o
+HashFuncsObjects = $(HashFuncsLocation)HashLSH.o $(HashFuncsLocation)Hhashing.o $(HashFuncsLocation)HashHC.o
 
 InterfacesLocation = $(sourcePath)
 InterfacesObjects = $(InterfacesLocation)HashInterface.o

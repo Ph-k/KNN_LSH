@@ -68,7 +68,7 @@ long int modulo(long int a, long int b){
     return (rem<0 ? rem+b : rem);
 }
 
-unsigned int randBit(int seed = time(NULL)){
+unsigned int randBit(int seed){
 
     if(seeded == false) { randomness.seed(seed); seeded=true; }
     uniform_int_distribution<int> uniform_distribution(0, 1);

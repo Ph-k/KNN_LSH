@@ -3,13 +3,9 @@
 #include <vector>
 
 HashHC::HashHC(int w, int k, int TableSize, int vecSize)
-{
-    HashInterface::HashInterface(w, k, TableSize, vecSize);
-}
+:HashInterface(w, k, TableSize, vecSize){}
 
-HashHC::~HashHC()
-{
-}
+HashHC::~HashHC(){}
 
 unsigned int HashHC::Hash(const std::vector<int> &p){
 
