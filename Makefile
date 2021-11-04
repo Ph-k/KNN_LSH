@@ -3,9 +3,11 @@ cflags = -Wall -g3 -std=c++11
 
 valgrindFlags = --leak-check=full
 
-pflags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
+lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
+cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -M 5 1000 -probes 1
 
-program = lsh
+lsh_exe = lsh
+cube_exe = cube
 
 sourcePath = ./
 
@@ -25,22 +27,27 @@ InterfacesObjects = $(InterfacesLocation)HashInterface.o
 
 AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(HashFuncsObjects) $(InterfacesObjects)
 
-$(program): $(AllObjects)
+$(lsh_exe): $(AllObjects)
 	$(CC) $(cflags) $(AllObjects) -o $@
 
+$(cube_exe): $(AllObjects)
+	$(CC) $(cflags) $(AllObjects) -o $@
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) -c $< -o $@
 
 
-run: $(program)
-	./$(program) $(pflags)
+run lsh: $(lsh_exe)
+	./$(lsh_exe) $(lsh_flags)
 
-val: $(program)
-	valgrind $(valgrindFlags) ./$(program) $(pflags)
+run cube: $(cube_exe)
+	./$(cube_exe) $(cube_flags)
 
-gdb: $(program)
-	gdb ./$(program)
+val: $(lsh_exe)
+	valgrind $(valgrindFlags) ./$(lsh_exe) $(lsh_flags)
+
+gdb: $(lsh_exe)
+	gdb ./$(lsh_exe)
 
 clean:
-	rm $(AllObjects) $(program)
+	rm $(AllObjects) $(lsh_exe)
