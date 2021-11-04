@@ -1,5 +1,5 @@
 #include "SimpleList.h"
-#include "HashLSH.h"
+#include "HashInterface.hpp"
 
 #include <vector>
 #include <unordered_map>

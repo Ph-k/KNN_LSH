@@ -1,5 +1,7 @@
 #include "HashTable.h"
 #include "Utilities.h"
+#include "HashLSH.h"
+#include "HashHC.h"
 #include "Point.h"
 #include <stdio.h>
 #include <iostream>
@@ -15,7 +17,7 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
         hashing = new HashLSH(w,k,given_table_size,vecSize);
         break;
     default:
-        hashing = new HashLSH(w,k,given_table_size,vecSize); // hypercube goes here
+        hashing = new HashHC(w,k,given_table_size,vecSize);
         break;
     }
 
