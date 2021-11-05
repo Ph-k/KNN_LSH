@@ -1,2 +1,6 @@
 .DS_Store
 .vscode
+lsh
+output.lsh
+*.o
+cube

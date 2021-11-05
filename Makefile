@@ -11,36 +11,48 @@ cube_exe = cube
 
 sourcePath = ./
 
-mainObjects = $(sourcePath)main.o
+mainObjects = $(sourcePath)main.o $(sourcePath)Point.o $(sourcePath)LSH.o
 
-DataStructuresLocation = $(sourcePath)
+DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
 
-UtilitiesLocation = $(sourcePath)
-UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o  $(UtilitiesLocation)Point.o $(UtilitiesLocation)LSH.o
+UtilitiesLocation = $(sourcePath)Utilities/
+UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o
 
-HashFuncsLocation = $(sourcePath)
-HashFuncsObjects = $(HashFuncsLocation)HashLSH.o $(HashFuncsLocation)Hhashing.o $(HashFuncsLocation)HashHC.o
+LSHHashFuncsLocation = $(sourcePath)HashFunctions/
+LSHHashFuncsObjects = $(LSHHashFuncsLocation)HashLSH.o
+
+CubeHashFuncsLocation = $(sourcePath)HashFunctions/
+CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 
 InterfacesLocation = $(sourcePath)
-InterfacesObjects = $(InterfacesLocation)HashInterface.o
+InterfacesObjects = $(InterfacesLocation)HashInterface.o $(InterfacesLocation)Hhashing.o 
 
-AllObjects = $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(HashFuncsObjects) $(InterfacesObjects)
+AllObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects)
 
-$(lsh_exe): $(AllObjects)
-	$(CC) $(cflags) $(AllObjects) -o $@
+includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation)
 
-$(cube_exe): $(AllObjects)
-	$(CC) $(cflags) $(AllObjects) -o $@
+all: $(lsh_exe) $(cube_exe)
+
+$(lsh_exe): $(AllObejects)
+	$(CC) $(cflags) $(includePaths) $(AllObejects) -o $@
+
+$(cube_exe): $(AllObejects)
+	$(CC) $(cflags) $(includePaths) $(AllObejects) -o $@
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
-	$(CC) $(cflags) -c $< -o $@
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
+$(DataStructuresLocation)%.o: $(DataStructuresLocation)%.cpp
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
-run lsh: $(lsh_exe)
+$(UtilitiesLocation)%.o: $(UtilitiesLocation)%.cpp
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
+
+rlsh: $(lsh_exe)
 	./$(lsh_exe) $(lsh_flags)
 
-run cube: $(cube_exe)
+rcube: $(cube_exe)
 	./$(cube_exe) $(cube_flags)
 
 val: $(lsh_exe)
@@ -50,4 +62,4 @@ gdb: $(lsh_exe)
 	gdb ./$(lsh_exe)
 
 clean:
-	rm $(AllObjects) $(lsh_exe)
+	rm $(AllObejects) $(lsh_exe) $(cube_exe)
