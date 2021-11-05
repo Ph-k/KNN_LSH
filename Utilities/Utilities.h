@@ -2,6 +2,9 @@
 
 #include <vector>
 
+#define __LSH_MODE 0
+#define __H_CUBE_MODE 1
+
 class Point;
 
 struct PD{

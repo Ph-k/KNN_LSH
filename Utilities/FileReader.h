@@ -15,6 +15,7 @@ class FileReader{
         std::ifstream input_file;
         std::ifstream query_file;
         std::ofstream output_file;
+        std::ifstream configuration_file;
         int dimension;
         int find_dimension_from_input(char const *input_f);
         std::unordered_map<std::string, Point*> queries;
@@ -22,13 +23,15 @@ class FileReader{
         FileReader(
             char const *input_f,
             char const *query_f,
-            char const *output_f);
+            char const *output_f,
+            char const *configuration_f = nullptr);
         int getDimension(){ return dimension; }
         Point* ReadPoint(char file='i');
         Point* getQuery(std::string id);
         inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
         int writeLshQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF);
         int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
-        std::ofstream& outputStream() {return output_file;}
+        int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
+        //std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

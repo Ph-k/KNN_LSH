@@ -4,14 +4,17 @@ cflags = -Wall -g3 -std=c++11
 valgrindFlags = --leak-check=full
 
 lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
-cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -M 5 1000 -probes 1
+cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -k 4 -M 5 -probes 1 -N 3 -R 300
 
 lsh_exe = lsh
 cube_exe = cube
 
 sourcePath = ./
 
-mainObjects = $(sourcePath)main.o $(sourcePath)Point.o $(sourcePath)LSH.o
+mainObjects = $(sourcePath)Point.o $(sourcePath)LSH.o
+
+LshObjects = $(sourcePath)mainLSH.cpp
+CubeObjects = $(sourcePath)mainCube.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
@@ -28,17 +31,17 @@ CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 InterfacesLocation = $(sourcePath)
 InterfacesObjects = $(InterfacesLocation)HashInterface.o $(InterfacesLocation)Hhashing.o 
 
-AllObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects)
+CommonObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects)
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation)
 
 all: $(lsh_exe) $(cube_exe)
 
-$(lsh_exe): $(AllObejects)
-	$(CC) $(cflags) $(includePaths) $(AllObejects) -o $@
+$(lsh_exe): $(CommonObejects) $(LshObjects)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(LshObjects) -o $@
 
-$(cube_exe): $(AllObejects)
-	$(CC) $(cflags) $(includePaths) $(AllObejects) -o $@
+$(cube_exe): $(CommonObejects) $(CubeObjects)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(CubeObjects) -o $@
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
@@ -62,4 +65,4 @@ gdb: $(lsh_exe)
 	gdb ./$(lsh_exe)
 
 clean:
-	rm $(AllObejects) $(lsh_exe) $(cube_exe)
+	rm $(CommonObejects) $(lsh_exe) $(cube_exe)

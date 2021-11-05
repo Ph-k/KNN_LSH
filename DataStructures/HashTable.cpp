@@ -13,7 +13,7 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
 :table_size(given_table_size)
 {
     switch (type){
-    case 'l':
+    case __LSH_MODE:
         hashing = new HashLSH(w,k,given_table_size,vecSize);
         break;
     default:

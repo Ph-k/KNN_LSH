@@ -6,14 +6,29 @@
 
 using namespace std;
 
-FileReader::FileReader(char const *input_f, char const *query_f, char const *output_f)
+FileReader::FileReader(char const *input_f, char const *query_f, char const *output_f, char const *configuration_f)
 {
     input_file.open(input_f);
+    if( input_file.is_open() == false )
+        {cout << "ERROR: could not open input file: " << input_f << endl; exit(-1);}
+
     query_file.open(query_f);
+    if( query_file.is_open() == false )
+        {cout << "ERROR: could not open query file: " << query_f << endl; exit(-1);}
+
     output_file.open(output_f);
+    if( output_file.is_open() == false )
+        {cout << "ERROR: could not create ouput file: " << output_f << endl; exit(-1);}
+
+    if(configuration_f != nullptr){
+        configuration_file.open(configuration_f);
+        if( configuration_file.is_open() == false )
+            {cout << "ERROR: could not create configuration file: " << configuration_f << endl; exit(-1);}
+    }
 
     dimension = this->find_dimension_from_input(input_f);
-    if(dimension == -1) cout << "Error: invalid file format!" << endl;
+    if(dimension == -1) 
+        {cout << "Error: invalid file format!" << endl; exit(-1);}
 
 
     Point *p = ReadPoint('q');
@@ -93,6 +108,50 @@ Point* FileReader::ReadPoint(char file_mode){
     return p;
 }
 
+int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes){
+    K=-1; L=3; k_lsh=4; M=10; k_hc=3; probes=2;
+    if( configuration_file.is_open() == false ) return -1;
+
+    string line, argument_name,argument_value;
+    int *argument;
+
+    while (getline(configuration_file, line)){
+        istringstream line_stream(line);
+
+        line_stream >> argument_name;
+
+        if(argument_name.compare("number_of_clusters:") == 0){
+            argument = &K;
+        }else if(argument_name.compare("number_of_vector_hash_tables:") == 0){
+            argument = &L;
+        }else if(argument_name.compare("number_of_vector_hash_functions:") == 0){
+            argument = &k_lsh;
+        }else if(argument_name.compare("mac_number_M_hypercube:") == 0){
+            argument = &M;
+        }else if(argument_name.compare("number_of_hypercube:") == 0){
+            argument = &k_hc;
+        }else if(argument_name.compare("number_of_probes:") == 0){
+            argument = &probes;
+        }
+
+        line_stream >> argument_value;
+        try {
+            *argument = stoi(argument_value);
+        }catch(...) {
+            cout << "Error: invalid configuration file format!" << endl;
+            return -2;
+        }
+
+    }
+
+    if(K == -1){
+        cout << "cube: No number_of_clusters parameter found in the configuration file!" << endl;
+        return -1;
+    }
+
+    return 0;
+}
+
 Point* FileReader::getQuery(string id){
     return queries.find(id)->second;
 }
@@ -131,6 +190,7 @@ FileReader::~FileReader(){
     input_file.close();
     query_file.close();
     output_file.close();
+    if( configuration_file.is_open() ) configuration_file.close();
 
     for(auto it: queries)
         delete it.second;
