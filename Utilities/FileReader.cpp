@@ -156,14 +156,16 @@ Point* FileReader::getQuery(string id){
     return queries.find(id)->second;
 }
 
-int FileReader::writeLshQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF){
+int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode){
+    static char const *method = (mode == __LSH_MODE ? "LSH" : "Hypercube" );
+
     output_file << "Query: " << query_id << '\n';
     for(int i=0; i<k; i++){
         if( knn[i].p != nullptr ){
             output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
-                        << "distanceLSH: " << knn[i].distance << '\n'
+                        << "distance"<< method << ":" << knn[i].distance << '\n'
                         << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "tLSH:" << timeLSH << "ms" << '\n'
+                        << "t"<< method << ":" << timeLSH << "ms" << '\n'
                         << "tTrue:" << timeBF << "ms" << '\n'; 
         }else{
             output_file << "Nearest neighbor-" << i+1 << ": none\n"

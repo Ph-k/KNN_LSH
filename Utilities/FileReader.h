@@ -29,7 +29,7 @@ class FileReader{
         Point* ReadPoint(char file='i');
         Point* getQuery(std::string id);
         inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
-        int writeLshQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF);
+        int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode);
         int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
         //std::ofstream& outputStream() {return output_file;}

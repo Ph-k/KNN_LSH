@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "Utilities.h"
 #include "FileReader.h"
+#include "HyperCube.h"
 
 using namespace std;
 
@@ -66,6 +67,7 @@ int main(int argc, char const *argv[]){
     }
 
     FileReader io_files(input_file,query_file,output_file);
+    HyperCube HC(io_files,150,K,probes,1000);
 
     cout << "Argumets:"
          << "\n\tinput_file: " << input_file
@@ -75,6 +77,25 @@ int main(int argc, char const *argv[]){
          << "\n\tM: " << probes
          << "\n\tnumber_of_nearest: " << number_of_nearest
          << "\n\tradius: " << radius << endl;
+
+    double time_cube, time_brute_force;
+    PD *knn = nullptr, *brute_force = nullptr;
+    unordered_map<string, Point*> r_neighbors;
+    for(i = 1; i <=100; i++){
+        string id = to_string(i);
+
+        time_cube = HC.kNN_Search(id,-1,K,&knn);        
+
+        time_brute_force = HC.bruteForceNN(id,-1,K,&brute_force);
+
+        io_files.writeQuery(id, knn, brute_force, K, time_cube, time_brute_force,__H_CUBE_MODE);
+
+        HC.rangeSearch(id, radius, r_neighbors);
+
+        io_files.writeRangeNeighbors(r_neighbors);
+    }
+    if(knn != nullptr) delete[] knn;
+    if(brute_force != nullptr) delete[] brute_force;
 
     return 0;
 }

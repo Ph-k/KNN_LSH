@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]){
 
         time_brute_force = operations.bruteForceNN(id,L,K,&brute_force);
 
-        io_files.writeLshQuery(id, knn, brute_force, K, time_lsh, time_brute_force);
+        io_files.writeQuery(id, knn, brute_force, K, time_lsh, time_brute_force,__LSH_MODE);
 
         operations.rangeSearch(id, radius, r_neighbors);
 

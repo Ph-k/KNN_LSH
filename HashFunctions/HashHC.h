@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <iostream>
 #include <unordered_map>
@@ -13,5 +15,5 @@ class HashHC: public HashInterface{
         ~HashHC();
         unsigned int Hash(const std::vector<int> &p);
         inline unsigned int HashIndex(unsigned int ID){return ID;};
-        std::vector<int>  HammingNeighbors(int index, int probes, int dim);
+        std::vector<int> HammingNeighbors(int index, int probes, int dim);
 };

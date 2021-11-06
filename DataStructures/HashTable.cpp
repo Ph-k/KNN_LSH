@@ -28,7 +28,7 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
 int HashTable::Insert(HashItem item){
     int Id_p = hashing->Hash(item->getXs());
     struct PointPointer pp = { item, Id_p };
-    
+
     int hash_index = hashing->HashIndex(pp.Id);
 
     return bucket[hash_index].Push(pp);

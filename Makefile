@@ -4,14 +4,18 @@ cflags = -Wall -g3 -std=c++11
 valgrindFlags = --leak-check=full
 
 lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
-cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -k 4 -M 5 -probes 1 -N 3 -R 300
+cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 4 -M 5 -probes 1 -N 3 -R 300
 
 lsh_exe = lsh
 cube_exe = cube
 
 sourcePath = ./
 
-mainObjects = $(sourcePath)Point.o $(sourcePath)LSH.o
+mainObjects = $(sourcePath)Point.o 
+
+
+OperationControllersLocation = $(sourcePath)OperationControllers/
+OperationControllersObjects = $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o
 
 LshObjects = $(sourcePath)mainLSH.cpp
 CubeObjects = $(sourcePath)mainCube.cpp
@@ -31,9 +35,9 @@ CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 InterfacesLocation = $(sourcePath)
 InterfacesObjects = $(InterfacesLocation)HashInterface.o $(InterfacesLocation)Hhashing.o 
 
-CommonObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects)
+CommonObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects)
 
-includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation)
+includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
 all: $(lsh_exe) $(cube_exe)
 
@@ -52,6 +56,15 @@ $(DataStructuresLocation)%.o: $(DataStructuresLocation)%.cpp
 $(UtilitiesLocation)%.o: $(UtilitiesLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
+$(CubeHashFuncsLocation)%.o: $(CubeHashFuncsLocation)%.cpp
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
+
+$(LSHHashFuncsLocation)%.o: $(LSHHashFuncsLocation)%.cpp
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
+
+$(OperationControllersLocation)%.o: $(OperationControllersLocation)%.cpp
+	$(CC) $(cflags) $(includePaths) -c $< -o $@
+
 rlsh: $(lsh_exe)
 	./$(lsh_exe) $(lsh_flags)
 
@@ -61,8 +74,8 @@ rcube: $(cube_exe)
 val: $(lsh_exe)
 	valgrind $(valgrindFlags) ./$(lsh_exe) $(lsh_flags)
 
-gdb: $(lsh_exe)
-	gdb ./$(lsh_exe)
+gdb: $(cube_exe)
+	gdb ./$(cube_exe)
 
 clean:
 	rm $(CommonObejects) $(lsh_exe) $(cube_exe)

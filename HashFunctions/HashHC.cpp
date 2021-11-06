@@ -51,7 +51,7 @@ std::vector<int> HashHC::HammingNeighbors(int index, int probes, int dim){
 }
 
 // Truncates to vector <masks> integers that can generate integers for with [remBits] Hamming distance
-void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int &threshold, int pos=0, int val=0){
+void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int &threshold, int pos, int val){
 
     if (masks->size() == threshold)
         return;
