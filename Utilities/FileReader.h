@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-#include "Point.h"
+#include "ClusterComplex.h"
 
 #define WORD_SEPERATOR ' '
 
@@ -32,6 +32,7 @@ class FileReader{
         int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode);
         int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
+        int writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k);
         //std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

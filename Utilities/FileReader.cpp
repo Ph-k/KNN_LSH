@@ -188,6 +188,19 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neig
     return 0;
 }
 
+int FileReader::writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k){
+
+    for(int i=0; i<k; i++){
+        output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
+        for(auto X: Medoids[i]->getXs())
+            output_file << ' ' << X;
+        output_file << "}\n";
+    }
+
+    output_file << endl;
+    return 0;
+}
+
 FileReader::~FileReader(){
     input_file.close();
     query_file.close();

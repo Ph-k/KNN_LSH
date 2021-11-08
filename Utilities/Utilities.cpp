@@ -75,3 +75,11 @@ unsigned int randBit(int seed){
 
     return uniform_distribution(randomness);
 }
+
+unsigned int randUInt(unsigned int l, unsigned int h){
+
+    if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
+    uniform_int_distribution<unsigned int> uniform_distribution(l, h);
+
+    return uniform_distribution(randomness);
+}

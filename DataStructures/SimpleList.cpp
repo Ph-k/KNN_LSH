@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "HashLSH.h"
 
+#include <string.h>
 #include <iostream>
 #include <unordered_map>
 
@@ -17,7 +18,7 @@ struct ListNode{
 SimpleList::SimpleList(): head(nullptr), T(0){}
 
 int SimpleList::Push(SimpleListItemType item){
-    //std::cout << "A list created!" << std::endl;
+    //std::cout << "Listed got a push!" << std::endl;
     ListNode* newNode = new ListNode;
     if( newNode == nullptr ) return -1;
 
@@ -61,7 +62,7 @@ int SimpleList::Find(SimpleListItemType item){
     return 0;
 }
 
-/*void SimpleList::Traverse( void (*fun)(SimpleListItemType *) ){
+/*void SimpleList::Traverse( void (*fun)(Point *p, void* privateItems ) ){
     ListNode* node = head;
     while(node != nullptr){
         fun( &(node->item) );
@@ -125,28 +126,31 @@ int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_ne
 
 Point* SimpleList::meanVector(){
     ListNode* node = head;
-    std::vector <int> tempVec;
 
-    if(node != nullptr){
-        for(int i=0; i<node->item.point->getXs().size(); i++)
-            tempVec.push_back(0);
-    }
+    int tempVecSize = node->item.point->getXs().size();
+    double *tempVec = new double[tempVecSize];
+
+    memset(tempVec,0.0,tempVecSize*sizeof(double));
+
+    const std::vector<int>* vec;
     while(node != nullptr){
-        std::vector <int> vec = node->item.point->getXs();
-        for(int i=0; i<node->item.point->getXs().size(); i++)
-            tempVec[i] += vec[i]/T;
+        vec = &(node->item.point->getXs());
+        for(int i=0; i<tempVecSize; i++)
+            tempVec[i] +=  ( (double)vec->at(i) ) / ((double)T);
         node = node->next;
     }
 
     std::vector<int> *meanVec = new std::vector<int>;
-    for(int i=0; i<tempVec.size(); i++)
-        meanVec->push_back(tempVec[i]);
+    for(int i=0; i<tempVecSize; i++)
+        meanVec->push_back((int)tempVec[i]);
     std::string *no_s = nullptr;
     Point *meanP = new Point(meanVec, no_s);
+
+    delete[] tempVec;
     return meanP;
 }
 
-SimpleList::~SimpleList(){
+void SimpleList::empty(){
     ListNode* temp;
     while(head != nullptr){
         temp = head;
@@ -154,4 +158,11 @@ SimpleList::~SimpleList(){
         //delete temp->item; for this program, items are points, which are deleted from the LSH class
         delete temp;
     }
+
+    head = nullptr;
+    T = 0;
+}
+
+SimpleList::~SimpleList(){
+    this->empty();
 }

@@ -1,4 +1,3 @@
-#include <math.h>
 #include <iostream>
 #include <string.h>
 #include <unordered_map>
@@ -6,7 +5,7 @@
 #include "Point.h"
 #include "Utilities.h"
 #include "FileReader.h"
-#include "HyperCube.h"
+#include "ClusterComplex.h"
 
 using namespace std;
 
@@ -68,7 +67,7 @@ int main(int argc, char const *argv[]){
     }
 
     FileReader io_files(input_file,query_file,output_file);
-    HyperCube HC(io_files,150,K,probes,pow(2,K));
+    ClusterComplex clustering(io_files,K);
 
     cout << "Argumets:"
          << "\n\tinput_file: " << input_file
@@ -79,7 +78,11 @@ int main(int argc, char const *argv[]){
          << "\n\tnumber_of_nearest: " << number_of_nearest
          << "\n\tradius: " << radius << endl;
 
-    double time_cube, time_brute_force;
+    clustering.kMeans(10);
+
+    io_files.writeClusterPoints(clustering.getClusters(), clustering.getMedoids(), K);
+
+    /*double time_cube, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
     unordered_map<string, Point*> r_neighbors;
     for(i = 1; i <=100; i++){
@@ -96,7 +99,7 @@ int main(int argc, char const *argv[]){
         io_files.writeRangeNeighbors(r_neighbors);
     }
     if(knn != nullptr) delete[] knn;
-    if(brute_force != nullptr) delete[] brute_force;
+    if(brute_force != nullptr) delete[] brute_force;*/
 
     return 0;
 }

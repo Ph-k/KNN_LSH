@@ -16,6 +16,7 @@ unsigned int HashHC::Hash(const std::vector<int> &p){
 	int i, h_i;
 	unsigned int tag=0, bit=0;
 	for(i=0; i<k; i++){
+        tag = tag << 1;
         h_i = hVec[i]->hash(p);
         auto existing_tag = h_mapping[i].find(h_i);
         if( existing_tag == h_mapping[i].end() ){
@@ -25,8 +26,9 @@ unsigned int HashHC::Hash(const std::vector<int> &p){
             bit = h_mapping[i][h_i];
         }
         tag = tag | bit;
-        tag << 1;
     }
+
+    std::cout << tag << std::endl;
 
 	return tag;
 }
@@ -39,11 +41,11 @@ std::vector<int> HashHC::HammingNeighbors(int index, int probes, int dim){
     std::vector <int> neighborProbes;
     int distance = 1;
     
-    while(neighborProbes.size() < probes){
+    while( (int)(neighborProbes.size()) < probes){
         MaskPermutations(distance, &neighborProbes, probes);
         distance++;
     }
-    for (int i=0; i<neighborProbes.size(); i++){
+    for (long unsigned int i=0; i<neighborProbes.size(); i++){
         neighborProbes[i] ^= index;
     }
 
@@ -53,12 +55,12 @@ std::vector<int> HashHC::HammingNeighbors(int index, int probes, int dim){
 // Truncates to vector <masks> integers that can generate integers for with [remBits] Hamming distance
 void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int &threshold, int pos, int val){
 
-    if (masks->size() == threshold)
+    if ( (int)(masks->size()) == threshold)
         return;
 
     if(pos == k || remBits == 0){
         masks->push_back(val);
-        threshold ++;
+        threshold++;
         return;
     }
 
