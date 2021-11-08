@@ -14,7 +14,7 @@ struct ListNode{
     struct ListNode* next;
 };
 
-SimpleList::SimpleList(): head(nullptr){}
+SimpleList::SimpleList(): head(nullptr), T(0){}
 
 int SimpleList::Push(SimpleListItemType item){
     //std::cout << "A list created!" << std::endl;
@@ -24,6 +24,7 @@ int SimpleList::Push(SimpleListItemType item){
     newNode->next=head;
     newNode->item=item;
     head = newNode;
+    T++;
     return 0;
 }
 
@@ -35,6 +36,7 @@ int SimpleList::Pop(SimpleListItemType &item){
     ListNode* oldHead = head;
     head = head->next;
     delete oldHead;
+    T--;
     return 0;
 }
 
@@ -44,6 +46,7 @@ int SimpleList::Pop(){
     ListNode* oldHead = head;
     head = head->next;
     delete oldHead;
+    T--;
     return 0;
 }
 
@@ -118,6 +121,29 @@ int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_ne
     }
 
     return 0;
+}
+
+Point* SimpleList::meanVector(){
+    ListNode* node = head;
+    std::vector <int> tempVec;
+
+    if(node != nullptr){
+        for(int i=0; i<node->item.point->getXs().size(); i++)
+            tempVec.push_back(0);
+    }
+    while(node != nullptr){
+        std::vector <int> vec = node->item.point->getXs();
+        for(int i=0; i<node->item.point->getXs().size(); i++)
+            tempVec[i] += vec[i]/T;
+        node = node->next;
+    }
+
+    std::vector<int> *meanVec = new std::vector<int>;
+    for(int i=0; i<tempVec.size(); i++)
+        meanVec->push_back(tempVec[i]);
+    std::string *no_s = nullptr;
+    Point *meanP = new Point(meanVec, no_s);
+    return meanP;
 }
 
 SimpleList::~SimpleList(){
