@@ -1,6 +1,6 @@
 #include "ClusterComplex.h"
 
-ClusterComplex::ClusterComplex(int k, std::vector<ClusterObject> medoids, std::vector<ClusterObject> nonMedoids)
+ClusterComplex::ClusterComplex(int k, std::vector<ClusterObject> &medoids, std::vector<ClusterObject> &nonMedoids)
 {
     this->k = k;
     int clusterIndex;
@@ -10,22 +10,20 @@ ClusterComplex::ClusterComplex(int k, std::vector<ClusterObject> medoids, std::v
 
     Medoids = new ClusterObject[k];
     Clusters = new SimpleList[k];
-    T = new int[k];
 
     for (int i=0; i<k; i++){
         Medoids[i] = medoids[i];
         PointPointer pp = {Medoids[i], 0};
         Clusters[i].Push(pp);
-        T[i]++;
     }
 
-    for (int i=0; i<nonMedoids.size(); i++){
-        ClusterObject &currPoint = nonMedoids[i];
-        clusterIndex = nearestCenter(currPoint);
-        PointPointer pp = {currPoint, euclidean_distance(currPoint, Medoids[clusterIndex])};
-        Clusters[clusterIndex].Push(pp);
-        T[clusterIndex]++;
-    }
+    Assign(nonMedoids);
+    // for (int i=0; i<nonMedoids.size(); i++){
+    //     ClusterObject &currPoint = nonMedoids[i];
+    //     clusterIndex = nearestCenter(currPoint);
+    //     PointPointer pp = {currPoint, euclidean_distance(currPoint, Medoids[clusterIndex])};
+    //     Clusters[clusterIndex].Push(pp);
+    // }
 }
 
 ClusterComplex::~ClusterComplex()
@@ -33,13 +31,6 @@ ClusterComplex::~ClusterComplex()
     delete[] Clusters;
     delete[] Medoids;
 }
- 
-// void ClusterComplex::InitializeCenters(){
-//     for (int i=0; i<medoids.size(); i++){
-//         Medoids[i] = medoids[i];
-//     }
-//     return;
-// }
 
 int ClusterComplex::nearestCenter(ClusterObject item){
 
@@ -60,5 +51,25 @@ void ClusterComplex::Update(){
 
     for(int i=0; i<k; i++){
         Medoids[i] = Clusters[i].meanVector();
+    }
+     delete[] Clusters;
+}
+
+void ClusterComplex::Assign(std::vector<ClusterObject> &points){
+
+    int clusterIndex;
+    for(int i=0; i<points.size(); i++){
+        ClusterObject &currPoint = points[i];
+        clusterIndex = nearestCenter(currPoint);
+        PointPointer pp = {currPoint, euclidean_distance(currPoint, Medoids[clusterIndex])};
+        Clusters[clusterIndex].Push(pp);
+    }
+}
+
+void ClusterComplex::kMeans(std::vector<ClusterObject> &points, int epochs){
+
+    for (int i=0; i<epochs; i++){
+        Update();
+        Assign(points);
     }
 }
