@@ -30,10 +30,15 @@ LSH::LSH(
 
 }
 
-int LSH::kNN_Search(string &id, int L, int k, PD **b){
+int LSH::kNN_Search(int L, int k, PD **b, string &id){
 
     Point *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
+
+    return kNN_Search(L,k,b,q);
+}
+
+int LSH::kNN_Search(int L, int k, PD **b, Point *q){
 
     int i;
 	if(*b == nullptr ) *b = new PD[k];
@@ -72,10 +77,14 @@ int LSH::bruteForceNN(string &id, int L, int k, PD **b){
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int LSH::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_neighbors){
+int LSH::rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, std::string &id){
     Point *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
 
+    return rangeSearch(r,r_neighbors,q);
+}
+
+int LSH::rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, Point *q){
     int i;
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
@@ -84,6 +93,12 @@ int LSH::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_neighbo
     }
 
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
+}
+
+int LSH::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
+    for (int i=0; i<L; i++){
+        hash_tables[i]->reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids);
+    }
 }
 
 LSH::~LSH(){

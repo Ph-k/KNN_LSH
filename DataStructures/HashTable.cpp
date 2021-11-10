@@ -61,6 +61,12 @@ int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Poi
     return bucket[hash_index].rangeSearch(r, q, r_neighbors);
 }
 
+int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
+    int Id_q = hashing->Hash(Medoids[k_index]->getXs());
+    int hash_index = hashing->HashIndex( Id_q );
+    return bucket[hash_index].reverseRangeSearch(r, Clusters, k, k_index, Medoids);
+}
+
 /*void HashTable::Traverse( void (*fun)(HashItem *) ){
     for(unsigned int i=0; i<table_size; i++){
         table[i].Traverse(fun);

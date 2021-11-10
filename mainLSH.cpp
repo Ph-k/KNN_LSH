@@ -78,13 +78,13 @@ int main(int argc, char const *argv[]){
     for(i = 1; i <=100; i++){
         string id = to_string(i);
 
-        time_lsh = operations.kNN_Search(id,L,K,&knn);        
+        time_lsh = operations.kNN_Search(L,K,&knn,id);
 
         time_brute_force = operations.bruteForceNN(id,L,K,&brute_force);
 
         io_files.writeQuery(id, knn, brute_force, K, time_lsh, time_brute_force,__LSH_MODE);
 
-        operations.rangeSearch(id, radius, r_neighbors);
+        operations.rangeSearch(radius, r_neighbors, id);
 
         io_files.writeRangeNeighbors(r_neighbors);
     }

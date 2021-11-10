@@ -109,7 +109,7 @@ Point* FileReader::ReadPoint(char file_mode){
 }
 
 int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes){
-    K=-1; L=3; k_lsh=4; M=10; k_hc=3; probes=2;
+    K=-1; L=-1; k_lsh=-1; M=-1; k_hc=-1; probes=-1;
     if( configuration_file.is_open() == false ) return -1;
 
     string line, argument_name,argument_value;
@@ -126,7 +126,7 @@ int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, in
             argument = &L;
         }else if(argument_name.compare("number_of_vector_hash_functions:") == 0){
             argument = &k_lsh;
-        }else if(argument_name.compare("mac_number_M_hypercube:") == 0){
+        }else if(argument_name.compare("max_number_M_hypercube:") == 0){
             argument = &M;
         }else if(argument_name.compare("number_of_hypercube:") == 0){
             argument = &k_hc;
@@ -148,6 +148,35 @@ int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, in
         cout << "cube: No number_of_clusters parameter found in the configuration file!" << endl;
         return -1;
     }
+
+    bool used_default = false;
+    if( L==-1 || k_lsh==-1 || M==-1 || k_hc==-1 || probes==-1 ){
+        cout << "Using default values for:";
+        used_default = true;
+    }
+
+    if(L == -1){
+        L = 3;
+        cout << " number_of_vector_hash_tables,";
+    }
+    if(k_lsh == -1){
+        k_lsh = 4;
+        cout << " number_of_vector_hash_functions,";
+    }
+    if(M == -1){
+        M = 10;
+        cout << " max_number_M_hypercube,";
+    }
+    if(k_hc == -1){
+        k_hc = 3;
+        cout << " number_of_hypercube,";
+    }
+    if(probes == -1){
+        probes =2;
+        cout << " number_of_probes,";
+    }
+
+    if(used_default) cout << endl;
 
     return 0;
 }
@@ -190,6 +219,18 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neig
 
 int FileReader::writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k){
 
+    for(int i=0; i<k; i++){
+        output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
+        for(auto X: Medoids[i]->getXs())
+            output_file << ' ' << X;
+        output_file << "}\n";
+    }
+
+    output_file << endl;
+    return 0;
+}
+
+int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, ClusterObject *Medoids, int k){
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
         for(auto X: Medoids[i]->getXs())

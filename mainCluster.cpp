@@ -11,8 +11,14 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
 
-    int i, K=-1, M=-1, probes=-1, number_of_nearest=-1, radius=-1;
-    char const *input_file  = nullptr, *query_file = nullptr, *output_file = nullptr;
+    int i, K, L, k_lsh, M_hc, k_hc, hc_probes;
+    char const *input_file  = nullptr,
+               *query_file = nullptr,
+               *output_file = nullptr,
+               *configuration_file = nullptr,
+               *method_string = nullptr;
+    char method = __INVALID_METHOD;
+    bool complete = false;
 
 	for(i=1; i<argc; i++){
 		if( strcmp(argv[i], "-i") == 0 ){
@@ -21,66 +27,71 @@ int main(int argc, char const *argv[]){
 			query_file = argv[++i];
 		}else if( strcmp(argv[i],"-o") == 0 ){
 			output_file = argv[++i];
-		}else if( strcmp(argv[i],"-k") == 0){
-			K = atoi(argv[++i]);
-		}else if( strcmp(argv[i],"-M") == 0){
-			M = atoi(argv[++i]);
-		}else if( strcmp(argv[i],"-probes") == 0){
-			probes = atoi(argv[++i]);
-		}else if( strcmp(argv[i],"-N") == 0){
-			number_of_nearest = atoi(argv[++i]);
-		}else if( strcmp(argv[i],"-R") == 0){
-			radius = atoi(argv[++i]);
+		}else if( strcmp(argv[i],"-c") == 0){
+			configuration_file = argv[++i];
+		}else if( strcmp(argv[i],"-complete") == 0){
+			complete = true;
+		}else if( strcmp(argv[i],"-m") == 0){
+			method_string = argv[++i];
+
+            if( strcmp(method_string,"Classic") == 0){
+                method = __CLASIC_METHOD;
+            }else if( strcmp(method_string,"LSH") == 0){
+                method = __LSH_METHOD;
+            }else if( strcmp(method_string,"Hypercube") == 0){
+                method = __HC_METHOD;
+            }
+
 		}else{
             cout << "Argument '" << argv[i] << "' is invalid!" << endl;
         }
 	}
 
-    if(input_file == nullptr || query_file == nullptr || output_file == nullptr){
-        cout << "cube: At least one of the input_file, query_file, output_file, configuration_file was mistyped or not given at all!" << endl;
+    if(input_file == nullptr || query_file == nullptr || output_file == nullptr || configuration_file == nullptr){
+        cout << "cluster: At least one of the input_file, query_file, output_file, configuration_file was mistyped or not given at all!" << endl;
         return -1;
     }
 
-    if( K == -1){
-        cout << "cube: using default value for argument K" << endl;
-        K = 14;
+    if(method == __INVALID_METHOD){
+        cout << "cluster: method argument (-m) was misstyped or not given at all, defaulting to Classic" << endl;
+        method = __CLASIC_METHOD;
     }
 
-    if( M == -1 ){
-        cout << "cube: using default value for argument M" << endl;
-        probes = 5;
-    }
-
-    if( probes == -1 ){
-        cout << "cube: using default value for argument probes" << endl;
-        probes = 5;
-    }
-
-    if( number_of_nearest == -1 ){
-        cout << "cube: using default value for argument N" << endl;
-        number_of_nearest = 1;
-    }
-
-    if( radius == -1 ){
-        cout << "cube: using default value for argument R" << endl;
-        radius = 10000;
-    }
-
-    FileReader io_files(input_file,query_file,output_file);
-    ClusterComplex clustering(io_files,K);
+    FileReader io_files(input_file,query_file,output_file,configuration_file);
 
     cout << "Argumets:"
          << "\n\tinput_file: " << input_file
          << "\n\tquery_file: " << query_file
          << "\n\toutput_file: " << output_file
-         << "\n\tK: " << K
-         << "\n\tM: " << probes
-         << "\n\tnumber_of_nearest: " << number_of_nearest
-         << "\n\tradius: " << radius << endl;
+         << "\n\tconfiguration_file: " << configuration_file
+         << "\n\tmethod: " << (method_string != nullptr? method_string : "default" ) << '\n';
 
-    clustering.kMeans(10);
+    if( io_files.readConfigFile(K, L, k_lsh, M_hc, k_hc, hc_probes) != 0 ) return -3;
 
-    io_files.writeClusterPoints(clustering.getClusters(), clustering.getMedoids(), K);
+    cout << "Configuration file argumets:"
+         << "\n\tnumber_of_clusters: " << K
+         << "\n\tnumber_of_vector_hash_tables: " << L
+         << "\n\tnumber_of_vector_hash_functions: " << k_lsh
+         << "\n\tmax_number_M_hypercube: " << M_hc
+         << "\n\tnumber_of_hypercube: " << k_hc
+         << "\n\tnumber_of_probes: " << hc_probes << endl;
+
+
+    ClusterComplex *clustering;
+    switch(method){
+        case __CLASIC_METHOD:
+            clustering = new ClusterComplex(io_files,K,method);
+            break;
+        case __LSH_METHOD:
+            clustering = new ClusterComplex(io_files,K,method,k_lsh,L);
+            break;
+        default:
+            return -3;
+    }
+
+    clustering->kMeans(10);
+
+    io_files.writeClusterPoints(clustering->getClusters(1), clustering->getMedoids(), K);
 
     /*double time_cube, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
@@ -101,5 +112,6 @@ int main(int argc, char const *argv[]){
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;*/
 
+    delete clustering;
     return 0;
 }

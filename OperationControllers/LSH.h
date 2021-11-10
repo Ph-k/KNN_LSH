@@ -18,9 +18,13 @@ class LSH{
             FileReader &io_files_ref,
             int w, int k, int l, int hash_table_size=10
         );
-        int kNN_Search(std::string &id, int L, int k, PD **b);
+        int kNN_Search(int L, int k, PD **b, std::string &id);
+        int kNN_Search(int L, int k, PD **b, Point *p);
         int bruteForceNN(std::string &id, int L, int k, PD **b);
-        int rangeSearch(std::string &id, int r, std::unordered_map<std::string, Point*> &r_neighbors);
+        int rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, std::string &id);
+        int rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, Point *q);
+        int reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids);
+        inline const std::vector<Point*>& getAllPoints(){ return this->points; }
         ~LSH();
 };
 

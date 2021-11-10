@@ -33,6 +33,7 @@ class FileReader{
         int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
         int writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k);
+        int writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, ClusterObject *Medoids, int k);
         //std::ofstream& outputStream() {return output_file;}
         ~FileReader();
 };

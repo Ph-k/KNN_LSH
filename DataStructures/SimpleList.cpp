@@ -124,6 +124,37 @@ int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_ne
     return 0;
 }
 
+int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
+    ListNode* node = head;
+    int i;
+    bool add;
+    double l1,l1_t;
+
+    while(node != nullptr){
+        l1 = euclidean_distance(node->item.point,Medoids[k_index]);
+
+        if(l1 < r){
+            add = true;
+            for(i=0; i<k; i++){
+                if(i != k_index){
+                    if( Clusters[i].find(node->item.point->getId()) != Clusters[i].end() ){
+                        l1_t = euclidean_distance(node->item.point,Medoids[i]);
+
+                        if(l1_t > l1){
+                            Clusters[i].erase(node->item.point->getId());
+                        }else add = false;
+                    }
+                }
+            }
+            if(add) Clusters[k_index][node->item.point->getId()] = node->item.point;
+        }
+
+        node = node->next;
+    }
+
+    return 0;
+}
+
 Point* SimpleList::meanVector(){
     ListNode* node = head;
 

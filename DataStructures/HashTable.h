@@ -20,6 +20,7 @@ class HashTable{
         int knn_search_bucket(int k, Point *q, struct PD* nearest);
         int bruteForceNN(int k, Point *q, struct PD* nearest);
         int rangeSearchBucket(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors);
+        int reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids);
         ~HashTable();
     private:
         SimpleList *bucket;
