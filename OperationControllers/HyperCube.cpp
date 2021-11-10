@@ -72,6 +72,7 @@ int HyperCube::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_n
 
 int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
     hash_table.reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids);
+    return 0;
 }
 
 HyperCube::~HyperCube(){}

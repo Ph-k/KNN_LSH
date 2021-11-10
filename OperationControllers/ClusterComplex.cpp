@@ -8,7 +8,7 @@
 using namespace std;
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
-:io_files(io_files_ref), k(given_k), LSHController(nullptr), Clusters2(nullptr), HCController(nullptr){
+:io_files(io_files_ref), k(given_k), Clusters2(nullptr), LSHController(nullptr), HCController(nullptr){
 
     if(mthd != __CLASIC_METHOD){
         cerr << "Cluster(::ClusterComplex): non Classic method requested to classic constructor" << endl;
@@ -72,7 +72,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
 }
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int M_hc, int k_hc, int hc_probes)
-:io_files(io_files_ref), k(given_k), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), search_range(100), Clusters(nullptr), LSHController(nullptr){
+:io_files(io_files_ref), k(given_k), search_range(100), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), Clusters(nullptr), LSHController(nullptr){
     if(mthd != __HC_METHOD){
         cerr << "Cluster(::ClusterComplex): non hyper cube method requested to hyper cube constructor" << endl;
         exit(-3);
@@ -242,7 +242,6 @@ void ClusterComplex::AssignLSH_HC(){
         }
         if(found == false){
             clusterIndex = nearestCenter(point);
-            PointPointer pp = {point, 0};
             Clusters2[clusterIndex][point->getId()]=point;
         }
     }

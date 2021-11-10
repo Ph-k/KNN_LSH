@@ -99,6 +99,7 @@ int LSH::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clus
     for (int i=0; i<L; i++){
         hash_tables[i]->reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids);
     }
+    return 0;
 }
 
 LSH::~LSH(){
