@@ -15,5 +15,7 @@ class HyperCube{
         int kNN_Search(std::string &id, int L, int k, PD **b);
         int bruteForceNN(std::string &id, int L, int k, PD **b);
         int rangeSearch(std::string &id, int r, std::unordered_map<std::string, Point*> &r_neighbors);
+        int reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids);
+        inline const std::vector<Point*>& getAllPoints(){ return this->points; }
         ~HyperCube();
 };

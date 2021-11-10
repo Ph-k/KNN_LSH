@@ -3,12 +3,12 @@
 #include "LSH.h"
 #include "FileReader.h"
 #include "ClusterComplex.h"
+#include "HyperCube.h"
 
 using namespace std;
 
-
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
-:io_files(io_files_ref), k(given_k), LSHController(nullptr), Clusters2(nullptr){
+:io_files(io_files_ref), k(given_k), LSHController(nullptr), Clusters2(nullptr), HCController(nullptr){
 
     if(mthd != __CLASIC_METHOD){
         cerr << "Cluster(::ClusterComplex): non Classic method requested to classic constructor" << endl;
@@ -47,7 +47,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
 }
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh)
-:io_files(io_files_ref), k(given_k), k_lsh(k_lsh), l_lsh(l_lsh), lsh_range(100), Clusters(nullptr){
+:io_files(io_files_ref), k(given_k), k_lsh(k_lsh), l_lsh(l_lsh), search_range(100), Clusters(nullptr), HCController(nullptr){
 
     if(mthd != __LSH_METHOD){
         cerr << "Cluster(::ClusterComplex): non LSH method requested to LSH constructor" << endl;
@@ -68,7 +68,31 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
         Medoids[i] = drawRandomMedoid(LSHController->getAllPoints());
     }
 
-    AssignLSH();
+    AssignLSH_HC();
+}
+
+ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int M_hc, int k_hc, int hc_probes)
+:io_files(io_files_ref), k(given_k), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), search_range(100), Clusters(nullptr), LSHController(nullptr){
+    if(mthd != __HC_METHOD){
+        cerr << "Cluster(::ClusterComplex): non hyper cube method requested to hyper cube constructor" << endl;
+        exit(-3);
+    }else this->method = mthd;
+
+    this->HCController = new HyperCube(io_files_ref,150,k_hc,hc_probes,1000);
+
+    Clusters2 = new std::unordered_map<std::string, Point*>[k];
+
+
+    Medoids = new ClusterObject[k];
+
+    random_medoid_indexes = new unsigned int[k];
+    random_medoid_size = 0;
+
+    for (int i=0; i<k; i++){
+        Medoids[i] = drawRandomMedoid(HCController->getAllPoints());
+    }
+
+    AssignLSH_HC();
 }
 
 ClusterObject ClusterComplex::drawRandomMedoid(const vector<ClusterObject>& all_points){
@@ -170,7 +194,7 @@ Point *meanVector(std::unordered_map<std::string, Point*> &Cluster){
     return meanP;
 }
 
-void ClusterComplex::UpdateLSH(){
+void ClusterComplex::UpdateLSH_HC(){
 
     int i;
     Point *newMedoid;
@@ -184,16 +208,31 @@ void ClusterComplex::UpdateLSH(){
 
 }
 
-void ClusterComplex::AssignLSH(){
+void ClusterComplex::AssignLSH_HC(){
     int i, clusterIndex;
     bool found;
-    for(i=0; i<k; i++){
-        LSHController->reverseRangeSearch(lsh_range,Clusters2,k,i,Medoids);
+
+    const vector<Point*> *allPoints;
+
+    switch (this->method){
+        case __LSH_METHOD:
+            for(i=0; i<k; i++){
+                LSHController->reverseRangeSearch(search_range,Clusters2,k,i,Medoids);
+            }
+            allPoints = &(LSHController->getAllPoints());
+            break;
+        default:
+            for(i=0; i<k; i++){
+                HCController->reverseRangeSearch(search_range,Clusters2,k,i,Medoids);
+            }
+            allPoints = &(HCController->getAllPoints());
+            break;
     }
-    lsh_range *= 2;
+
+    search_range *= 2;
 
     points.clear();
-    for(auto point: LSHController->getAllPoints()){
+    for(auto point: *allPoints){
         found = false;
         for(i=0; i<k; i++){
             if( Clusters2[i].find(point->getId()) != Clusters2[i].end() ){
@@ -219,11 +258,9 @@ void ClusterComplex::kMeans(int epochs){
                 Update();
                 Assign();
                 break;
-            case __LSH_METHOD:
-                UpdateLSH();
-                AssignLSH();
-                break;
             default:
+                UpdateLSH_HC();
+                AssignLSH_HC();
                 break;
         }
     }

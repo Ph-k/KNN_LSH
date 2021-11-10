@@ -15,27 +15,30 @@
 
 class FileReader;
 class LSH;
+class HyperCube;
 
 class ClusterComplex{
     private:
         FileReader &io_files;
         int k;
-        int k_lsh, l_lsh, lsh_range/*m*/;
+        int k_lsh, l_lsh, search_range, M_hc, k_hc, hc_probes;
         ClusterObject *Medoids;
         std::vector<ClusterObject> points;
         SimpleList *Clusters;
         std::unordered_map<std::string, Point*> *Clusters2;
         void Update();
-        void UpdateLSH();
+        void UpdateLSH_HC();
         void Assign();
-        void AssignLSH();
+        void AssignLSH_HC();
         unsigned int* random_medoid_indexes,random_medoid_size;
         ClusterObject drawRandomMedoid(const std::vector<ClusterObject>& all_points);
         char method;
         LSH* LSHController;
+        HyperCube* HCController;
     public:
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd); //For classic method
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh); //For lsh method
+        ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int M_hc, int k_hc, int hc_probes); //For hc method
         ~ClusterComplex();
         void Insert(ClusterObject item);
         int nearestCenter(ClusterObject item);

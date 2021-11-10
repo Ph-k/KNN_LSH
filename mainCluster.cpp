@@ -85,6 +85,9 @@ int main(int argc, char const *argv[]){
         case __LSH_METHOD:
             clustering = new ClusterComplex(io_files,K,method,k_lsh,L);
             break;
+        case __HC_METHOD:
+            clustering = new ClusterComplex(io_files,K,method,M_hc,k_hc,hc_probes);
+            break;
         default:
             return -3;
     }
