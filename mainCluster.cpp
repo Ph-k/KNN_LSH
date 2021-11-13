@@ -101,6 +101,7 @@ int main(int argc, char const *argv[]){
             break;
         default:
             io_files.writeClusterPoints(clustering->getClustersUmap(), clustering->getMedoids(), K,complete);
+            io_files.writeSilhouette(clustering->umapSilhouette(),K);
             break;
     }
 

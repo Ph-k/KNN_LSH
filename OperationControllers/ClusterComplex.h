@@ -32,8 +32,8 @@ class ClusterComplex{
         SimpleList *Clusters;
         int *clusterIndexes;
         std::unordered_map<std::string, Point*> *Clusters2;
-        void Update();
-        void UpdateLSH_HC();
+        void Update(bool first = true);
+        void UpdateLSH_HC(bool first = true);
         void Assign();
         void AssignLSH_HC();
         //unsigned int* random_medoid_indexes,random_medoid_size;
@@ -43,6 +43,7 @@ class ClusterComplex{
         LSH* LSHController;
         HyperCube* HCController;
         silhouetteStats silhouetteS;
+        int findClusterIndex(Point *p);
     public:
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd); //For classic method
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh); //For lsh method

@@ -230,20 +230,24 @@ ClusterComplex::~ClusterComplex()
 
 int ClusterComplex::nearestCenter(ClusterObject item, bool sec){
 
-    double minDist = DBL_MAX, currDist;
-    int index=0, secondIndex=0;
+    double minDist[2] = {DBL_MAX, DBL_MAX}, currDist;
+    int index[2]={0,0};
     for (int i=0; i<k; i++){
         currDist = euclidean_distance(item, Medoids[i]);
-        if (currDist < minDist){
-            secondIndex = index;
-            index = i;
-            minDist = currDist;
+        if (currDist < minDist[0]){
+            minDist[1] = minDist[0];
+            minDist[0] = currDist;
+            index[1] = index[0];
+            index[0] = i;
+        }else if(currDist < minDist[1]){
+            minDist[1] = currDist;
+            index[1] = i;
         }
     }
 
     if (!sec)
-        return index;
-    return secondIndex;    
+        return index[0];
+    return index[1];    
 }
 
 double ClusterComplex::minDistance(ClusterObject item, int t){
@@ -259,14 +263,18 @@ double ClusterComplex::minDistance(ClusterObject item, int t){
     return currDist;    
 }
 
-void ClusterComplex::Update(){
+void ClusterComplex::Update(bool first){
 
     int i;
     PointPointer pp = {nullptr, 0};
 
     for(i=0; i<k; i++){
+        
+        ClusterObject temp = Medoids[i];
         Medoids[i] = Clusters[i].meanVector();
         Clusters[i].empty();
+        if(!first)
+            delete temp;
 
         pp.point = Medoids[i];
         Clusters[i].Push(pp);
@@ -324,7 +332,7 @@ double averageDistance(std::unordered_map<std::string, Point*> &Cluster, Point *
     return tempDist;
 }
 
-void ClusterComplex::UpdateLSH_HC(){
+void ClusterComplex::UpdateLSH_HC(bool first){
 
     int i;
     Point *newMedoid;
@@ -332,11 +340,12 @@ void ClusterComplex::UpdateLSH_HC(){
     for(i=0; i<k; i++){
         newMedoid = meanVector(Clusters2[i]);
         if(newMedoid != nullptr){
+            if(!first)
+                delete Medoids[i];
             //if(Medoids[i]->getId() != nullptr) delete Medoids[i];
             Medoids[i] = newMedoid;
         }
         
-
         Clusters2[i].clear();
     }
 
@@ -362,18 +371,19 @@ void ClusterComplex::AssignLSH_HC(){
 }
 
 void ClusterComplex::kMeans(int epochs){
-
+    bool first = true;
     for (int i=0; i<epochs; i++){
         switch (this->method){
             case __CLASIC_METHOD:
-                Update();
+                Update(first);
                 Assign();
                 break;
             default:
-                UpdateLSH_HC();
+                UpdateLSH_HC(first);
                 AssignLSH_HC();
                 break;
         }
+        first = false;
     }
 
     if(this->method != __CLASIC_METHOD){
@@ -429,7 +439,10 @@ silhouetteStats *ClusterComplex::Silhouette(){
     }
    
     for(int i=0; i<k; i++){
+        cout << "avgSil: " << silhouetteS.avgSil[i];
+        cout << "size: " << (double)Clusters[i].size();
         silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters[i].size();
+        
     }
     silhouetteS.OSC = silhouetteS.OSC/(double)points.size();
 
@@ -440,26 +453,45 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
 
     double a_i, b_i;
     double s_i, OSC;
-    double *averageSilhouette = new double[k];
+    if(silhouetteS.avgSil == nullptr) silhouetteS.avgSil = new double[k];
 
-    for(long unsigned int i=0; i<points.size(); i++){
-        a_i = averageDistance(Clusters2[clusterIndexes[i]], points[i]);
-        b_i = averageDistance(Clusters2[nearestCenter(points[i], true)],points[i]);
+    vector<Point*>* allPoints;
+    switch (this->method){
+        case __LSH_METHOD:
+            allPoints = &(LSHController->getAllPoints());
+            break;
+        default:
+            allPoints = &(HCController->getAllPoints());
+            break;
+    }
+
+    for(long unsigned int i=0; i<allPoints->size(); i++){
+        int clusterIndex = findClusterIndex(allPoints->at(i));
+        a_i = averageDistance(Clusters2[clusterIndex], allPoints->at(i));
+        b_i = averageDistance(Clusters2[nearestCenter(allPoints->at(i), true)],allPoints->at(i));
         if(a_i == b_i)
             s_i = 0;
         else if(a_i < b_i)
             s_i = 1-a_i/b_i;
         else   
             s_i = b_i/a_i-1;
-        averageSilhouette[clusterIndexes[i]] += s_i;
+        silhouetteS.avgSil[clusterIndex] += s_i;
         OSC += s_i;
     }
 
     for(int i=0; i<k; i++){
-        averageSilhouette[i] = averageSilhouette[i]/(double)Clusters2[i].size();
+        silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters2[i].size();
     }
     OSC = OSC/(double)points.size();
     
-    silhouetteStats *ss = new silhouetteStats{averageSilhouette, OSC};
-    return ss;
+    return &silhouetteS;
+}
+
+int ClusterComplex::findClusterIndex(Point *p){
+  for(int i=0; i<k; i++){
+    if( Clusters2[i].find(p->getId()) != Clusters2[i].end() ){
+      return i;
+    }
+  }
+  return -1;
 }
