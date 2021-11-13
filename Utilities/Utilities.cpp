@@ -83,3 +83,10 @@ unsigned int randUInt(unsigned int l, unsigned int h){
 
     return uniform_distribution(randomness);
 }
+
+void printPointIdInList(struct PointPointer* pp, void* output_f){
+    std::ofstream* output_file = (std::ofstream*)output_f;
+    for(auto X: pp->point->getXs())
+        *output_file << ' ' << X;
+    *output_file << ", ";
+}

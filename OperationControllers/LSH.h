@@ -24,7 +24,7 @@ class LSH{
         int rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, std::string &id);
         int rangeSearch(int r, std::unordered_map<std::string, Point*> &r_neighbors, Point *q);
         int reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids);
-        inline const std::vector<Point*>& getAllPoints(){ return this->points; }
+        inline std::vector<Point*>& getAllPoints(){ return this->points; }
         ~LSH();
 };
 

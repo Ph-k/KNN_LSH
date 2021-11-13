@@ -28,8 +28,6 @@ unsigned int HashHC::Hash(const std::vector<int> &p){
         tag = tag | bit;
     }
 
-    std::cout << tag << std::endl;
-
 	return tag;
 }
 

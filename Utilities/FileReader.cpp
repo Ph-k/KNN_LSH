@@ -217,20 +217,33 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neig
     return 0;
 }
 
-int FileReader::writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k){
+int FileReader::writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k, bool complete){
 
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
         for(auto X: Medoids[i]->getXs())
             output_file << ' ' << X;
         output_file << "}\n";
+    }
+
+    if(complete){
+        for(int i=0; i<k; i++){
+            output_file << "CLUSTER-" << i << " {";
+            for(auto X: Medoids[i]->getXs())
+                output_file << ' ' << X;
+            output_file <<  " ,";
+
+
+            Clusters->Traverse( &printPointIdInList , &output_file);
+            output_file << "}\n";
+        }
     }
 
     output_file << endl;
     return 0;
 }
 
-int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, ClusterObject *Medoids, int k){
+int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, ClusterObject *Medoids, int k, bool complete){
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
         for(auto X: Medoids[i]->getXs())
@@ -238,7 +251,31 @@ int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clus
         output_file << "}\n";
     }
 
+    if(complete){
+        for(int i=0; i<k; i++){
+            output_file << "CLUSTER-" << i << " {";
+            for(auto X: Medoids[i]->getXs())
+                output_file << ' ' << X;
+            output_file <<  " ,";
+
+            for(auto pointPair: Clusters[i]){
+                for(auto X: pointPair.second->getXs())
+                    output_file << ' ' << X;
+                output_file << ", ";
+            }
+            output_file << "}\n";
+        }
+    }
+
     output_file << endl;
+    return 0;
+}
+
+int FileReader::writeSilhouette(silhouetteStats *silhouetteS, int k){
+    output_file << "Silhouette: [";
+    for(int i=0; i<k; i++)
+        output_file << silhouetteS->avgSil[i] << ", ";
+    output_file << silhouetteS->OSC << "]" << endl;
     return 0;
 }
 

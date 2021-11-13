@@ -92,28 +92,17 @@ int main(int argc, char const *argv[]){
             return -3;
     }
 
-    clustering->kMeans(10);
+    clustering->kMeans(15);
 
-    io_files.writeClusterPoints(clustering->getClusters(1), clustering->getMedoids(), K);
-
-    /*double time_cube, time_brute_force;
-    PD *knn = nullptr, *brute_force = nullptr;
-    unordered_map<string, Point*> r_neighbors;
-    for(i = 1; i <=100; i++){
-        string id = to_string(i);
-
-        time_cube = HC.kNN_Search(id,-1,K,&knn);        
-
-        time_brute_force = HC.bruteForceNN(id,-1,K,&brute_force);
-
-        io_files.writeQuery(id, knn, brute_force, K, time_cube, time_brute_force,__H_CUBE_MODE);
-
-        HC.rangeSearch(id, radius, r_neighbors);
-
-        io_files.writeRangeNeighbors(r_neighbors);
+    switch (method){
+        case __CLASIC_METHOD:
+            io_files.writeClusterPoints(clustering->getClustersList(), clustering->getMedoids(), K, complete);
+            io_files.writeSilhouette(clustering->Silhouette(),K);
+            break;
+        default:
+            io_files.writeClusterPoints(clustering->getClustersUmap(), clustering->getMedoids(), K,complete);
+            break;
     }
-    if(knn != nullptr) delete[] knn;
-    if(brute_force != nullptr) delete[] brute_force;*/
 
     delete clustering;
     return 0;

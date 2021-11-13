@@ -62,13 +62,13 @@ int SimpleList::Find(SimpleListItemType item){
     return 0;
 }
 
-/*void SimpleList::Traverse( void (*fun)(Point *p, void* privateItems ) ){
+void SimpleList::Traverse( void (*fun)(SimpleListItemType *item, void* privateItems ), void* privateItems ){
     ListNode* node = head;
     while(node != nullptr){
-        fun( &(node->item) );
+        fun( &(node->item), privateItems );
         node = node->next;
     }
-}*/
+}
 
 int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool brute_force){
     ListNode* node = head;
@@ -146,7 +146,9 @@ int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*
                     }
                 }
             }
-            if(add) Clusters[k_index][node->item.point->getId()] = node->item.point;
+            if(add){
+                Clusters[k_index][node->item.point->getId()] = node->item.point;
+            }
         }
 
         node = node->next;

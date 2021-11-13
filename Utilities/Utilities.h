@@ -32,3 +32,5 @@ unsigned int randBit(int seed = time(NULL));
 unsigned int randUInt(unsigned int l, unsigned int h);
 
 int binarySearch(std::vector<double> &P);
+
+void printPointIdInList(struct PointPointer* pp, void* output_f);

@@ -36,11 +36,13 @@ class ClusterComplex{
         void UpdateLSH_HC();
         void Assign();
         void AssignLSH_HC();
-        unsigned int* random_medoid_indexes,random_medoid_size;
+        //unsigned int* random_medoid_indexes,random_medoid_size;
         ClusterObject drawRandomMedoid(const std::vector<ClusterObject>& all_points);
+        void initMedoidsPP_LSH_HC();
         char method;
         LSH* LSHController;
         HyperCube* HCController;
+        silhouetteStats silhouetteS;
     public:
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd); //For classic method
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh); //For lsh method
@@ -50,8 +52,8 @@ class ClusterComplex{
         int nearestCenter(ClusterObject item, bool sec=false);
         double minDistance(ClusterObject item, int t);
         void kMeans(int epochs);
-        inline SimpleList *getClusters(){return Clusters;};
-        inline std::unordered_map<std::string, Point*> *getClusters(int i){return Clusters2;};
+        inline SimpleList *getClustersList(){return Clusters;};
+        inline std::unordered_map<std::string, Point*> *getClustersUmap(){return Clusters2;};
         inline ClusterObject *getMedoids(){return Medoids;};
         silhouetteStats *Silhouette();
         silhouetteStats *umapSilhouette();
