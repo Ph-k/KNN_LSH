@@ -197,3 +197,15 @@ void SimpleList::empty(){
 SimpleList::~SimpleList(){
     this->empty();
 }
+
+double SimpleList::averageDistance(Point *item){
+    ListNode* node = head;
+
+    double tempDist = 0.0;
+    while(node != nullptr){
+        tempDist += euclidean_distance(node->item.point, item);
+        node = node->next;
+    }
+    tempDist = tempDist/(double)T;
+    return tempDist;
+}

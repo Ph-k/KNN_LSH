@@ -13,6 +13,11 @@
 
 #define ClusterObject Point*
 
+struct silhouetteStats{
+    double *avgSil;
+    double OSC;
+};
+
 class FileReader;
 class LSH;
 class HyperCube;
@@ -25,6 +30,7 @@ class ClusterComplex{
         ClusterObject *Medoids;
         std::vector<ClusterObject> points;
         SimpleList *Clusters;
+        int *clusterIndexes;
         std::unordered_map<std::string, Point*> *Clusters2;
         void Update();
         void UpdateLSH_HC();
@@ -41,10 +47,13 @@ class ClusterComplex{
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int M_hc, int k_hc, int hc_probes); //For hc method
         ~ClusterComplex();
         void Insert(ClusterObject item);
-        int nearestCenter(ClusterObject item);
+        int nearestCenter(ClusterObject item, bool sec=false);
+        double minDistance(ClusterObject item, int t);
         void kMeans(int epochs);
         inline SimpleList *getClusters(){return Clusters;};
         inline std::unordered_map<std::string, Point*> *getClusters(int i){return Clusters2;};
         inline ClusterObject *getMedoids(){return Medoids;};
+        silhouetteStats *Silhouette();
+        silhouetteStats *umapSilhouette();
 };
 

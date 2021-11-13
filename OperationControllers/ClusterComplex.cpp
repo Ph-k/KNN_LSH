@@ -25,25 +25,61 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
     }
 
     Medoids = new ClusterObject[k];
+    clusterIndexes = new int[points.size()];
 
     random_medoid_indexes = new unsigned int[k];
     random_medoid_size = 0;
 
     Clusters = new SimpleList[k];
 
-    for (int i=0; i<k; i++){
-        Medoids[i] = drawRandomMedoid(this->points);
+    // for (int i=0; i<k; i++){
+    //     Medoids[i] = drawRandomMedoid(this->points);
+    //     PointPointer pp = {Medoids[i], 0};
+    //     Clusters[i].Push(pp);
+    // }
+
+    // Initialization ++
+
+    int t=1, n=points.size();
+    int randIndex = randUInt(0, n-1);
+    std::vector<double> P(n-1);
+    std::vector<double> D(n-1);
+    Medoids[0] = points[randIndex];
+    points.erase(points.begin()+randIndex);
+
+    // Generate k Medoids probabillistically.
+    for (int i=1; i<k; i++){
+        // Use max of all min distances D(i) to normalize
+        D[0] = minDistance(points[0], t);
+        double maxD = D[0];
+        for(int j=1; j<n-t; j++){
+            D[j] = minDistance(points[j], t);
+            if(D[j] > maxD) maxD = D[j];
+        }
+        double currPr = 0.0;
+        for(int j=0; j<n-t; j++){
+            D[j] = D[j]/maxD;
+            P[j] = currPr + D[j]*D[j];
+            currPr = P[j];
+        }
+
+        // Select double precision number x from uniform distr.
+        // Find index r in P so that x <= P(r) and it's at the upper bound
+        double randP = (double)random_float(0.0, P[n-t-1]);
+        int index = upper_bound(P.begin(), P.end(), randP) - P.begin();
+        Medoids[i] = points[index];
+        points.erase(points.begin()+index);
         PointPointer pp = {Medoids[i], 0};
         Clusters[i].Push(pp);
+        P.pop_back();
+        D.pop_back();
+        t++;
     }
 
+    for (int i=0; i<k; i++){
+        points.push_back(Medoids[i]);
+    }
     Assign();
-    // for (int i=0; i<nonMedoids.size(); i++){
-    //     ClusterObject &currPoint = nonMedoids[i];
-    //     clusterIndex = nearestCenter(currPoint);
-    //     PointPointer pp = {currPoint, euclidean_distance(currPoint, Medoids[clusterIndex])};
-    //     Clusters[clusterIndex].Push(pp);
-    // }
 }
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh)
@@ -129,19 +165,36 @@ ClusterComplex::~ClusterComplex()
     if(Clusters2 != nullptr) delete[] Clusters2;
 }
 
-int ClusterComplex::nearestCenter(ClusterObject item){
+int ClusterComplex::nearestCenter(ClusterObject item, bool sec=false){
 
-    double minDist = DBL_MAX, currDist;
-    int index;
+    double minDist = DBL_MAX, currDist, secondMinDist;
+    int index=0, secondIndex=0;
     for (int i=0; i<k; i++){
         currDist = euclidean_distance(item, Medoids[i]);
         if (currDist < minDist){
+            secondIndex = index;
+            secondMinDist = minDist;
             index = i;
             minDist = currDist;
         }
     }
 
-    return index;
+    if (!sec)
+        return index;
+    return secondIndex;    
+}
+
+double ClusterComplex::minDistance(ClusterObject item, int t){
+
+    double minDist = DBL_MAX, currDist;
+    for (int i=0; i<t; i++){
+        currDist = euclidean_distance(item, Medoids[i]);
+        if (currDist < minDist){
+            minDist = currDist;
+        }
+    }
+
+    return currDist;    
 }
 
 void ClusterComplex::Update(){
@@ -155,6 +208,7 @@ void ClusterComplex::Update(){
 
         pp.point = Medoids[i];
         Clusters[i].Push(pp);
+
     }
 
 }
@@ -167,6 +221,7 @@ void ClusterComplex::Assign(){
         clusterIndex = nearestCenter(currPoint);
         PointPointer pp = {currPoint, 0};
         Clusters[clusterIndex].Push(pp);
+        clusterIndexes[i] = clusterIndex;
     }
 }
 
@@ -192,6 +247,19 @@ Point *meanVector(std::unordered_map<std::string, Point*> &Cluster){
 
     delete[] tempVec;
     return meanP;
+}
+
+double averageDistance(std::unordered_map<std::string, Point*> &Cluster, Point *item){
+    if(Cluster.empty()) return 0;
+    unsigned int T = Cluster.size();
+
+    double tempDist = 0.0;
+
+    for(auto point: Cluster){
+        tempDist += euclidean_distance(point.second, item);
+    }
+    tempDist = tempDist/(double)T;
+    return tempDist;
 }
 
 void ClusterComplex::UpdateLSH_HC(){
@@ -247,8 +315,6 @@ void ClusterComplex::AssignLSH_HC(){
     }
 }
 
-
-
 void ClusterComplex::kMeans(int epochs){
 
     for (int i=0; i<epochs; i++){
@@ -264,4 +330,62 @@ void ClusterComplex::kMeans(int epochs){
         }
     }
 
+}
+
+silhouetteStats *ClusterComplex::Silhouette(){
+
+    double a_i, b_i;
+    Point *currPoint;
+    double s_i, OSC;
+    double *averageSilhouette = new double[k];
+
+    for(int i=0; i<points.size(); i++){
+        a_i = Clusters[clusterIndexes[i]].averageDistance(points[i]);
+        b_i = Clusters[nearestCenter(points[i], true)].averageDistance(points[i]);
+        if(a_i == b_i)
+            s_i = 0;
+        else if(a_i < b_i)
+            s_i = 1-a_i/b_i;
+        else   
+            s_i = b_i/a_i-1;
+        averageSilhouette[clusterIndexes[i]] += s_i;
+        OSC += s_i;
+    }
+   
+    for(int i=0; i<k; i++){
+        averageSilhouette[i] = averageSilhouette[i]/(double)Clusters[i].size();
+    }
+    OSC = OSC/(double)points.size();
+    
+    silhouetteStats *ss = new silhouetteStats{averageSilhouette, OSC};
+    return ss;
+}
+
+silhouetteStats *ClusterComplex::umapSilhouette(){
+
+    double a_i, b_i;
+    Point *currPoint;
+    double s_i, OSC;
+    double *averageSilhouette = new double[k];
+
+    for(int i=0; i<points.size(); i++){
+        a_i = averageDistance(Clusters2[clusterIndexes[i]], points[i]);
+        b_i = averageDistance(Clusters2[nearestCenter(points[i], true)],points[i]);
+        if(a_i == b_i)
+            s_i = 0;
+        else if(a_i < b_i)
+            s_i = 1-a_i/b_i;
+        else   
+            s_i = b_i/a_i-1;
+        averageSilhouette[clusterIndexes[i]] += s_i;
+        OSC += s_i;
+    }
+
+    for(int i=0; i<k; i++){
+        averageSilhouette[i] = averageSilhouette[i]/(double)Clusters2[i].size();
+    }
+    OSC = OSC/(double)points.size();
+    
+    silhouetteStats *ss = new silhouetteStats{averageSilhouette, OSC};
+    return ss;
 }

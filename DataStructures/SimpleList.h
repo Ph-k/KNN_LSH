@@ -26,6 +26,7 @@ class SimpleList{
         inline unsigned int size(){ return T;}
         ~SimpleList();
         void empty();
+        double averageDistance(Point *item);
     private:
         ListNode *head;
         unsigned int T;
