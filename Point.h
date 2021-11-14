@@ -9,6 +9,7 @@ class Point{
         std::string *item_id;
     public:
         Point(std::vector<int> *given_Xs, std::string *given_item_id);
+        Point(Point &p);
         inline /*const*/ std::string getId() { return *item_id; };
         inline const std::vector<int>& getXs() { return *X; };
         void print();

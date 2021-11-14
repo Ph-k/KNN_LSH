@@ -33,7 +33,7 @@ class ClusterComplex{
         int *clusterIndexes;
         std::unordered_map<std::string, Point*> *Clusters2;
         void Update(bool first = true);
-        void UpdateLSH_HC(bool first = true);
+        void UpdateLSH_HC();
         void Assign();
         void AssignLSH_HC();
         //unsigned int* random_medoid_indexes,random_medoid_size;

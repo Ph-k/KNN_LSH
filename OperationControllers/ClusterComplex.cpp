@@ -135,6 +135,7 @@ void ClusterComplex::initMedoidsPP_LSH_HC(){
 
     for (int i=0; i<k; i++){
         allPoints->push_back(Medoids[i]);
+        Medoids[i] = new Point(*(Medoids[i]));
     }
 }
 
@@ -332,7 +333,7 @@ double averageDistance(std::unordered_map<std::string, Point*> &Cluster, Point *
     return tempDist;
 }
 
-void ClusterComplex::UpdateLSH_HC(bool first){
+void ClusterComplex::UpdateLSH_HC(){
 
     int i;
     Point *newMedoid;
@@ -340,19 +341,18 @@ void ClusterComplex::UpdateLSH_HC(bool first){
     for(i=0; i<k; i++){
         newMedoid = meanVector(Clusters2[i]);
         if(newMedoid != nullptr){
-            if(!first)
-                delete Medoids[i];
+            delete Medoids[i];
             //if(Medoids[i]->getId() != nullptr) delete Medoids[i];
             Medoids[i] = newMedoid;
         }
-        
+
         Clusters2[i].clear();
     }
 
 }
 
 void ClusterComplex::AssignLSH_HC(){
-    int i;    
+    int i;
 
     switch (this->method){
         case __LSH_METHOD:
@@ -379,7 +379,7 @@ void ClusterComplex::kMeans(int epochs){
                 Assign();
                 break;
             default:
-                UpdateLSH_HC(first);
+                UpdateLSH_HC();
                 AssignLSH_HC();
                 break;
         }
@@ -439,10 +439,7 @@ silhouetteStats *ClusterComplex::Silhouette(){
     }
    
     for(int i=0; i<k; i++){
-        cout << "avgSil: " << silhouetteS.avgSil[i];
-        cout << "size: " << (double)Clusters[i].size();
         silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters[i].size();
-        
     }
     silhouetteS.OSC = silhouetteS.OSC/(double)points.size();
 
@@ -452,8 +449,10 @@ silhouetteStats *ClusterComplex::Silhouette(){
 silhouetteStats *ClusterComplex::umapSilhouette(){
 
     double a_i, b_i;
-    double s_i, OSC;
+    double s_i;
     if(silhouetteS.avgSil == nullptr) silhouetteS.avgSil = new double[k];
+    memset(silhouetteS.avgSil ,0.0,k*sizeof(double));
+    silhouetteS.OSC = 0.0;
 
     vector<Point*>* allPoints;
     switch (this->method){
@@ -476,14 +475,14 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
         else   
             s_i = b_i/a_i-1;
         silhouetteS.avgSil[clusterIndex] += s_i;
-        OSC += s_i;
+        silhouetteS.OSC += s_i;
     }
 
     for(int i=0; i<k; i++){
         silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters2[i].size();
     }
-    OSC = OSC/(double)points.size();
-    
+    silhouetteS.OSC = silhouetteS.OSC/(double)allPoints->size();
+
     return &silhouetteS;
 }
 
