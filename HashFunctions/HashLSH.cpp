@@ -19,4 +19,10 @@ unsigned int HashLSH::Hash(const std::vector<int> &p){
 	return res;
 }
 
+int *HashLSH::HashIndex(unsigned int ID, bool insertingMode){
+	int *bID = new int[1];
+	bID[0] = ID%TableSize;
+	return bID;
+};
+
 HashLSH::~HashLSH(){}

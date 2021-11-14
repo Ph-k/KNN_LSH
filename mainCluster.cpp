@@ -7,6 +7,8 @@
 #include "FileReader.h"
 #include "ClusterComplex.h"
 
+static int const epochs = 15;
+
 using namespace std;
 
 int main(int argc, char const *argv[]){
@@ -92,15 +94,19 @@ int main(int argc, char const *argv[]){
             return -3;
     }
 
-    clustering->kMeans(15);
+    clustering->kMeans(epochs);
 
     switch (method){
         case __CLASIC_METHOD:
-            io_files.writeClusterPoints(clustering->getClustersList(), clustering->getMedoids(), K, complete);
+            io_files.writeClusterPoints(clustering->getClustersList(), clustering->getClusteringTimes() ,clustering->getMedoids(), K, "Lloyds" , complete);
             io_files.writeSilhouette(clustering->Silhouette(),K);
             break;
+        case __LSH_METHOD:
+            io_files.writeClusterPoints(clustering->getClustersUmap(), clustering->getClusteringTimes() ,clustering->getMedoids(), K, "Range Search LSH", complete);
+            io_files.writeSilhouette(clustering->umapSilhouette(),K);
+            break;
         default:
-            io_files.writeClusterPoints(clustering->getClustersUmap(), clustering->getMedoids(), K,complete);
+            io_files.writeClusterPoints(clustering->getClustersUmap(), clustering->getClusteringTimes() ,clustering->getMedoids(), K, "Range Search Hypercube ", complete);
             io_files.writeSilhouette(clustering->umapSilhouette(),K);
             break;
     }

@@ -1,3 +1,4 @@
+#include <chrono>
 #include <float.h>
 #include <string.h>
 #include <algorithm>
@@ -371,6 +372,8 @@ void ClusterComplex::AssignLSH_HC(){
 }
 
 void ClusterComplex::kMeans(int epochs){
+    chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+
     bool first = true;
     for (int i=0; i<epochs; i++){
         switch (this->method){
@@ -416,6 +419,8 @@ void ClusterComplex::kMeans(int epochs){
             }
         }
     }
+
+    clustering_time = (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 
 }
 

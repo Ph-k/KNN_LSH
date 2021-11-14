@@ -17,5 +17,5 @@ class HashInterface
         virtual ~HashInterface();
         virtual unsigned int Hash(const std::vector<int> &p) = 0;
         inline int getNumProbes(){return numProbes;};
-        virtual int *HashIndex(unsigned int ID) = 0;
+        virtual int *HashIndex(unsigned int ID, bool insertingMode = false) = 0;
 };

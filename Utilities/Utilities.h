@@ -32,3 +32,7 @@ unsigned int randBit(int seed = time(NULL));
 unsigned int randUInt(unsigned int l, unsigned int h);
 
 void printPointIdInList(struct PointPointer* pp, void* output_f);
+
+inline double nanosecToMilliSec(int nanosec){ return ((double)nanosec)/1000000.0; }
+
+inline double millisecToSec(int nanosec){ return ((double)nanosec)/1000.0; }

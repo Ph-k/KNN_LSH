@@ -4,8 +4,8 @@ cflags = -Wall -g3 -std=c++11
 valgrindFlags = --leak-check=full
 
 lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
-cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 4 -M 5 -probes 1 -N 3 -R 300
-cluster_flags = -i ../input_small_id -q ../query_small_id -c ../cluster.conf -o ./output.clustering -m LSH
+cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 4 -M 5 -probes 5 -N 3 -R 300
+cluster_flags = -i ../input_small_id -q ../query_small_id -c ../cluster.conf -o ./output.clustering -m Hypercube
 
 lsh_exe = lsh
 cube_exe = cube
@@ -80,11 +80,11 @@ rcube: $(cube_exe)
 rcluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
 
-val: $(cluster_exe)
-	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
+val: $(lsh_exe)
+	valgrind $(valgrindFlags) ./$(lsh_exe) $(lsh_flags)
 
-gdb: $(cluster_exe)
-	gdb ./$(cluster_exe)
+gdb: $(cube_exe)
+	gdb ./$(cube_exe)
 
 clean:
 	rm $(CommonObejects) $(lsh_exe) $(cube_exe) $(cluster_exe)

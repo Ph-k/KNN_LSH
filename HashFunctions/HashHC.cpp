@@ -32,7 +32,13 @@ unsigned int HashHC::Hash(const std::vector<int> &p){
 }
 
 // Given bucket tag (index), returns a vector of all the closest vertices (all their bucket indices)
-int *HashHC::HashIndex(unsigned int index){
+int *HashHC::HashIndex(unsigned int index, bool insertingMode){
+    int *neighbors;
+    if(insertingMode){
+        neighbors = new int[1];
+        neighbors[0] = index;
+        return neighbors;
+    }
 
     std::vector <int> neighborProbes;
     int distance = 1;
@@ -45,7 +51,8 @@ int *HashHC::HashIndex(unsigned int index){
         neighborProbes[i] ^= index;
     }
 
-    int *neighbors = new int[numProbes], i=0;
+    neighbors = new int[numProbes];
+    int i=0;
     for(auto neighbor: neighborProbes){
         neighbors[i++] = neighbor;
     }
@@ -53,14 +60,13 @@ int *HashHC::HashIndex(unsigned int index){
 }
 
 // Truncates to vector <masks> integers that can generate integers for with [remBits] Hamming distance
-void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int &threshold, int pos, int val){
+void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int threshold, int pos, int val){
 
     if ( (int)(masks->size()) == threshold)
         return;
 
     if(pos == k || remBits == 0){
         masks->push_back(val);
-        threshold++;
         return;
     }
 
@@ -68,7 +74,7 @@ void HashHC::MaskPermutations(int remBits, std::vector<int> *masks, int &thresho
 
     set = 1 << pos;
     val &= set;
-    MaskPermutations(remBits--, masks, threshold, pos+1, val);
+    MaskPermutations(remBits-1, masks, threshold, pos+1, val);
 
     set = ~set;
     val &= set;

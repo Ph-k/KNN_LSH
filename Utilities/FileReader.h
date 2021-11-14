@@ -33,8 +33,8 @@ class FileReader{
         int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode);
         int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
-        int writeClusterPoints(SimpleList *Clusters, ClusterObject *Medoids, int k, bool complete = false);
-        int writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, ClusterObject *Medoids, int k, bool complete = false);
+        int writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
+        int writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
         int writeSilhouette(silhouetteStats *silhouetteS, int k);
         ~FileReader();
 };

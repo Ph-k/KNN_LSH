@@ -29,8 +29,10 @@ int HashTable::Insert(HashItem item){
     int Id_p = hashing->Hash(item->getXs());
     struct PointPointer pp = { item, Id_p };
 
-    int *hash_indexes = hashing->HashIndex(pp.Id);
-    return bucket[hash_indexes[0]].Push(pp);
+    int *hash_indexes = hashing->HashIndex(pp.Id,true);
+    if( bucket[hash_indexes[0]].Push(pp) != 0) return -1;
+    delete[] hash_indexes;
+    return 0;
 }
 
 /*int HashTable::Find(HashItem item){
@@ -43,10 +45,10 @@ int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest){
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();
     for (int i = 0; i < probes; i++)
-    {
-        bucket[hash_indexes[i]].knn_search(k, q, Id_q, nearest);
-    }
-    return 0;    
+        if( bucket[hash_indexes[i]].knn_search(k, q, Id_q, nearest) != 0) return -1;
+
+    delete[] hash_indexes;
+    return 0;
 }
 
 int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
@@ -64,9 +66,9 @@ int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Poi
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();
     for (int i = 0; i < probes; i++)
-    {
-        bucket[hash_indexes[i]].rangeSearch(r, q, r_neighbors);
-    }
+        if( bucket[hash_indexes[i]].rangeSearch(r, q, r_neighbors) != 0) return -1;
+
+    delete[] hash_indexes;
     return 0;
 }
 
@@ -75,9 +77,9 @@ int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, P
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();
     for (int i = 0; i < probes; i++)
-    {
-        bucket[hash_indexes[i]].reverseRangeSearch(r, Clusters, k, k_index, Medoids);
-    }
+        if( bucket[hash_indexes[i]].reverseRangeSearch(r, Clusters, k, k_index, Medoids) != 0 ) return -1;;
+
+    delete[] hash_indexes;
     return 0;
 }
 

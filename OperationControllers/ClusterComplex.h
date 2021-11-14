@@ -31,6 +31,7 @@ class ClusterComplex{
         std::vector<ClusterObject> points;
         SimpleList *Clusters;
         int *clusterIndexes;
+        int clustering_time;
         std::unordered_map<std::string, Point*> *Clusters2;
         void Update(bool first = true);
         void UpdateLSH_HC();
@@ -56,6 +57,7 @@ class ClusterComplex{
         inline SimpleList *getClustersList(){return Clusters;};
         inline std::unordered_map<std::string, Point*> *getClustersUmap(){return Clusters2;};
         inline ClusterObject *getMedoids(){return Medoids;};
+        inline int getClusteringTimes(){return clustering_time;};
         silhouetteStats *Silhouette();
         silhouetteStats *umapSilhouette();
 };
