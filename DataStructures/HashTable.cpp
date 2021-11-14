@@ -35,11 +35,6 @@ int HashTable::Insert(HashItem item){
     return 0;
 }
 
-/*int HashTable::Find(HashItem item){
-    int hash_index = Ghashing.Hash(item);
-    return table[hash_index].Find(item);
-}*/
-
 int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest, int M){
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
