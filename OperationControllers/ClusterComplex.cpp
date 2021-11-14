@@ -188,6 +188,8 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
     AssignLSH_HC();
 }
 
+
+// drawRandomMedoid was used for the simple kmeans Lloyd's implimentation (not kmeans++)
 /*ClusterObject ClusterComplex::drawRandomMedoid(const vector<ClusterObject>& all_points){
     unsigned int randIndex,i;
     bool foundIndex = false;

@@ -13,9 +13,6 @@ cluster_exe = cluster
 
 sourcePath = ./
 
-mainObjects = $(sourcePath)Point.o 
-
-
 OperationControllersLocation = $(sourcePath)OperationControllers/
 OperationControllersObjects = $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
 
@@ -27,7 +24,7 @@ DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
 
 UtilitiesLocation = $(sourcePath)Utilities/
-UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o
+UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o $(UtilitiesLocation)Point.o
 
 LSHHashFuncsLocation = $(sourcePath)HashFunctions/
 LSHHashFuncsObjects = $(LSHHashFuncsLocation)HashLSH.o
@@ -35,10 +32,10 @@ LSHHashFuncsObjects = $(LSHHashFuncsLocation)HashLSH.o
 CubeHashFuncsLocation = $(sourcePath)HashFunctions/
 CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 
-InterfacesLocation = $(sourcePath)
-InterfacesObjects = $(InterfacesLocation)HashInterface.o $(InterfacesLocation)Hhashing.o 
+HashInterfacesLocation = $(sourcePath)HashFunctions/
+HashInterfacesObjects = $(HashInterfacesLocation)HashInterface.o $(HashInterfacesLocation)Hhashing.o 
 
-CommonObejects =  $(mainObjects) $(DataStructuresObjects) $(UtilitiesObjects) $(InterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects)
+CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects)
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 

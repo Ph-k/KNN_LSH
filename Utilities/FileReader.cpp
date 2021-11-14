@@ -60,7 +60,6 @@ int FileReader::find_dimension_from_input(char const *input_f){
 }
 
 Point* FileReader::ReadPoint(char file_mode){
-    //vector<int> *v = new vector<int>;
 
     ifstream *file = nullptr;
     switch (file_mode){

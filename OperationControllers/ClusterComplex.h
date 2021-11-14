@@ -39,8 +39,7 @@ class ClusterComplex{
         void UpdateLSH_HC();
         void Assign();
         void AssignLSH_HC();
-        //unsigned int* random_medoid_indexes,random_medoid_size;
-        ClusterObject drawRandomMedoid(const std::vector<ClusterObject>& all_points);
+        //ClusterObject drawRandomMedoid(const std::vector<ClusterObject>& all_points);
         void initMedoidsPP_LSH_HC();
         char method;
         LSH* LSHController;

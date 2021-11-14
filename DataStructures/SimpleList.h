@@ -21,6 +21,8 @@ class SimpleList{
         void Traverse( void (*fun)(SimpleListItemType* item, void* privateItems ), void* privateItems);
         int knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M, bool brute_force = false);
         int rangeSearch(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors, int M);
+
+        // RangeSearch for clustering
         int reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M);
         Point* meanVector();
         inline unsigned int size(){ return T;}
