@@ -70,12 +70,12 @@ void SimpleList::Traverse( void (*fun)(SimpleListItemType *item, void* privateIt
     }
 }
 
-int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool brute_force){
+int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M, bool brute_force){
     ListNode* node = head;
     double l1;
-    int i,j;
+    int i,j,M_i=0;
 
-    while(node != nullptr){
+    while(node != nullptr && ( M==-1 || M_i<M ) ){
         if(brute_force || Id_q == node->item.Id){
             l1 = euclidean_distance(node->item.point,q);
 
@@ -103,45 +103,48 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, bool b
         }
 
         node = node->next;
+        M_i++;
     }
 
     return 0;
 }
 
-int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_neighbors){
+int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_neighbors, int M){
     ListNode* node = head;
+    int i = 0;
     double l1;
 
-    while(node != nullptr){
+    while(node != nullptr && ( M==-1 || i<M ) ){
         l1 = euclidean_distance(node->item.point,q);
 
         if(l1 < r && r_neighbors.find(node->item.point->getId()) == r_neighbors.end() )
             r_neighbors[node->item.point->getId()]=node->item.point;
 
         node = node->next;
+        i++;
     }
 
     return 0;
 }
 
-int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
+int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
     ListNode* node = head;
-    int i;
+    int i=0,j;
     bool add;
     double l1,l1_t;
 
-    while(node != nullptr){
+    while(node != nullptr && ( M==-1 || i<M ) ){
         l1 = euclidean_distance(node->item.point,Medoids[k_index]);
 
         if(l1 < r){
             add = true;
-            for(i=0; i<k; i++){
-                if(i != k_index){
-                    if( Clusters[i].find(node->item.point->getId()) != Clusters[i].end() ){
-                        l1_t = euclidean_distance(node->item.point,Medoids[i]);
+            for(j=0; j<k; j++){
+                if(j != k_index){
+                    if( Clusters[j].find(node->item.point->getId()) != Clusters[j].end() ){
+                        l1_t = euclidean_distance(node->item.point,Medoids[j]);
 
                         if(l1_t > l1){
-                            Clusters[i].erase(node->item.point->getId());
+                            Clusters[j].erase(node->item.point->getId());
                         }else add = false;
                     }
                 }
@@ -152,6 +155,7 @@ int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*
         }
 
         node = node->next;
+        i++;
     }
 
     return 0;

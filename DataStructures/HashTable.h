@@ -17,10 +17,10 @@ class HashTable{
         int Insert(HashItem item);
         //int Find(HashItem item);
         //void Traverse( void (*fun)(HashItem *) );
-        int knn_search_bucket(int k, Point *q, struct PD* nearest);
+        int knn_search_bucket(int k, Point *q, struct PD* nearest, int M = -1);
         int bruteForceNN(int k, Point *q, struct PD* nearest);
-        int rangeSearchBucket(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors);
-        int reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids);
+        int rangeSearchBucket(int r, Point *q, std::unordered_map<std::string, Point*> &r_neighbors, int M = -1);
+        int reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M = -1);
         ~HashTable();
     private:
         SimpleList *bucket;

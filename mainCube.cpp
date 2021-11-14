@@ -68,7 +68,7 @@ int main(int argc, char const *argv[]){
     }
 
     FileReader io_files(input_file,query_file,output_file);
-    HyperCube HC(io_files,150,K,probes,pow(2,K));
+    HyperCube HC(io_files,150,K,M,probes,pow(2,K));
 
     cout << "Argumets:"
          << "\n\tinput_file: " << input_file

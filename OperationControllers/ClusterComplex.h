@@ -11,6 +11,8 @@
 #include "SimpleList.h"
 #include "Utilities.h"
 
+#define THRESHOLD 0.85
+
 #define ClusterObject Point*
 
 struct silhouetteStats{

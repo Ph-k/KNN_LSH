@@ -4,7 +4,7 @@ cflags = -Wall -g3 -std=c++11
 valgrindFlags = --leak-check=full
 
 lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
-cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 4 -M 5 -probes 5 -N 3 -R 300
+cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 4 -M 10 -probes 5 -N 3 -R 300
 cluster_flags = -i ../input_small_id -q ../query_small_id -c ../cluster.conf -o ./output.clustering -m Hypercube
 
 lsh_exe = lsh

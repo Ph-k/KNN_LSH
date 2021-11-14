@@ -4,8 +4,8 @@
 
 using namespace std;
 
-HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int probes, int hash_table_size)
-:io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes) {
+HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int M, int probes, int hash_table_size)
+:io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes), M(M) {
 
     // We start by reading the input
     Point* p = io_files.ReadPoint();
@@ -33,7 +33,7 @@ int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
     }
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
-    hash_table.knn_search_bucket(k, q, *b);
+    hash_table.knn_search_bucket(k, q, *b, M);
 
     return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
 }
@@ -64,13 +64,13 @@ int HyperCube::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_n
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
-    hash_table.rangeSearchBucket(r, q, r_neighbors);
+    hash_table.rangeSearchBucket(r, q, r_neighbors, M);
 
     return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
-    hash_table.reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids);
+int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+    hash_table.reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids, M);
     return 0;
 }
 

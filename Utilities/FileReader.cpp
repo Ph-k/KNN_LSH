@@ -37,8 +37,6 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
         queries.insert( temp );
         p = ReadPoint('q');
     }
-
-    cout << "A file manager created! " << endl;
 }
 
 int FileReader::find_dimension_from_input(char const *input_f){
@@ -194,14 +192,14 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
             output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
                         << "distance"<< method << ":" << knn[i].distance << '\n'
                         << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "t"<< method << ":" << nanosecToMilliSec(timeLSH) << "ms" << '\n'
+                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
                         << "tTrue:" << nanosecToMilliSec(timeBF) << "ms" << '\n'; 
         }else{
             output_file << "Nearest neighbor-" << i+1 << ": none\n"
                         << "distanceLSH: -\n"
                         << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "tLSH:" << nanosecToMilliSec(timeLSH) << "ms" << '\n'
-                        << "tTrue:" << nanosecToMilliSec(timeBF) << "ms" << endl; 
+                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
+                        << "tTrue:"  << nanosecToMilliSec(timeBF) << "ms" << endl; 
         }
     }
 
@@ -218,7 +216,7 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neig
 }
 
 int FileReader::writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
-
+    output_file << "Algorithm: " << algorithm << '\n';
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
         for(auto X: Medoids[i]->getXs())
@@ -244,6 +242,7 @@ int FileReader::writeClusterPoints(SimpleList *Clusters, int clustering_times, C
 }
 
 int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
+    output_file << "Algorithm: " << algorithm << '\n';
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
         for(auto X: Medoids[i]->getXs())

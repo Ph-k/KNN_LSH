@@ -223,11 +223,16 @@ ClusterComplex::~ClusterComplex()
     //delete[] random_medoid_indexes;
 
     if(LSHController != nullptr) delete LSHController;
+    if(HCController != nullptr) delete HCController;
     if(Clusters2 != nullptr) delete[] Clusters2;
 
     if(clusterIndexes != nullptr) delete[] clusterIndexes;
 
     if(silhouetteS.avgSil != nullptr) delete silhouetteS.avgSil;
+
+    for(auto point: points)
+        delete point;
+
 }
 
 int ClusterComplex::nearestCenter(ClusterObject item, bool sec){
@@ -352,23 +357,65 @@ void ClusterComplex::UpdateLSH_HC(){
 
 }
 
+inline double ReverseAssignLSH_HCThreshold(unordered_map<string, Point*> *Clusters2, int k, long unsigned int allPointsCount){
+    long unsigned int assignedPoints = 0;
+    for(int i=0; i<k; i++){
+        assignedPoints += Clusters2[i].size();
+    }
+
+    return ((double)assignedPoints)/((double)allPointsCount);
+}
+
 void ClusterComplex::AssignLSH_HC(){
     int i;
+    int clusterIndex, local_search_range = search_range;
+    bool found;
+    double R_A_T_Value, R_A_T_Value_old=-1.0;
+
+    const vector<Point*> *allPoints;
 
     switch (this->method){
         case __LSH_METHOD:
-            for(i=0; i<k; i++){
-                LSHController->reverseRangeSearch(search_range,Clusters2,k,i,Medoids);
-            }
+            allPoints = &(LSHController->getAllPoints());
             break;
         default:
-            for(i=0; i<k; i++){
-                HCController->reverseRangeSearch(search_range,Clusters2,k,i,Medoids);
-            }
+            allPoints = &(HCController->getAllPoints());
             break;
     }
 
-    search_range *= 2;
+    R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters2,k,allPoints->size());
+    while(R_A_T_Value < THRESHOLD && R_A_T_Value != R_A_T_Value_old){
+        switch (this->method){
+            case __LSH_METHOD:
+                for(i=0; i<k; i++){
+                    LSHController->reverseRangeSearch(local_search_range,Clusters2,k,i,Medoids);
+                }
+                break;
+            default:
+                for(i=0; i<k; i++){
+                    HCController->reverseRangeSearch(local_search_range,Clusters2,k,i,Medoids,this->M_hc);
+                }
+                break;
+        }
+        local_search_range *= 2;
+        R_A_T_Value_old = R_A_T_Value;
+        R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters2,k,allPoints->size());
+    }
+
+
+    for(auto point: *allPoints){
+        found = false;
+        for(i=0; i<k; i++){
+            if( Clusters2[i].find(point->getId()) != Clusters2[i].end() ){
+                found = true;
+                break;
+            }
+        }
+        if(found == false){
+            clusterIndex = nearestCenter(point);
+            Clusters2[clusterIndex][point->getId()]=point;
+        }
+    }
 }
 
 void ClusterComplex::kMeans(int epochs){
@@ -387,37 +434,6 @@ void ClusterComplex::kMeans(int epochs){
                 break;
         }
         first = false;
-    }
-
-    if(this->method != __CLASIC_METHOD){
-
-        int i,clusterIndex;
-        bool found;
-        const vector<Point*> *allPoints;
-
-        switch (this->method){
-            case __LSH_METHOD:
-                allPoints = &(LSHController->getAllPoints());
-                break;
-            default:
-                allPoints = &(HCController->getAllPoints());
-                break;
-        }
-
-
-        for(auto point: *allPoints){
-            found = false;
-            for(i=0; i<k; i++){
-                if( Clusters2[i].find(point->getId()) != Clusters2[i].end() ){
-                    found = true;
-                    break;
-                }
-            }
-            if(found == false){
-                clusterIndex = nearestCenter(point);
-                Clusters2[clusterIndex][point->getId()]=point;
-            }
-        }
     }
 
     clustering_time = (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
