@@ -1,8 +1,8 @@
 #include "HashInterface.hpp"
 #include "Utilities.h"
 
-HashInterface::HashInterface(int w, int k, int TableSize, int vecSize)
-:w(w), k(k), TableSize(TableSize), vecSize(vecSize) {
+HashInterface::HashInterface(int w, int k, int TableSize, int vecSize, int probes)
+:w(w), k(k), TableSize(TableSize), vecSize(vecSize), numProbes(probes) {
     float t; // randomly selected integer 
 	std::vector<int>* rVec; //randomly selected vector of size vecSize
 	Hhash *Hhasing;

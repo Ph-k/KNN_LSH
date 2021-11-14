@@ -5,7 +5,7 @@
 using namespace std;
 
 HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int probes, int hash_table_size)
-:io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE), probes(probes){
+:io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes) {
 
     // We start by reading the input
     Point* p = io_files.ReadPoint();
@@ -33,7 +33,6 @@ int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
     }
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
-
     hash_table.knn_search_bucket(k, q, *b);
 
     return (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();

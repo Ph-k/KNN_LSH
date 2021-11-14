@@ -7,7 +7,6 @@ class HyperCube{
         FileReader &io_files;
         HashTable hash_table;
         std::vector<Point*> points;
-        int probes;
     public:
         HyperCube(
             FileReader &io_files_ref,

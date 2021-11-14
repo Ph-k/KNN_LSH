@@ -9,7 +9,7 @@
 using namespace std;
 
 
-HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type)
+HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, int probes)
 :table_size(given_table_size)
 {
     switch (type){
@@ -17,7 +17,7 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
         hashing = new HashLSH(w,k,given_table_size,vecSize);
         break;
     default:
-        hashing = new HashHC(w,k,given_table_size,vecSize);
+        hashing = new HashHC(w,k,given_table_size,vecSize,probes);
         break;
     }
 
@@ -29,9 +29,8 @@ int HashTable::Insert(HashItem item){
     int Id_p = hashing->Hash(item->getXs());
     struct PointPointer pp = { item, Id_p };
 
-    int hash_index = hashing->HashIndex(pp.Id);
-
-    return bucket[hash_index].Push(pp);
+    int *hash_indexes = hashing->HashIndex(pp.Id);
+    return bucket[hash_indexes[0]].Push(pp);
 }
 
 /*int HashTable::Find(HashItem item){
@@ -41,8 +40,13 @@ int HashTable::Insert(HashItem item){
 
 int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest){
     int Id_q = hashing->Hash(q->getXs());
-    int hash_index = hashing->HashIndex( Id_q );
-    return bucket[hash_index].knn_search(k, q, Id_q, nearest);
+    int *hash_indexes = hashing->HashIndex( Id_q );
+    int probes = hashing->getNumProbes();
+    for (int i = 0; i < probes; i++)
+    {
+        bucket[hash_indexes[i]].knn_search(k, q, Id_q, nearest);
+    }
+    return 0;    
 }
 
 int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
@@ -57,14 +61,24 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
 int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors){
     r_neighbors.empty();
     int Id_q = hashing->Hash(q->getXs());
-    int hash_index = hashing->HashIndex( Id_q );
-    return bucket[hash_index].rangeSearch(r, q, r_neighbors);
+    int *hash_indexes = hashing->HashIndex( Id_q );
+    int probes = hashing->getNumProbes();
+    for (int i = 0; i < probes; i++)
+    {
+        bucket[hash_indexes[i]].rangeSearch(r, q, r_neighbors);
+    }
+    return 0;
 }
 
 int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids){
     int Id_q = hashing->Hash(Medoids[k_index]->getXs());
-    int hash_index = hashing->HashIndex( Id_q );
-    return bucket[hash_index].reverseRangeSearch(r, Clusters, k, k_index, Medoids);
+    int *hash_indexes = hashing->HashIndex( Id_q );
+    int probes = hashing->getNumProbes();
+    for (int i = 0; i < probes; i++)
+    {
+        bucket[hash_indexes[i]].reverseRangeSearch(r, Clusters, k, k_index, Medoids);
+    }
+    return 0;
 }
 
 /*void HashTable::Traverse( void (*fun)(HashItem *) ){

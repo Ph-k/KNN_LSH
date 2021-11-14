@@ -8,6 +8,6 @@ class HashLSH : public HashInterface{
 		HashLSH(int w, int k, int TableSize, int vecSize);
 		~HashLSH();
 		unsigned int Hash(const std::vector<int> &p);
-		inline unsigned int HashIndex(unsigned int ID){return ID % TableSize;};
+		int *HashIndex(unsigned int ID){int *bID = new int; *bID = ID% TableSize; return bID;};
 		// inline int getSize(){return TableSize;};
 };

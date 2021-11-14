@@ -4,7 +4,7 @@
 #define M 4294967291 // 2^32 - 5
 
 HashLSH::HashLSH(int w, int k, int TableSize, int vecSize)
-: HashInterface(w,k,TableSize,vecSize){}
+: HashInterface(w,k,TableSize,vecSize, 1){}
 
 unsigned int HashLSH::Hash(const std::vector<int> &p){
 

@@ -2,8 +2,8 @@
 #include "Utilities.h"
 #include <vector>
 
-HashHC::HashHC(int w, int k, int TableSize, int vecSize)
-:HashInterface(w, k, TableSize, vecSize){
+HashHC::HashHC(int w, int k, int TableSize, int vecSize, int probes)
+:HashInterface(w, k, TableSize, vecSize, probes){
     h_mapping = new std::unordered_map<int, unsigned int>[k];
 }
 
@@ -32,22 +32,24 @@ unsigned int HashHC::Hash(const std::vector<int> &p){
 }
 
 // Given bucket tag (index), returns a vector of all the closest vertices (all their bucket indices)
-std::vector<int> HashHC::HammingNeighbors(int index, int probes, int dim){
-
-    // error handling: if probes >= 2^d -> null
+int *HashHC::HashIndex(unsigned int index){
 
     std::vector <int> neighborProbes;
     int distance = 1;
     
-    while( (int)(neighborProbes.size()) < probes){
-        MaskPermutations(distance, &neighborProbes, probes);
+    while( (int)(neighborProbes.size()) < numProbes){
+        MaskPermutations(distance, &neighborProbes, numProbes);
         distance++;
     }
     for (long unsigned int i=0; i<neighborProbes.size(); i++){
         neighborProbes[i] ^= index;
     }
 
-    return neighborProbes;
+    int *neighbors = new int[numProbes], i=0;
+    for(auto neighbor: neighborProbes){
+        neighbors[i++] = neighbor;
+    }
+    return neighbors;
 }
 
 // Truncates to vector <masks> integers that can generate integers for with [remBits] Hamming distance

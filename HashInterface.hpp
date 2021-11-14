@@ -11,10 +11,11 @@ class HashInterface
         int k;
         int TableSize;
         int vecSize;
-
+        int numProbes;
     public:
-        HashInterface(int w, int k, int TableSize, int vecSize);
+        HashInterface(int w, int k, int TableSize, int vecSize, int probes);
         virtual ~HashInterface();
         virtual unsigned int Hash(const std::vector<int> &p) = 0;
-        virtual unsigned int HashIndex(unsigned int ID) = 0;
+        inline int getNumProbes(){return numProbes;};
+        virtual int *HashIndex(unsigned int ID) = 0;
 };
