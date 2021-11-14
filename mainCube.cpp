@@ -75,7 +75,8 @@ int main(int argc, char const *argv[]){
          << "\n\tquery_file: " << query_file
          << "\n\toutput_file: " << output_file
          << "\n\tK: " << K
-         << "\n\tM: " << probes
+         << "\n\tM: " << M
+         << "\n\tprobes: " << probes
          << "\n\tnumber_of_nearest: " << number_of_nearest
          << "\n\tradius: " << radius << endl;
 
