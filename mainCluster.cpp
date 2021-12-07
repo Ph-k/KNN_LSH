@@ -15,7 +15,6 @@ int main(int argc, char const *argv[]){
 
     int i, K, L, k_lsh, M_hc, k_hc, hc_probes;
     char const *input_file  = nullptr,
-               *query_file = nullptr,
                *output_file = nullptr,
                *configuration_file = nullptr,
                *method_string = nullptr;
@@ -25,8 +24,6 @@ int main(int argc, char const *argv[]){
 	for(i=1; i<argc; i++){
 		if( strcmp(argv[i], "-i") == 0 ){
 			input_file = argv[++i];
-		}else if( strcmp(argv[i],"-q") == 0 ){
-			query_file = argv[++i];
 		}else if( strcmp(argv[i],"-o") == 0 ){
 			output_file = argv[++i];
 		}else if( strcmp(argv[i],"-c") == 0){
@@ -49,8 +46,8 @@ int main(int argc, char const *argv[]){
         }
 	}
 
-    if(input_file == nullptr || query_file == nullptr || output_file == nullptr || configuration_file == nullptr){
-        cout << "cluster: At least one of the input_file, query_file, output_file, configuration_file was mistyped or not given at all!" << endl;
+    if(input_file == nullptr || output_file == nullptr || configuration_file == nullptr){
+        cout << "cluster: At least one of the input_file, output_file, configuration_file was mistyped or not given at all!" << endl;
         return -1;
     }
 
@@ -59,11 +56,10 @@ int main(int argc, char const *argv[]){
         method = __CLASIC_METHOD;
     }
 
-    FileReader io_files(input_file,query_file,output_file,configuration_file);
+    FileReader io_files(input_file,nullptr,output_file,configuration_file);
 
     cout << "Argumets:"
          << "\n\tinput_file: " << input_file
-         << "\n\tquery_file: " << query_file
          << "\n\toutput_file: " << output_file
          << "\n\tconfiguration_file: " << configuration_file
          << "\n\tmethod: " << (method_string != nullptr? method_string : "default" ) << '\n';

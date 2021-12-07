@@ -12,9 +12,11 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
     if( input_file.is_open() == false )
         {cout << "ERROR: could not open input file: " << input_f << endl; exit(-1);}
 
-    query_file.open(query_f);
-    if( query_file.is_open() == false )
-        {cout << "ERROR: could not open query file: " << query_f << endl; exit(-1);}
+	if(query_f != nullptr){
+		query_file.open(query_f);
+		if( query_file.is_open() == false )
+			{cout << "ERROR: could not open query file: " << query_f << endl; exit(-1);}
+	}
 
     output_file.open(output_f);
     if( output_file.is_open() == false )
@@ -67,6 +69,7 @@ Point* FileReader::ReadPoint(char file_mode){
             file = &(this->input_file);
             break;
         case 'q':
+			if( query_file.is_open() == false ) return nullptr;
             file = &(this->query_file);
             break;
         default:
@@ -279,7 +282,7 @@ int FileReader::writeSilhouette(silhouetteStats *silhouetteS, int k){
 
 FileReader::~FileReader(){
     input_file.close();
-    query_file.close();
+    if( query_file.is_open() ) query_file.close();
     output_file.close();
     if( configuration_file.is_open() ) configuration_file.close();
 
