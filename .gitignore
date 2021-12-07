@@ -1,0 +1,9 @@
+.DS_Store
+.vscode
+output.lsh
+output.cube
+output.clustering
+*.o
+lsh
+cube
+cluster
