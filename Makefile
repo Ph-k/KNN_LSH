@@ -3,22 +3,16 @@ cflags = -Wall -g3 -std=c++11
 
 valgrindFlags = --leak-check=full
 
-lsh_flags = -i ../input_small_id -q ../query_small_id -o ./output.lsh -N 3 -R 300 -k 4 -L 5
-cube_flags = -i ../input_small_id -q ../query_small_id -o ./output.cube -k 5 -M 500 -probes 5 -N 3 -R 300
-cluster_flags = -i ../input_small_id -c ./cluster.conf -o ./output.clustering -m Hypercube
+search_flags = -i ../input.csv -q ../query.csv -o ./output.search -N 3 -R 300 -k 4 -L 5 -algorithm LSH
 
-lsh_exe = lsh
-cube_exe = cube
-cluster_exe = cluster
+search_exe = search
 
 sourcePath = ./
 
 OperationControllersLocation = $(sourcePath)OperationControllers/
 OperationControllersObjects = $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
 
-LshObjects = $(sourcePath)mainLSH.cpp
-CubeObjects = $(sourcePath)mainCube.cpp
-ClusterObjects = $(sourcePath)mainCluster.cpp
+Objects = $(sourcePath)mainA.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
@@ -39,16 +33,10 @@ CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesO
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(lsh_exe) $(cube_exe) $(cluster_exe)
+all: $(search_exe)
 
-$(lsh_exe): $(CommonObejects) $(LshObjects)
-	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(LshObjects) -o $@
-
-$(cube_exe): $(CommonObejects) $(CubeObjects)
-	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(CubeObjects) -o $@
-
-$(cluster_exe): $(CommonObejects) $(ClusterObjects)
-	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ClusterObjects) -o $@
+$(search_exe): $(CommonObejects) $(Objects)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(Objects) -o $@
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
@@ -68,20 +56,14 @@ $(LSHHashFuncsLocation)%.o: $(LSHHashFuncsLocation)%.cpp
 $(OperationControllersLocation)%.o: $(OperationControllersLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
-rlsh: $(lsh_exe)
-	./$(lsh_exe) $(lsh_flags)
+rsearch: $(search_exe)
+	./$(search_exe) $(search_flags)
 
-rcube: $(cube_exe)
-	./$(cube_exe) $(cube_flags)
+val: $(search_exe)
+	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags)
 
-rcluster: $(cluster_exe)
-	./$(cluster_exe) $(cluster_flags)
-
-val: $(lsh_exe)
-	valgrind $(valgrindFlags) ./$(lsh_exe) $(lsh_flags)
-
-gdb: $(cube_exe)
-	gdb ./$(cube_exe)
+gdb: $(search_exe)
+	gdb ./$(search_exe)
 
 clean:
-	rm $(CommonObejects) $(lsh_exe) $(cube_exe) $(cluster_exe)
+	rm $(CommonObejects) $(search_exe)

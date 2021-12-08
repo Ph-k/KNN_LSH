@@ -182,7 +182,9 @@ int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, in
 }
 
 Point* FileReader::getQuery(string id){
-    return queries.find(id)->second;
+    auto p = queries.find(id);
+    if( p == queries.end() ) return nullptr;
+    return p->second;
 }
 
 int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode){
