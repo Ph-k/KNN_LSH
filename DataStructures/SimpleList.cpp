@@ -72,21 +72,21 @@ void SimpleList::Traverse( void (*fun)(SimpleListItemType *item, void* privateIt
 
 int SimpleList::knn_search(int k, TimeSeries *q, int Id_q, struct PD* nearest, int M, bool brute_force){
     ListNode* node = head;
-    double l1;
+    double l2;
     int i,j,M_i=0;
 
     while(node != nullptr && ( M==-1 || M_i<M ) ){
         if(brute_force || Id_q == node->item.Id){
-            l1 = euclidean_distance(node->item.point,q);
+            l2 = euclidean_distance(node->item.point,q);
 
             for(i=0; i<k; i++){
                 if( nearest[i].p == nullptr ){
                     nearest[i].p = node->item.point;
-                    nearest[i].distance = l1;
+                    nearest[i].distance = l2;
                     break;
                 }else if(nearest[i].p == node->item.point){
                     break;
-                }else if(nearest[i].distance > l1){
+                }else if(nearest[i].distance > l2){
                     //Shifting arrey
                     for(j=k-1; j>i; j--){
                         nearest[j].p = nearest[j-1].p;
@@ -96,7 +96,7 @@ int SimpleList::knn_search(int k, TimeSeries *q, int Id_q, struct PD* nearest, i
                     /*cout << nearest[i].p << " vs " << node->item << ' ' << nearest[i].distance << "vs" << l1 << ' ' << endl;
                     nearest[i].p->print(); node->item->print();*/
                     nearest[i].p = node->item.point;
-                    nearest[i].distance = l1;
+                    nearest[i].distance = l2;
                     break;
                 }
             }

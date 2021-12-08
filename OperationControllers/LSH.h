@@ -2,9 +2,14 @@
 #include "FileReader.h"
 #include "Utilities.h"
 #include "MappingMethod.hpp"
+#include "HashDF.h"
 
 #include <vector>
 #include <string>
+
+#define __STANDARD_LSH 0
+#define __DF_LSH 1
+#define __CF_LSH 2
 
 class TimeSeries;
 
@@ -12,10 +17,12 @@ class LSH: public MappingMethod{
     private:
         HashTable **hash_tables;
         int L;
+        HashDF *Frechet;
+        char metric;
     public:
         LSH(
             FileReader &io_files_ref,
-            int w, int k, int l, int hash_table_size=10
+            int w, int k, int l, int hash_table_size=10, char metric = __STANDARD_LSH
         );
         int kNN_Search(int L, int k, PD **b, std::string &id);
         int kNN_Search(int L, int k, PD **b, TimeSeries *q);
