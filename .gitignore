@@ -1,10 +1,5 @@
 .DS_Store
 .vscode
-output.lsh
-output.cube
-output.clustering
-output.search
+output.*
 *.o
-lsh
-cube
-cluster
+search

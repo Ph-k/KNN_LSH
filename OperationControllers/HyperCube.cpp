@@ -5,7 +5,7 @@
 using namespace std;
 
 HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int M, int probes, int hash_table_size)
-:io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes), M(M) {
+:MappingMethod(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes), M(M) {
 
     // We start by reading the input
     TimeSeries* p = io_files.ReadPoint();
@@ -19,10 +19,15 @@ HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int M, int probes, 
 
 }
 
-int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
+int HyperCube::kNN_Search(int L, int k, PD **b, std::string &id){
 
     TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
+
+	return kNN_Search(L,k,b,q);
+}
+
+int HyperCube::kNN_Search(int L, int k, PD **b, TimeSeries* q){
 
 	if(*b == nullptr ) *b = new PD[k];
 
@@ -39,9 +44,13 @@ int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
 }
 
 int HyperCube::bruteForceNN(string &id, int L, int k, PD **b){
-
     TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
+
+    return bruteForceNN(q,L,k,b);
+}
+
+int HyperCube::bruteForceNN(TimeSeries *q, int L, int k, PD **b){    
 
     if(*b == nullptr ) *b = new PD[k];
 
@@ -58,9 +67,15 @@ int HyperCube::bruteForceNN(string &id, int L, int k, PD **b){
     return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int HyperCube::rangeSearch(string &id, int r, unordered_map<string, TimeSeries*> &r_neighbors){
+int HyperCube::rangeSearch(int r, std::unordered_map<std::string, TimeSeries*> &r_neighbors, std::string &id){
     TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
+
+    return rangeSearch(r,r_neighbors,q);
+}
+
+
+int HyperCube::rangeSearch(int r, std::unordered_map<std::string, TimeSeries*> &r_neighbors, TimeSeries *q){
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 

@@ -1,8 +1,10 @@
+#include <math.h>
 #include <iostream>
 #include <string.h>
 #include <unordered_map>
 
 #include "LSH.h"
+#include "HyperCube.h"
 #include "TimeSeries.h"
 #include "Utilities.h"
 
@@ -103,13 +105,13 @@ int main(int argc, char const *argv[]){
         }
     }
 
-    if( method == __FRECHET_CONTINUOUS_MODE || method == __FRECHET_DISCRETE_MODE ){
+    if( method == __FRECHET_MODE ){
         if(delta == -1){
             cout << "search: using default value for argument delta" << endl;
             delta = 5;
         }
         if( frechet_method == -1 ){
-            cout << "search; Frechet algorithm requested, but -metric argument is missing!, defaulting to discrete" << endl;
+            cout << "search: Frechet algorithm requested, but -metric argument is missing!, defaulting to discrete" << endl;
             frechet_method = __FRECHET_DISCRETE_MODE;
             frechet_method_string = "N/A";
         }
@@ -129,13 +131,20 @@ int main(int argc, char const *argv[]){
     }else if(method == __H_CUBE_MODE){
         cout << "\n\tM: " << M;
         cout << "\n\tprobes: " << probes;
-    }else if(method == __FRECHET_DISCRETE_MODE || method == __FRECHET_CONTINUOUS_MODE){
+    }else if(method == __FRECHET_MODE){
         cout << "\n\tfrechet method : " << frechet_method_string;
         cout << "\n\tdelta: " << delta;
     } cout << endl;
 
     FileReader io_files(input_file,query_file,output_file);
-    LSH operations(io_files,150,K,L,1000);
+
+    MappingMethod* operations;
+
+    if(method == __LSH_MODE){
+        operations = new LSH(io_files,150,K,L,1000);
+    }else if(method == __H_CUBE_MODE){
+        operations = new HyperCube(io_files,150,K,M,probes,pow(2,K));
+    }
 
     double time_lsh, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
@@ -144,18 +153,19 @@ int main(int argc, char const *argv[]){
     const unordered_map<string, TimeSeries*> &queries = io_files.getQueries();
     for(auto &query: queries){
 
-        time_lsh = operations.kNN_Search(L,K,&knn,query.second);
+        time_lsh = operations->kNN_Search(L,K,&knn,query.second);
 
-        time_brute_force = operations.bruteForceNN(query.second,L,K,&brute_force);
+        time_brute_force = operations->bruteForceNN(query.second,L,K,&brute_force);
 
-        io_files.writeQuery(query.first, knn, brute_force, K, time_lsh, time_brute_force,__LSH_MODE);
+        io_files.writeQuery(query.first, knn, brute_force, K, time_lsh, time_brute_force, method);
 
-        operations.rangeSearch(radius, r_neighbors, query.second);
+        operations->rangeSearch(radius, r_neighbors, query.second);
 
         io_files.writeRangeNeighbors(r_neighbors);
     }
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;
+    delete operations;
 
     return 0;
 }

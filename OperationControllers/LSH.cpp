@@ -9,7 +9,7 @@ LSH::LSH(
     FileReader &io_files_ref,
     int w, int k, int l, int hash_table_size
 /*good practice https://stackoverflow.com/questions/4162021/is-it-ok-to-call-a-function-in-constructor-initializer-list*/
-):io_files(io_files_ref),L(l){
+):MappingMethod(io_files_ref),L(l){
 
     this->hash_tables = new HashTable*[l];
     for(int i=0; i<l; i++){

@@ -3,14 +3,15 @@ cflags = -Wall -g3 -std=c++11
 
 valgrindFlags = --leak-check=full
 
-search_flags = -i ../input.csv -q ../query.csv -o ./output.search -N 3 -R 300 -k 4 -L 5 -algorithm LSH
+search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 4 -L 3 -algorithm LSH
+search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 4 -probes 4 -M 15 -algorithm Hypercube
 
 search_exe = search
 
 sourcePath = ./
 
 OperationControllersLocation = $(sourcePath)OperationControllers/
-OperationControllersObjects = $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
+OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
 
 Objects = $(sourcePath)mainA.cpp
 
@@ -56,8 +57,11 @@ $(LSHHashFuncsLocation)%.o: $(LSHHashFuncsLocation)%.cpp
 $(OperationControllersLocation)%.o: $(OperationControllersLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
-rsearch: $(search_exe)
-	./$(search_exe) $(search_flags)
+rSlsh: $(search_exe)
+	./$(search_exe) $(search_flags_lsh)
+
+rScube: $(search_exe)
+	./$(search_exe) $(search_flags_cube)
 
 val: $(search_exe)
 	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags)
