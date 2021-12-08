@@ -1,6 +1,6 @@
 #include "FileReader.h"
 #include "Utilities.h"
-#include "Point.h"
+#include "TimeSeries.h"
 
 #include <random>
 #include <time.h>
@@ -31,7 +31,7 @@ float random_float(float l, float h){
     return uniform_distribution(randomness);
 }
 
-double euclidean_distance(Point *p1, Point *p2){
+double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
     const vector<int>& Xs_p1 = p1->getXs();
     const vector<int>& Xs_p2 = p2->getXs();
 

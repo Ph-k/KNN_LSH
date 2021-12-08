@@ -7,13 +7,13 @@
 
 #include <unordered_map>
 
-#include "Point.h"
+#include "TimeSeries.h"
 #include "SimpleList.h"
 #include "Utilities.h"
 
 #define THRESHOLD 0.85
 
-#define ClusterObject Point*
+#define ClusterObject TimeSeries*
 
 struct silhouetteStats{
     double *avgSil;
@@ -34,7 +34,7 @@ class ClusterComplex{
         SimpleList *Clusters;
         int *clusterIndexes;
         int clustering_time;
-        std::unordered_map<std::string, Point*> *Clusters2;
+        std::unordered_map<std::string, TimeSeries*> *Clusters2;
         void Update(bool first = true);
         void UpdateLSH_HC();
         void Assign();
@@ -45,7 +45,7 @@ class ClusterComplex{
         LSH* LSHController;
         HyperCube* HCController;
         silhouetteStats silhouetteS;
-        int findClusterIndex(Point *p);
+        int findClusterIndex(TimeSeries *p);
     public:
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd); //For classic method
         ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh); //For lsh method
@@ -56,7 +56,7 @@ class ClusterComplex{
         double minDistance(ClusterObject item, int t);
         void kMeans(int epochs);
         inline SimpleList *getClustersList(){return Clusters;};
-        inline std::unordered_map<std::string, Point*> *getClustersUmap(){return Clusters2;};
+        inline std::unordered_map<std::string, TimeSeries*> *getClustersUmap(){return Clusters2;};
         inline ClusterObject *getMedoids(){return Medoids;};
         inline int getClusteringTimes(){return clustering_time;};
         silhouetteStats *Silhouette();

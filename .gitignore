@@ -3,6 +3,7 @@
 output.lsh
 output.cube
 output.clustering
+output.search
 *.o
 lsh
 cube

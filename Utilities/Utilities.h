@@ -10,15 +10,15 @@
 #define __FRECHET_DISCRETE_MODE 0
 #define __FRECHET_CONTINUOUS_MODE 1
 
-class Point;
+class TimeSeries;
 
 struct PD{
-    Point *p;
+    TimeSeries *p;
     double distance;
 };
 
 struct PointPointer{
-    Point *point;
+    TimeSeries *point;
     int Id;
 };
 
@@ -26,7 +26,7 @@ std::vector<int>* uniform_vec(int dimensions);
 
 float random_float(float l=2.0, float h=6.0);
 
-double euclidean_distance(Point *p1, Point *p2);
+double euclidean_distance(TimeSeries *p1, TimeSeries *p2);
 
 int dot_product(const std::vector<int> &x,const std::vector<int> &y);
 

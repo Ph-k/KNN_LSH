@@ -2,7 +2,7 @@
 #include "Utilities.h"
 #include "HashLSH.h"
 #include "HashHC.h"
-#include "Point.h"
+#include "TimeSeries.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -35,7 +35,7 @@ int HashTable::Insert(HashItem item){
     return 0;
 }
 
-int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest, int M){
+int HashTable::knn_search_bucket(int k, TimeSeries *q, struct PD* nearest, int M){
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();
@@ -46,7 +46,7 @@ int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest, int M){
     return 0;
 }
 
-int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
+int HashTable::bruteForceNN(int k, TimeSeries *q, struct PD* nearest){
     int res;
 
     for (unsigned int i=0; i<table_size; i++){
@@ -55,7 +55,7 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
     return res;
 }
 
-int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors, int M){
+int HashTable::rangeSearchBucket(int r, TimeSeries *q, std::unordered_map<string, TimeSeries*> &r_neighbors, int M){
     r_neighbors.empty();
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
@@ -67,7 +67,7 @@ int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Poi
     return 0;
 }
 
-int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
     int Id_q = hashing->Hash(Medoids[k_index]->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();

@@ -3,7 +3,7 @@
 #include <unordered_map>
 
 #include "LSH.h"
-#include "Point.h"
+#include "TimeSeries.h"
 #include "Utilities.h"
 
 
@@ -139,19 +139,18 @@ int main(int argc, char const *argv[]){
 
     double time_lsh, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;
-    unordered_map<string, Point*> r_neighbors;
-    for(i = 1; i <=100; i++){
-        string id = to_string(i);
+    unordered_map<string, TimeSeries*> r_neighbors;
 
-        time_lsh = operations.kNN_Search(L,K,&knn,id);
+    const unordered_map<string, TimeSeries*> &queries = io_files.getQueries();
+    for(auto &query: queries){
 
-        cout << time_lsh << endl;
+        time_lsh = operations.kNN_Search(L,K,&knn,query.second);
 
-        time_brute_force = operations.bruteForceNN(id,L,K,&brute_force);
+        time_brute_force = operations.bruteForceNN(query.second,L,K,&brute_force);
 
-        io_files.writeQuery(id, knn, brute_force, K, time_lsh, time_brute_force,__LSH_MODE);
+        io_files.writeQuery(query.first, knn, brute_force, K, time_lsh, time_brute_force,__LSH_MODE);
 
-        operations.rangeSearch(radius, r_neighbors, id);
+        operations.rangeSearch(radius, r_neighbors, query.second);
 
         io_files.writeRangeNeighbors(r_neighbors);
     }

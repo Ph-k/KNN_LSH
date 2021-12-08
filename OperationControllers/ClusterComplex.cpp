@@ -19,7 +19,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
     }else this->method = mthd;
 
     // We start by reading the input
-    Point* p = io_files.ReadPoint();
+    TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){
 
         this->points.push_back(p);
@@ -87,7 +87,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
 
 
 void ClusterComplex::initMedoidsPP_LSH_HC(){
-    vector<Point*>* allPoints;
+    vector<TimeSeries*>* allPoints;
     switch (this->method){
         case __LSH_METHOD:
             allPoints = &(LSHController->getAllPoints());
@@ -136,7 +136,7 @@ void ClusterComplex::initMedoidsPP_LSH_HC(){
 
     for (int i=0; i<k; i++){
         allPoints->push_back(Medoids[i]);
-        Medoids[i] = new Point(*(Medoids[i]));
+        Medoids[i] = new TimeSeries(*(Medoids[i]));
     }
 }
 
@@ -151,7 +151,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
 
     this->LSHController = new LSH(io_files_ref,150,k_lsh,l_lsh,1000);
 
-    Clusters2 = new std::unordered_map<std::string, Point*>[k];
+    Clusters2 = new std::unordered_map<std::string, TimeSeries*>[k];
 
     Medoids = new ClusterObject[k];
     for (int i = 0; i < k; i++)
@@ -176,7 +176,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
 
     this->HCController = new HyperCube(io_files_ref,150,k_hc,hc_probes,1000);
 
-    Clusters2 = new std::unordered_map<std::string, Point*>[k];
+    Clusters2 = new std::unordered_map<std::string, TimeSeries*>[k];
 
 
     Medoids = new ClusterObject[k];
@@ -304,7 +304,7 @@ void ClusterComplex::Assign(){
     }
 }
 
-Point *meanVector(std::unordered_map<std::string, Point*> &Cluster){
+TimeSeries *meanVector(std::unordered_map<std::string, TimeSeries*> &Cluster){
     if(Cluster.empty()) return nullptr;
     unsigned int T = Cluster.size();
     int tempVecSize = Cluster.begin()->second->getXs().size();
@@ -322,13 +322,13 @@ Point *meanVector(std::unordered_map<std::string, Point*> &Cluster){
     for(int i=0; i<tempVecSize; i++)
         meanVec->push_back((int)tempVec[i]);
     std::string *no_s = nullptr;
-    Point *meanP = new Point(meanVec, no_s);
+    TimeSeries *meanP = new TimeSeries(meanVec, no_s);
 
     delete[] tempVec;
     return meanP;
 }
 
-double averageDistance(std::unordered_map<std::string, Point*> &Cluster, Point *item){
+double averageDistance(std::unordered_map<std::string, TimeSeries*> &Cluster, TimeSeries *item){
     if(Cluster.empty()) return 0;
     unsigned int T = Cluster.size();
 
@@ -344,7 +344,7 @@ double averageDistance(std::unordered_map<std::string, Point*> &Cluster, Point *
 void ClusterComplex::UpdateLSH_HC(){
 
     int i;
-    Point *newMedoid;
+    TimeSeries *newMedoid;
 
     for(i=0; i<k; i++){
         newMedoid = meanVector(Clusters2[i]);
@@ -359,7 +359,7 @@ void ClusterComplex::UpdateLSH_HC(){
 
 }
 
-inline double ReverseAssignLSH_HCThreshold(unordered_map<string, Point*> *Clusters2, int k, long unsigned int allPointsCount){
+inline double ReverseAssignLSH_HCThreshold(unordered_map<string, TimeSeries*> *Clusters2, int k, long unsigned int allPointsCount){
     long unsigned int assignedPoints = 0;
     for(int i=0; i<k; i++){
         assignedPoints += Clusters2[i].size();
@@ -374,7 +374,7 @@ void ClusterComplex::AssignLSH_HC(){
     bool found;
     double R_A_T_Value, R_A_T_Value_old=-1.0;
 
-    const vector<Point*> *allPoints;
+    const vector<TimeSeries*> *allPoints;
 
     switch (this->method){
         case __LSH_METHOD:
@@ -477,7 +477,7 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
     memset(silhouetteS.avgSil ,0.0,k*sizeof(double));
     silhouetteS.OSC = 0.0;
 
-    vector<Point*>* allPoints;
+    vector<TimeSeries*>* allPoints;
     switch (this->method){
         case __LSH_METHOD:
             allPoints = &(LSHController->getAllPoints());
@@ -509,7 +509,7 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
     return &silhouetteS;
 }
 
-int ClusterComplex::findClusterIndex(Point *p){
+int ClusterComplex::findClusterIndex(TimeSeries *p){
   for(int i=0; i<k; i++){
     if( Clusters2[i].find(p->getId()) != Clusters2[i].end() ){
       return i;

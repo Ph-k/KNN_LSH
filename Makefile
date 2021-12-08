@@ -18,7 +18,7 @@ DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
 
 UtilitiesLocation = $(sourcePath)Utilities/
-UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o $(UtilitiesLocation)Point.o
+UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o $(UtilitiesLocation)TimeSeries.o
 
 LSHHashFuncsLocation = $(sourcePath)HashFunctions/
 LSHHashFuncsObjects = $(LSHHashFuncsLocation)HashLSH.o

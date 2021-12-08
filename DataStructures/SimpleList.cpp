@@ -6,7 +6,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "Point.h"
+#include "TimeSeries.h"
 
 using namespace std;
 
@@ -70,7 +70,7 @@ void SimpleList::Traverse( void (*fun)(SimpleListItemType *item, void* privateIt
     }
 }
 
-int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M, bool brute_force){
+int SimpleList::knn_search(int k, TimeSeries *q, int Id_q, struct PD* nearest, int M, bool brute_force){
     ListNode* node = head;
     double l1;
     int i,j,M_i=0;
@@ -109,7 +109,7 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M,
     return 0;
 }
 
-int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_neighbors, int M){
+int SimpleList::rangeSearch(int r, TimeSeries *q, unordered_map<string, TimeSeries*> &r_neighbors, int M){
     ListNode* node = head;
     int i = 0;
     double l1;
@@ -127,7 +127,7 @@ int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_ne
     return 0;
 }
 
-int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
     ListNode* node = head;
     int i=0,j;
     bool add;
@@ -161,7 +161,7 @@ int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*
     return 0;
 }
 
-Point* SimpleList::meanVector(){
+TimeSeries* SimpleList::meanVector(){
     ListNode* node = head;
 
     int tempVecSize = node->item.point->getXs().size();
@@ -181,7 +181,7 @@ Point* SimpleList::meanVector(){
     for(int i=0; i<tempVecSize; i++)
         meanVec->push_back((int)tempVec[i]);
     std::string *no_s = nullptr;
-    Point *meanP = new Point(meanVec, no_s);
+    TimeSeries *meanP = new TimeSeries(meanVec, no_s);
 
     delete[] tempVec;
     return meanP;
@@ -204,7 +204,7 @@ SimpleList::~SimpleList(){
     this->empty();
 }
 
-double SimpleList::averageDistance(Point *item){
+double SimpleList::averageDistance(TimeSeries *item){
     ListNode* node = head;
 
     double tempDist = 0.0;

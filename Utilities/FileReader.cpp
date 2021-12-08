@@ -33,9 +33,9 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
         {cout << "Error: invalid file format!" << endl; exit(-1);}
 
 
-    Point *p = ReadPoint('q');
+    TimeSeries *p = ReadPoint('q');
     while( p != nullptr ){
-        pair<string, Point*> temp(p->getId(),p);
+        pair<string, TimeSeries*> temp(p->getId(),p);
         queries.insert( temp );
         p = ReadPoint('q');
     }
@@ -61,7 +61,7 @@ int FileReader::find_dimension_from_input(char const *input_f){
     return s-1;
 }
 
-Point* FileReader::ReadPoint(char file_mode){
+TimeSeries* FileReader::ReadPoint(char file_mode){
 
     ifstream *file = nullptr;
     switch (file_mode){
@@ -103,7 +103,7 @@ Point* FileReader::ReadPoint(char file_mode){
         given_Xs->push_back(Xnum);
     }
 
-    Point *p = new Point(given_Xs,item_id);
+    TimeSeries *p = new TimeSeries(given_Xs,item_id);
 
     return p;
 }
@@ -181,7 +181,7 @@ int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, in
     return 0;
 }
 
-Point* FileReader::getQuery(string id){
+TimeSeries* FileReader::getQuery(string id){
     auto p = queries.find(id);
     if( p == queries.end() ) return nullptr;
     return p->second;
@@ -210,7 +210,7 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
     return 0;
 }
 
-int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors){
+int FileReader::writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*> neighbors){
     output_file << "R-near neighbors:" << '\n';
     for(auto neighbor: neighbors){
         output_file << neighbor.second->getId() << '\n';
@@ -245,7 +245,7 @@ int FileReader::writeClusterPoints(SimpleList *Clusters, int clustering_times, C
     return 0;
 }
 
-int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
+int FileReader::writeClusterPoints(std::unordered_map<std::string, TimeSeries*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
     output_file << "Algorithm: " << algorithm << '\n';
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";

@@ -8,7 +8,7 @@ HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int M, int probes, 
 :io_files(io_files_ref), hash_table(hash_table_size,150,k,io_files.getDimension(),__H_CUBE_MODE, probes), M(M) {
 
     // We start by reading the input
-    Point* p = io_files.ReadPoint();
+    TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){
 
         this->points.push_back(p);
@@ -21,7 +21,7 @@ HyperCube::HyperCube(FileReader &io_files_ref, int w, int k, int M, int probes, 
 
 int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
 
-    Point *q = io_files.getQuery(id);
+    TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
 
 	if(*b == nullptr ) *b = new PD[k];
@@ -40,7 +40,7 @@ int HyperCube::kNN_Search(string &id, int L, int k, PD **b){
 
 int HyperCube::bruteForceNN(string &id, int L, int k, PD **b){
 
-    Point *q = io_files.getQuery(id);
+    TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
 
     if(*b == nullptr ) *b = new PD[k];
@@ -58,8 +58,8 @@ int HyperCube::bruteForceNN(string &id, int L, int k, PD **b){
     return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int HyperCube::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_neighbors){
-    Point *q = io_files.getQuery(id);
+int HyperCube::rangeSearch(string &id, int r, unordered_map<string, TimeSeries*> &r_neighbors){
+    TimeSeries *q = io_files.getQuery(id);
     if( q == nullptr ) return -1;
 
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
@@ -69,7 +69,7 @@ int HyperCube::rangeSearch(string &id, int r, unordered_map<string, Point*> &r_n
     return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
 }
 
-int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
     hash_table.reverseRangeSearchBucket(r, Clusters, k, k_index, Medoids, M);
     return 0;
 }
