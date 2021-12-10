@@ -169,17 +169,17 @@ TimeSeries* SimpleList::meanVector(){
 
     memset(tempVec,0.0,tempVecSize*sizeof(double));
 
-    const std::vector<double>* vec;
+    const std::vector<__TIMESERIES_X_TYPE>* vec;
     while(node != nullptr){
         vec = &(node->item.point->getXs());
         for(int i=0; i<tempVecSize; i++)
-            tempVec[i] +=  ( (double)vec->at(i) ) / ((double)T);
+            tempVec[i] +=  ( (__TIMESERIES_X_TYPE)vec->at(i) ) / ((double)T);
         node = node->next;
     }
 
-    std::vector<__TIMESERIES_X_TYPE> *meanVec = new std::vector<double>;
+    std::vector<__TIMESERIES_X_TYPE> *meanVec = new std::vector<__TIMESERIES_X_TYPE>;
     for(int i=0; i<tempVecSize; i++)
-        meanVec->push_back((double)tempVec[i]);
+        meanVec->push_back((__TIMESERIES_X_TYPE)tempVec[i]);
     std::string *no_s = nullptr;
     TimeSeries *meanP = new TimeSeries(meanVec, no_s);
 
