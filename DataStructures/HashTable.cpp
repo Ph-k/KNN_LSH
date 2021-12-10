@@ -2,7 +2,6 @@
 #include "Utilities.h"
 #include "HashLSH.h"
 #include "HashHC.h"
-#include "TimeSeries.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -27,6 +26,16 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
 
 int HashTable::Insert(HashItem item){
     int Id_p = hashing->Hash(item->getXs());
+    struct PointPointer pp = { item, Id_p };
+
+    int *hash_indexes = hashing->HashIndex(pp.Id,true);
+    if( bucket[hash_indexes[0]].Push(pp) != 0) return -1;
+    delete[] hash_indexes;
+    return 0;
+}
+
+int HashTable::InsertQ(HashItem item, vector<__TIMESERIES_X_TYPE> &q_vec){
+    int Id_p = hashing->Hash(q_vec);
     struct PointPointer pp = { item, Id_p };
 
     int *hash_indexes = hashing->HashIndex(pp.Id,true);

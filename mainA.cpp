@@ -149,23 +149,28 @@ int main(int argc, char const *argv[]){
     }
 
 
-    double time_lsh, time_brute_force;
+    unsigned int index = 0;
+    double time_aprx = 0.0, time_brute_force = 0.0;
     PD *knn = nullptr, *brute_force = nullptr;
     unordered_map<string, TimeSeries*> r_neighbors;
 
     const unordered_map<string, TimeSeries*> &queries = io_files.getQueries();
     for(auto &query: queries){
 
-        time_lsh = operations->kNN_Search(L,K,&knn,query.second);
+        time_aprx += nanosecToMilliSec(operations->kNN_Search(L,1,&knn,query.second));
 
-        time_brute_force = operations->bruteForceNN(query.second,L,K,&brute_force);
+        time_brute_force += nanosecToMilliSec(operations->bruteForceNN(query.second,L,1,&brute_force));
 
-        io_files.writeQuery(query.first, knn, brute_force, K, time_lsh, time_brute_force, method);
+        io_files.writeQuery(query.first, knn, brute_force, 1, method);
 
         /*operations->rangeSearch(radius, r_neighbors, query.second);
 
         io_files.writeRangeNeighbors(r_neighbors);*/
+        index++;
     }
+
+    io_files.writeQueryTimes(time_aprx, time_brute_force, index);
+
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;
     delete operations;

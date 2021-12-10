@@ -21,19 +21,26 @@ LSH::LSH(
         Frechet = nullptr;
     }
 
+    vector<__TIMESERIES_X_TYPE> *q_vec;
     // We start by reading the input
     TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){
 
         if(metric == __DF_LSH){
-            vector<__TIMESERIES_X_TYPE> *q_vec = Frechet->Snap(p->getXs());
-            TimeSeries* q = new TimeSeries(q_vec,new string(p->getId()));
-            delete p;
-            p = q;
-        }
-        this->points.push_back(p);
-        for(int i=0; i<l; i++){
-            this->hash_tables[i]->Insert(p);
+            q_vec = Frechet->Snap(p->getXs());
+
+            this->points.push_back(p);
+            for(int i=0; i<l; i++){
+                this->hash_tables[i]->InsertQ(p,*q_vec);
+            }
+
+            delete q_vec;
+
+        }else{
+            this->points.push_back(p);
+            for(int i=0; i<l; i++){
+                this->hash_tables[i]->Insert(p);
+            }
         }
 
         p = io_files.ReadPoint();

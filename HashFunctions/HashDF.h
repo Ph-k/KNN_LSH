@@ -3,7 +3,7 @@
 
 class HashDF{
     private:
-        double *Grid;
+        double *t;
         double delta;
         int d;
 	public:

@@ -49,7 +49,7 @@ double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
     const vector<__TIMESERIES_X_TYPE>& Xs_p1 = p1->getXs();
     const vector<__TIMESERIES_X_TYPE>& Xs_p2 = p2->getXs();
 
-    if(Xs_p1.size() != Xs_p2.size()) exit(1);//Consider removing it for speed
+    if(Xs_p1.size() != Xs_p2.size()) exit(1);
 
     double sum = 0;
 
@@ -67,13 +67,15 @@ double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
 
 // Our own function to calculate dot product of two vector objects
 int dot_product(const vector<double> &x,const vector<double> &y){
-	if (x.size() != y.size()){
-        cerr << ("dot product vector size error!") << endl;
-		exit(1);
+    unsigned int i,n;
+    if( x.size() <= y.size() ){
+        n = x.size();
+    }else{
+        n = y.size();
     }
-	int n = x.size();
+
 	double dp=0;
-	for (int i=0; i<n; i++)
+	for (i=0; i<n; i++)
 		dp += x[i]*y[i];
 	return dp;
 }

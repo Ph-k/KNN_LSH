@@ -187,7 +187,7 @@ TimeSeries* FileReader::getQuery(string id){
     return p->second;
 }
 
-int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode, char fr_mode){
+int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, char mode, char fr_mode){
     char const *method = "Unknown";
     switch (mode){
         case __LSH_MODE:
@@ -208,25 +208,26 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
         break;
     }
 
-    double timeAproximateSum = 0.0, timeTrueSum = 0.0;
     output_file << "Query: " << query_id << "\nAlgorithm: " << method << '\n';
     for(int i=0; i<k; i++){
         if( knn[i].p != nullptr ){
-            output_file << "Aproximate Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
-                        << "True Nearest neighbor-" << i+1 << ": " << bruteForce[i].p->getId() << '\n'
+            output_file << "Aproximate Nearest neighbor: " << knn[i].p->getId() << '\n'
+                        << "True Nearest neighbor: " << bruteForce[i].p->getId() << '\n'
                         << "distanceAproximate: " << knn[i].distance << '\n'
-                        << "distanceTrue: " << bruteForce[i].distance << '\n';
+                        << "distanceTrue: " << bruteForce[i].distance << "\n\n";
         }else{
-            output_file << "Nearest neighbor-" << i+1 << ": none\n"
+            output_file << "Nearest neighbor: none\n"
                         << "distanceAproximate: -\n"
-                        << "distanceTrue: " << bruteForce[i].distance << '\n';
+                        << "distanceTrue: " << bruteForce[i].distance << "\n\n";
         }
-        timeAproximateSum += nanosecToMilliSec(timeLSH);
-        timeTrueSum += nanosecToMilliSec(timeBF);
     }
 
-    output_file << "tAproximateAverage: " << timeAproximateSum/k << "ms\n"
-                << "tTrueAverage: " << timeTrueSum/k << "ms\n"
+    return 0;
+}
+
+int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count){
+    output_file << "tAproximateAverage: " << timeAprx/count << "ms\n"
+                << "tTrueAverage: " << timeBF/count << "ms\n"
                 << "MAF: " << "To-Do" << '\n' << endl;
 
     return 0;

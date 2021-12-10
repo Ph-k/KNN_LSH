@@ -5,15 +5,15 @@
 #include "HashDF.h"
 #include "Utilities.h"
 
-HashDF::HashDF(double given_delta, int given_d):Grid(new double[given_d]),delta(given_delta),d(given_d){
+HashDF::HashDF(double given_delta, int given_d):t(new double[given_d]),delta(given_delta),d(given_d){
 
     for (int i = 0; i < d; i++)
-        Grid[i] = i*delta + random_float(0.0, delta);
+        t[i] = random_float(0.0, delta);
     
 }
 
 HashDF::~HashDF(){
-    delete[] Grid;
+    delete[] t;
 }
 
 std::vector<__TIMESERIES_X_TYPE> *HashDF::Snap(const std::vector<__TIMESERIES_X_TYPE> &p){
@@ -22,22 +22,13 @@ std::vector<__TIMESERIES_X_TYPE> *HashDF::Snap(const std::vector<__TIMESERIES_X_
     }
 
     std::vector<__TIMESERIES_X_TYPE> *q = new std::vector<__TIMESERIES_X_TYPE>;
-    int prev_arg = -1;
-    for (int i = 0; i < d; i++)
-    {
-        double dist_i = DBL_MAX;
-        int argmin = -1;
-        for (int j = 0; i < d; i++)
-        {
-            double curr_dist = std::abs(p[j] - Grid[j]);
-            if (curr_dist < dist_i){
-                dist_i = curr_dist;
-                argmin = j;
-            }
-        }
+    int prev_arg, argmin;
+    for (int i = 0; i < d; i++){
+        argmin = floor( (p[i]-t[i])/delta + 0.5 ) * delta + t[i];
         
-        if(prev_arg == -1 || prev_arg != argmin)
-            q->push_back(Grid[argmin]);
+        if(i == 0 || prev_arg != argmin)
+            q->push_back(argmin);
+
         prev_arg = argmin;
     }
     return q;

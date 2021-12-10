@@ -30,7 +30,8 @@ class FileReader{
         TimeSeries* ReadPoint(char file='i');
         TimeSeries* getQuery(std::string id);
         inline const std::unordered_map<std::string, TimeSeries*>& getQueries() {return queries;}
-        int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode, char fr_mode = -1);
+        int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, char mode, char fr_mode = -1);
+        int writeQueryTimes(double timeAprx, double timeBF, int count);
         int writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
         int writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
