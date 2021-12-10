@@ -1,10 +1,11 @@
 #include <iostream>
 #include <float.h>
+#include <stdio.h>
 #include <cmath>
 #include "HashDF.h"
 #include "Utilities.h"
 
-HashDF::HashDF(double delta, int d):delta(delta),d(d),Grid(new double[d]){
+HashDF::HashDF(double given_delta, int given_d):Grid(new double[given_d]),delta(given_delta),d(given_d){
 
     for (int i = 0; i < d; i++)
         Grid[i] = i*delta + random_float(0.0, delta);
@@ -15,13 +16,13 @@ HashDF::~HashDF(){
     delete[] Grid;
 }
 
-std::vector<double> *HashDF::Snap(const std::vector<double> &p){
-    if (p.size() != d){
-        std::stderr << "Size error in Snap function!\n";
+std::vector<__TIMESERIES_X_TYPE> *HashDF::Snap(const std::vector<__TIMESERIES_X_TYPE> &p){
+    if (p.size() != (long unsigned int)d){
+        perror("Size error in Snap function!\n");
     }
 
-    std::vector<double> *q = new std::vector<double>;
-    int prev_arg = -1, arg_min = -1;
+    std::vector<__TIMESERIES_X_TYPE> *q = new std::vector<__TIMESERIES_X_TYPE>;
+    int prev_arg = -1;
     for (int i = 0; i < d; i++)
     {
         double dist_i = DBL_MAX;

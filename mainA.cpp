@@ -141,10 +141,13 @@ int main(int argc, char const *argv[]){
     MappingMethod* operations;
 
     if(method == __LSH_MODE){
-        operations = new LSH(io_files,150,K,L,1000);
+        operations = new LSH(io_files,150,K,L,delta,1000,__STANDARD_LSH);
     }else if(method == __H_CUBE_MODE){
         operations = new HyperCube(io_files,150,K,M,probes,pow(2,K));
+    }else if(method == __FRECHET_MODE && frechet_method == __FRECHET_DISCRETE_MODE){
+        operations = new LSH(io_files,150,K,L,delta,1000,__DF_LSH);
     }
+
 
     double time_lsh, time_brute_force;
     PD *knn = nullptr, *brute_force = nullptr;

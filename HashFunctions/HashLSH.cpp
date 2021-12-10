@@ -6,7 +6,7 @@
 HashLSH::HashLSH(int w, int k, int TableSize, int vecSize)
 : HashInterface(w,k,TableSize,vecSize, 1){}
 
-unsigned int HashLSH::Hash(const std::vector<int> &p){
+unsigned int HashLSH::Hash(const std::vector<__TIMESERIES_X_TYPE> &p){
 
 	int i,r; // r: random natural number
 	unsigned int res=0;

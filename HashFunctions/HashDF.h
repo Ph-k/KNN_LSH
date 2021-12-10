@@ -1,13 +1,13 @@
 #include <vector>
+#include <TimeSeries.h>
 
 class HashDF{
     private:
-        static double *baseGrid;
         double *Grid;
         double delta;
         int d;
 	public:
-		HashDF(double delta, int d);
+		HashDF(double given_delta, int given_d);
 		~HashDF();
-		std::vector<double> *Snap(const std::vector<double> &p); // h_delta function
+		std::vector<__TIMESERIES_X_TYPE> *Snap(const std::vector<__TIMESERIES_X_TYPE> &p); // h_delta function
 };

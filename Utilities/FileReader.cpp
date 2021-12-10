@@ -84,15 +84,15 @@ TimeSeries* FileReader::ReadPoint(char file_mode){
 
     istringstream line_stream(line);
 
-    vector<int> *given_Xs = new vector<int>;
+    vector<__TIMESERIES_X_TYPE> *given_Xs = new vector<__TIMESERIES_X_TYPE>;
 
-    int Xnum;
+    double Xnum;
     string Xstring, *item_id = new string;
     line_stream >> *item_id;
     while (line_stream >> Xstring){
 
         try {
-            Xnum = stoi(Xstring);
+            Xnum = stod(Xstring);
         }catch(...) {
             cout << "Error: invalid input file format! not valid Xij numerical value!" << endl;
             delete given_Xs;

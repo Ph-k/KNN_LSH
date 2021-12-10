@@ -310,7 +310,7 @@ TimeSeries *meanVector(std::unordered_map<std::string, TimeSeries*> &Cluster){
     int tempVecSize = Cluster.begin()->second->getXs().size();
     double *tempVec = new double[tempVecSize];
     memset(tempVec,0.0,tempVecSize*sizeof(double));
-    const std::vector<int>* vec;
+    const std::vector<__TIMESERIES_X_TYPE>* vec;
 
     for(auto point: Cluster){
         vec = &(point.second->getXs());
@@ -318,7 +318,7 @@ TimeSeries *meanVector(std::unordered_map<std::string, TimeSeries*> &Cluster){
             tempVec[i] +=  ( (double)vec->at(i) ) / ((double)T);
     }
 
-    std::vector<int> *meanVec = new std::vector<int>;
+    std::vector<__TIMESERIES_X_TYPE> *meanVec = new std::vector<__TIMESERIES_X_TYPE>;
     for(int i=0; i<tempVecSize; i++)
         meanVec->push_back((int)tempVec[i]);
     std::string *no_s = nullptr;

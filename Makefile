@@ -5,6 +5,7 @@ valgrindFlags = --leak-check=full
 
 search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 4 -L 3 -algorithm LSH
 search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 4 -probes 4 -M 15 -algorithm Hypercube
+search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 4 -L 3 -algorithm Frechet
 
 search_exe = search
 
@@ -28,7 +29,7 @@ CubeHashFuncsLocation = $(sourcePath)HashFunctions/
 CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 
 HashInterfacesLocation = $(sourcePath)HashFunctions/
-HashInterfacesObjects = $(HashInterfacesLocation)HashInterface.o $(HashInterfacesLocation)Hhashing.o 
+HashInterfacesObjects = $(HashInterfacesLocation)HashInterface.o $(HashInterfacesLocation)HashDF.o $(HashInterfacesLocation)Hhashing.o
 
 CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects)
 
@@ -62,6 +63,9 @@ rSlsh: $(search_exe)
 
 rScube: $(search_exe)
 	./$(search_exe) $(search_flags_cube)
+
+rSdfr: $(search_exe)
+	./$(search_exe) $(search_flags_dfr)
 
 val: $(search_exe)
 	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags)

@@ -22,12 +22,13 @@ struct PointPointer{
 };
 
 std::vector<int>* uniform_vec(int dimensions);
+std::vector<double>* uniformD_vec(int dimensions);
 
 float random_float(float l=2.0, float h=6.0);
 
 double euclidean_distance(TimeSeries *p1, TimeSeries *p2);
 
-int dot_product(const std::vector<int> &x,const std::vector<int> &y);
+int dot_product(const std::vector<double> &x,const std::vector<double> &y);
 
 long int modulo(long int a, long int b);
 

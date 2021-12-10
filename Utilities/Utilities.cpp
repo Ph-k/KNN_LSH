@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "TimeSeries.h"
 
+#include <stdio.h>
 #include <random>
 #include <time.h>
 
@@ -23,6 +24,19 @@ vector<int>* uniform_vec(int dimensions){
     return v;
 }
 
+// Create a vector object with floating numbers taken from the normal distribution
+vector<double>* uniformD_vec(int dimensions){
+    if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
+    normal_distribution<double> normal_distribution(0.0,1.0);
+
+    vector<double> *v = new vector<double>;
+
+    for(int i=0; i<dimensions; i++)
+        v->push_back((double)normal_distribution(randomness));
+
+    return v;
+}
+
 // Choose random floating point number in the inerval (0,w] from uniform distribution
 float random_float(float l, float h){
     if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
@@ -32,8 +46,8 @@ float random_float(float l, float h){
 }
 
 double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
-    const vector<int>& Xs_p1 = p1->getXs();
-    const vector<int>& Xs_p2 = p2->getXs();
+    const vector<__TIMESERIES_X_TYPE>& Xs_p1 = p1->getXs();
+    const vector<__TIMESERIES_X_TYPE>& Xs_p2 = p2->getXs();
 
     if(Xs_p1.size() != Xs_p2.size()) exit(1);//Consider removing it for speed
 
@@ -52,11 +66,13 @@ double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
 }
 
 // Our own function to calculate dot product of two vector objects
-int dot_product(const vector<int> &x,const vector<int> &y){
-	if (x.size() != y.size())
+int dot_product(const vector<double> &x,const vector<double> &y){
+	if (x.size() != y.size()){
+        perror("dot product size not");
 		exit(1);
+    }
 	int n = x.size();
-	int dp=0;
+	double dp=0;
 	for (int i=0; i<n; i++)
 		dp += x[i]*y[i];
 	return dp;

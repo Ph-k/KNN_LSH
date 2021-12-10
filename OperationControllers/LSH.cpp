@@ -7,7 +7,7 @@ using namespace std;
 
 LSH::LSH(
     FileReader &io_files_ref,
-    int w, int k, int l, int hash_table_size, char metric
+    int w, int k, int l,int delta, int hash_table_size, char metric
 /*good practice https://stackoverflow.com/questions/4162021/is-it-ok-to-call-a-function-in-constructor-initializer-list*/
 ):MappingMethod(io_files_ref),L(l), metric(metric){
 
@@ -16,7 +16,7 @@ LSH::LSH(
         this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(),__LSH_MODE);
     }
     if(metric == __DF_LSH){
-        Frechet = new HashDF(delta ,io_files.getDimension()) // delta must be given!!!!!!
+        Frechet = new HashDF(delta ,io_files.getDimension()); // delta must be given!!!!!!
     }else{
         Frechet = nullptr;
     }
@@ -26,8 +26,8 @@ LSH::LSH(
     while( p != nullptr){
 
         if(metric == __DF_LSH){
-            std::vector<double> *q_vec = Frechet->Snap(p);
-            TimeSeries* q = new TimeSeries(q_vec, p->getId());
+            vector<__TIMESERIES_X_TYPE> *q_vec = Frechet->Snap(p->getXs());
+            TimeSeries* q = new TimeSeries(q_vec,new string(p->getId()));
             delete p;
             p = q;
         }

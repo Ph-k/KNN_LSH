@@ -11,7 +11,7 @@ HashHC::~HashHC(){
     delete[] h_mapping;
 }
 
-unsigned int HashHC::Hash(const std::vector<int> &p){
+unsigned int HashHC::Hash(const std::vector<__TIMESERIES_X_TYPE> &p){
 
 	int i, h_i;
 	unsigned int tag=0, bit=0;
