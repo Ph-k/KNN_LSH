@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char const *argv[]){
 
     int i, K=-1, L=-1, number_of_nearest=-1, radius=-1, M=-1, probes=-1, delta=-1;
-    char method=-1,frechet_method=-1;
+    char method=-1;
     char const *input_file  = nullptr, *query_file = nullptr, *output_file = nullptr, *method_string = nullptr, *frechet_method_string = nullptr;
 
 	for(i=1; i<argc; i++){
@@ -46,14 +46,14 @@ int main(int argc, char const *argv[]){
             }else if( strcmp(method_string,"Hypercube") == 0){
                 method = __H_CUBE_MODE;
             }else if( strcmp(method_string,"Frechet") == 0){
-                method = __FRECHET_MODE;
+                method = -1;
 
                 if( strcmp(argv[++i],"-metric") == 0){
                     frechet_method_string = argv[++i];
 			        if( strcmp(frechet_method_string,"continuous") == 0){
-                        frechet_method = __FRECHET_CONTINUOUS_MODE;
+                        method = __FRECHET_CONTINUOUS_MODE;
                     }else if( strcmp(frechet_method_string,"discrete") == 0){
-                        frechet_method = __FRECHET_DISCRETE_MODE;
+                        method = __FRECHET_DISCRETE_MODE;
                     }
                 }
                 
@@ -105,15 +105,17 @@ int main(int argc, char const *argv[]){
         }
     }
 
-    if( method == __FRECHET_MODE ){
+
+    if( method == -1 ){
+        cout << "search: Frechet algorithm requested, but -metric argument is missing!, defaulting to discrete" << endl;
+        method = __FRECHET_DISCRETE_MODE;
+        frechet_method_string = "N/A";
+    }
+
+    if( method == __FRECHET_DISCRETE_MODE || method == __FRECHET_CONTINUOUS_MODE ){
         if(delta == -1){
             cout << "search: using default value for argument delta" << endl;
             delta = 5;
-        }
-        if( frechet_method == -1 ){
-            cout << "search: Frechet algorithm requested, but -metric argument is missing!, defaulting to discrete" << endl;
-            frechet_method = __FRECHET_DISCRETE_MODE;
-            frechet_method_string = "N/A";
         }
     }
 
@@ -131,7 +133,7 @@ int main(int argc, char const *argv[]){
     }else if(method == __H_CUBE_MODE){
         cout << "\n\tM: " << M;
         cout << "\n\tprobes: " << probes;
-    }else if(method == __FRECHET_MODE){
+    }else if( method == __FRECHET_DISCRETE_MODE || method == __FRECHET_CONTINUOUS_MODE ){
         cout << "\n\tfrechet method : " << frechet_method_string;
         cout << "\n\tdelta: " << delta;
     } cout << endl;
@@ -140,12 +142,10 @@ int main(int argc, char const *argv[]){
 
     MappingMethod* operations;
 
-    if(method == __LSH_MODE){
-        operations = new LSH(io_files,150,K,L,delta,1000,__STANDARD_LSH);
+    if(method == __LSH_MODE || method == __FRECHET_DISCRETE_MODE || method == __FRECHET_CONTINUOUS_MODE){
+        operations = new LSH(io_files,150,K,L,delta,1000, method);
     }else if(method == __H_CUBE_MODE){
         operations = new HyperCube(io_files,150,K,M,probes,pow(2,K));
-    }else if(method == __FRECHET_MODE && frechet_method == __FRECHET_DISCRETE_MODE){
-        operations = new LSH(io_files,150,K,L,delta,1000,__DF_LSH);
     }
 
 

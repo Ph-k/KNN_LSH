@@ -13,9 +13,9 @@ LSH::LSH(
 
     this->hash_tables = new HashTable*[l];
     for(int i=0; i<l; i++){
-        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(),__LSH_MODE);
+        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(), metric);
     }
-    if(metric == __DF_LSH){
+    if(metric == __FRECHET_DISCRETE_MODE){
         Frechet = new HashDF(delta ,io_files.getDimension()); // delta must be given!!!!!!
     }else{
         Frechet = nullptr;
@@ -26,7 +26,7 @@ LSH::LSH(
     TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){
 
-        if(metric == __DF_LSH){
+        if(metric == __FRECHET_DISCRETE_MODE){
             q_vec = Frechet->Snap(p->getXs());
 
             this->points.push_back(p);

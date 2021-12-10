@@ -11,17 +11,19 @@ using namespace std;
 HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, int probes)
 :table_size(given_table_size)
 {
-    switch (type){
-    case __LSH_MODE:
+    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE){
         hashing = new HashLSH(w,k,given_table_size,vecSize);
-        break;
-    default:
+    }else if ( type == __H_CUBE_MODE) {
         hashing = new HashHC(w,k,given_table_size,vecSize,probes);
-        break;
-    }
+    }else {cerr << "no mode specified to hashtable!" << endl; exit(2);};
 
     this->bucket = new SimpleList[given_table_size];
     if(this->bucket == nullptr) cerr << "Not enough memory to create hashtable!" << endl;
+
+    if( type == __FRECHET_DISCRETE_MODE )
+        for(unsigned int i=0; i<given_table_size; i++)
+            (this->bucket[i]).alterDistanceMetric(&dfr_distance);
+
 }
 
 int HashTable::Insert(HashItem item){
@@ -64,7 +66,7 @@ int HashTable::bruteForceNN(int k, TimeSeries *q, struct PD* nearest){
     return res;
 }
 
-int HashTable::rangeSearchBucket(int r, TimeSeries *q, std::unordered_map<string, TimeSeries*> &r_neighbors, int M){
+int HashTable::rangeSearchBucket(int r, TimeSeries *q, unordered_map<string, TimeSeries*> &r_neighbors, int M){
     r_neighbors.empty();
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );

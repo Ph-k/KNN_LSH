@@ -3,6 +3,7 @@
 #include "TimeSeries.h"
 
 #include <iostream>
+#include <algorithm> // std::max
 #include <random>
 #include <time.h>
 
@@ -63,6 +64,51 @@ double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
     }
 
     return sqrt(sum);
+}
+
+double dfr_distance(TimeSeries *p1, TimeSeries *p2){
+    const vector<__TIMESERIES_X_TYPE>& Xs_p1 = p1->getXs();
+    const vector<__TIMESERIES_X_TYPE>& Xs_p2 = p2->getXs();
+
+    long unsigned int i,j;
+    double **opt = new double*[Xs_p1.size()];
+    for(i=0; i<Xs_p1.size(); i++)
+        opt[i] = new double[Xs_p2.size()];
+
+
+    opt[0][0] = abs(Xs_p1.at(0) - Xs_p2.at(0));
+
+    //calculate first row
+    j = 1;
+    while( j < Xs_p2.size() ){
+        opt[0][j] = max(opt[0][j-1],abs(Xs_p1.at(0) - Xs_p2.at(j)) );
+        j++;
+    }
+
+    //calculate the rest rows of the table
+    for(i=1; i<Xs_p1.size(); i++){
+        //first cell of row (edge case)
+        j = 0;
+        opt[i][j] = max(opt[i-1][j],abs(Xs_p1.at(i) - Xs_p2.at(j)) );
+        j++;
+
+        //rest cells of row
+        while( j < Xs_p2.size() ){
+            opt[i][j] = max( 
+                min( opt[i-1][j-1], min(opt[i-1][j],opt[i][j-1]) ),
+                abs(Xs_p1.at(i) - Xs_p2.at(j))
+            );
+            j++;
+        }
+    }
+
+    double ret = opt[Xs_p1.size()-1][Xs_p2.size()-1];
+
+    for(i=0; i<Xs_p1.size(); i++)
+        delete[] opt[i];
+    delete[] opt;
+
+    return ret;
 }
 
 // Our own function to calculate dot product of two vector objects

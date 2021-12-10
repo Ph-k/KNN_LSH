@@ -7,10 +7,6 @@
 #include <vector>
 #include <string>
 
-#define __STANDARD_LSH 0
-#define __DF_LSH 1
-#define __CF_LSH 2
-
 class TimeSeries;
 
 class LSH: public MappingMethod{
@@ -22,7 +18,7 @@ class LSH: public MappingMethod{
     public:
         LSH(
             FileReader &io_files_ref,
-            int w, int k, int l, int delta, int hash_table_size=10, char metric = __STANDARD_LSH
+            int w, int k, int l, int delta, int hash_table_size=10, char metric = __LSH_MODE
         );
         int kNN_Search(int L, int k, PD **b, std::string &id);
         int kNN_Search(int L, int k, PD **b, TimeSeries *q);

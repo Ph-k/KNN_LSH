@@ -196,16 +196,12 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
         case __H_CUBE_MODE:
             method = "Hypercube";
             break;
-        case __FRECHET_MODE:
-            switch (fr_mode){
-                case __FRECHET_DISCRETE_MODE:
-                    method = "LSH_Frechet_Discrete";
-                    break;
-                case __FRECHET_CONTINUOUS_MODE:
-                    method = "LSH_Frechet_Continuous";
-                    break;
-            }
-        break;
+        case __FRECHET_DISCRETE_MODE:
+            method = "LSH_Frechet_Discrete";
+            break;
+        case __FRECHET_CONTINUOUS_MODE:
+            method = "LSH_Frechet_Continuous";
+            break;
     }
 
     output_file << "Query: " << query_id << "\nAlgorithm: " << method << '\n';

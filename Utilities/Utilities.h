@@ -5,9 +5,8 @@
 
 #define __LSH_MODE 0
 #define __H_CUBE_MODE 1
-#define __FRECHET_MODE 2
-#define __FRECHET_DISCRETE_MODE 0
-#define __FRECHET_CONTINUOUS_MODE 1
+#define __FRECHET_DISCRETE_MODE 2
+#define __FRECHET_CONTINUOUS_MODE 3
 
 class TimeSeries;
 
@@ -27,6 +26,8 @@ std::vector<double>* uniformD_vec(int dimensions);
 float random_float(float l=2.0, float h=6.0);
 
 double euclidean_distance(TimeSeries *p1, TimeSeries *p2);
+
+double dfr_distance(TimeSeries *p1, TimeSeries *p2);
 
 int dot_product(const std::vector<double> &x,const std::vector<double> &y);
 

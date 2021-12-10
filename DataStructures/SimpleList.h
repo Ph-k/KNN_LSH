@@ -14,6 +14,8 @@ typedef struct ListNode ListNode;
 class SimpleList{
     public:
         SimpleList();
+
+        inline void alterDistanceMetric(double (*Gmetric_func)(TimeSeries*, TimeSeries*)) {metric_func=Gmetric_func;};
         int Push(SimpleListItemType item);
         int Pop(SimpleListItemType &item);
         int Pop();
@@ -32,4 +34,5 @@ class SimpleList{
     private:
         ListNode *head;
         unsigned int T;
+        double (*metric_func)(TimeSeries*, TimeSeries*);
 };
