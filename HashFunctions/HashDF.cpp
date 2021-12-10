@@ -18,7 +18,7 @@ HashDF::~HashDF(){
 
 std::vector<__TIMESERIES_X_TYPE> *HashDF::Snap(const std::vector<__TIMESERIES_X_TYPE> &p){
     if (p.size() != (long unsigned int)d){
-        perror("Size error in Snap function!\n");
+        std::cerr << "Size error in Snap function!" << std::endl;
     }
 
     std::vector<__TIMESERIES_X_TYPE> *q = new std::vector<__TIMESERIES_X_TYPE>;

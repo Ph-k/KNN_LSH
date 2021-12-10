@@ -48,7 +48,7 @@ int main(int argc, char const *argv[]){
             }else if( strcmp(method_string,"Frechet") == 0){
                 method = __FRECHET_MODE;
 
-                if( strcmp(argv[i],"-metric") == 0){
+                if( strcmp(argv[++i],"-metric") == 0){
                     frechet_method_string = argv[++i];
 			        if( strcmp(frechet_method_string,"continuous") == 0){
                         frechet_method = __FRECHET_CONTINUOUS_MODE;
@@ -162,9 +162,9 @@ int main(int argc, char const *argv[]){
 
         io_files.writeQuery(query.first, knn, brute_force, K, time_lsh, time_brute_force, method);
 
-        operations->rangeSearch(radius, r_neighbors, query.second);
+        /*operations->rangeSearch(radius, r_neighbors, query.second);
 
-        io_files.writeRangeNeighbors(r_neighbors);
+        io_files.writeRangeNeighbors(r_neighbors);*/
     }
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;

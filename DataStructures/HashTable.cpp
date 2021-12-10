@@ -22,7 +22,7 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
     }
 
     this->bucket = new SimpleList[given_table_size];
-    if(this->bucket == nullptr) perror("Not enough memory to create hashtable!");
+    if(this->bucket == nullptr) cerr << "Not enough memory to create hashtable!" << endl;
 }
 
 int HashTable::Insert(HashItem item){

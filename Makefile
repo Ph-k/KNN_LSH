@@ -3,9 +3,9 @@ cflags = -Wall -g3 -std=c++11
 
 valgrindFlags = --leak-check=full
 
-search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 4 -L 3 -algorithm LSH
-search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 4 -probes 4 -M 15 -algorithm Hypercube
-search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 4 -L 3 -algorithm Frechet
+search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 3 -L 3 -algorithm LSH
+search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 4 -M 5 -algorithm Hypercube
+search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6
 
 search_exe = search
 

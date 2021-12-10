@@ -187,25 +187,47 @@ TimeSeries* FileReader::getQuery(string id){
     return p->second;
 }
 
-int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode){
-    static char const *method = (mode == __LSH_MODE ? "LSH" : "Hypercube" );
+int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode, char fr_mode){
+    char const *method = "Unknown";
+    switch (mode){
+        case __LSH_MODE:
+            method = "LSH_Vector";
+            break;
+        case __H_CUBE_MODE:
+            method = "Hypercube";
+            break;
+        case __FRECHET_MODE:
+            switch (fr_mode){
+                case __FRECHET_DISCRETE_MODE:
+                    method = "LSH_Frechet_Discrete";
+                    break;
+                case __FRECHET_CONTINUOUS_MODE:
+                    method = "LSH_Frechet_Continuous";
+                    break;
+            }
+        break;
+    }
 
-    output_file << "Query: " << query_id << '\n';
+    double timeAproximateSum = 0.0, timeTrueSum = 0.0;
+    output_file << "Query: " << query_id << "\nAlgorithm: " << method << '\n';
     for(int i=0; i<k; i++){
         if( knn[i].p != nullptr ){
-            output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
-                        << "distance"<< method << ":" << knn[i].distance << '\n'
-                        << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
-                        << "tTrue:" << nanosecToMilliSec(timeBF) << "ms" << '\n'; 
+            output_file << "Aproximate Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
+                        << "True Nearest neighbor-" << i+1 << ": " << bruteForce[i].p->getId() << '\n'
+                        << "distanceAproximate: " << knn[i].distance << '\n'
+                        << "distanceTrue: " << bruteForce[i].distance << '\n';
         }else{
             output_file << "Nearest neighbor-" << i+1 << ": none\n"
-                        << "distanceLSH: -\n"
-                        << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
-                        << "tTrue:"  << nanosecToMilliSec(timeBF) << "ms" << endl; 
+                        << "distanceAproximate: -\n"
+                        << "distanceTrue: " << bruteForce[i].distance << '\n';
         }
+        timeAproximateSum += nanosecToMilliSec(timeLSH);
+        timeTrueSum += nanosecToMilliSec(timeBF);
     }
+
+    output_file << "tAproximateAverage: " << timeAproximateSum/k << "ms\n"
+                << "tTrueAverage: " << timeTrueSum/k << "ms\n"
+                << "MAF: " << "To-Do" << '\n' << endl;
 
     return 0;
 }

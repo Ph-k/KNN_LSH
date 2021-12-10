@@ -2,7 +2,7 @@
 #include "Utilities.h"
 #include "TimeSeries.h"
 
-#include <stdio.h>
+#include <iostream>
 #include <random>
 #include <time.h>
 
@@ -68,7 +68,7 @@ double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
 // Our own function to calculate dot product of two vector objects
 int dot_product(const vector<double> &x,const vector<double> &y){
 	if (x.size() != y.size()){
-        perror("dot product size not");
+        cerr << ("dot product vector size error!") << endl;
 		exit(1);
     }
 	int n = x.size();
