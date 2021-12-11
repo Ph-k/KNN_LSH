@@ -161,7 +161,7 @@ int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, TimeSe
     return 0;
 }
 
-TimeSeries* SimpleList::meanVector(){
+/*TimeSeries* SimpleList::meanVector(){
     ListNode* node = head;
 
     int tempVecSize = node->item.point->getXs().size();
@@ -185,7 +185,7 @@ TimeSeries* SimpleList::meanVector(){
 
     delete[] tempVec;
     return meanP;
-}
+}*/
 
 void SimpleList::empty(){
     ListNode* temp;

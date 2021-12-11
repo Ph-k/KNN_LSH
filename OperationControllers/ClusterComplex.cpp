@@ -10,7 +10,7 @@
 using namespace std;
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
-:io_files(io_files_ref), k(given_k), Clusters2(nullptr), LSHController(nullptr), HCController(nullptr){
+:io_files(io_files_ref), k(given_k), Clusters(nullptr), LSHController(nullptr), HCController(nullptr){
     silhouetteS.avgSil = nullptr;
 
     if(mthd != __CLASIC_METHOD){
@@ -27,74 +27,34 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd)
         p = io_files.ReadPoint();
     }
 
+    Clusters = new std::unordered_map<std::string, TimeSeries*>[k];
+
     Medoids = new ClusterObject[k];
+    for (int i = 0; i < k; i++)
+        Medoids[i] = nullptr;
     clusterIndexes = new int[points.size()];
 
-    /*random_medoid_indexes = new unsigned int[k];
-    random_medoid_size = 0;*/
+    initMedoids();
 
-    Clusters = new SimpleList[k];
-
-    // for (int i=0; i<k; i++){
-    //     Medoids[i] = drawRandomMedoid(this->points);
-    //     PointPointer pp = {Medoids[i], 0};
-    //     Clusters[i].Push(pp);
-    // }
-
-    // Initialization ++
-
-    int t=1, n=points.size();
-    int randIndex = randUInt(0, n-1);
-    std::vector<double> P(n-1);
-    std::vector<double> D(n-1);
-    Medoids[0] = points[randIndex];
-    points.erase(points.begin()+randIndex);
-
-    // Generate k Medoids probabillistically.
-    for (int i=1; i<k; i++){
-        // Use max of all min distances D(i) to normalize
-        D[0] = minDistance(points[0], t);
-        double maxD = D[0];
-        for(int j=1; j<n-t; j++){
-            D[j] = minDistance(points[j], t);
-            if(D[j] > maxD) maxD = D[j];
-        }
-        double currPr = 0.0;
-        for(int j=0; j<n-t; j++){
-            D[j] = D[j]/maxD;
-            P[j] = currPr + D[j]*D[j];
-            currPr = P[j];
-        }
-
-        // Select double precision number x from uniform distr.
-        // Find index r in P so that x <= P(r) and it's at the upper bound
-        double randP = (double)random_float(0.0, P[n-t-1]);
-        int index = upper_bound(P.begin(), P.end(), randP) - P.begin();
-        Medoids[i] = points[index];
-        points.erase(points.begin()+index);
-        PointPointer pp = {Medoids[i], 0};
-        Clusters[i].Push(pp);
-        P.pop_back();
-        D.pop_back();
-        t++;
-    }
-
-    for (int i=0; i<k; i++){
-        points.push_back(Medoids[i]);
-    }
-    Assign();
+    AssignLloyds();
 }
 
 
-void ClusterComplex::initMedoidsPP_LSH_HC(){
+void ClusterComplex::initMedoids(){
     vector<TimeSeries*>* allPoints;
     switch (this->method){
         case __LSH_METHOD:
             allPoints = &(LSHController->getAllPoints());
             break;
-        default:
+        case __HC_METHOD:
             allPoints = &(HCController->getAllPoints());
             break;
+        case __CLASIC_METHOD:
+            allPoints = &(points);
+            break;
+        default:
+            cerr << "Ivalid method in init medoids!" << endl;
+            exit(4);
     }
 
     // Initialization ++
@@ -128,7 +88,7 @@ void ClusterComplex::initMedoidsPP_LSH_HC(){
         int index = upper_bound(P.begin(), P.end(), randP) - P.begin();
         Medoids[i] = allPoints->at(index);
         allPoints->erase(allPoints->begin()+index);
-        Clusters2[i][Medoids[i]->getId()] = Medoids[i];
+        Clusters[i][Medoids[i]->getId()] = Medoids[i];
         P.pop_back();
         D.pop_back();
         t++;
@@ -141,7 +101,7 @@ void ClusterComplex::initMedoidsPP_LSH_HC(){
 }
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int k_lsh, int l_lsh)
-:io_files(io_files_ref), k(given_k), k_lsh(k_lsh), l_lsh(l_lsh), search_range(100), Clusters(nullptr), clusterIndexes(nullptr), HCController(nullptr){
+:io_files(io_files_ref), k(given_k), k_lsh(k_lsh), l_lsh(l_lsh), search_range(100), clusterIndexes(nullptr), Clusters(nullptr), HCController(nullptr){
     silhouetteS.avgSil = nullptr;
 
     if(mthd != __LSH_METHOD){
@@ -151,7 +111,7 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
 
     this->LSHController = new LSH(io_files_ref,150,k_lsh,l_lsh,1000);
 
-    Clusters2 = new std::unordered_map<std::string, TimeSeries*>[k];
+    Clusters = new std::unordered_map<std::string, TimeSeries*>[k];
 
     Medoids = new ClusterObject[k];
     for (int i = 0; i < k; i++)
@@ -160,13 +120,13 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
     /*random_medoid_indexes = new unsigned int[k];
     random_medoid_size = 0;*/
 
-    initMedoidsPP_LSH_HC();
+    initMedoids();
 
     AssignLSH_HC();
 }
 
 ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, int M_hc, int k_hc, int hc_probes)
-:io_files(io_files_ref), k(given_k), search_range(100), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), Clusters(nullptr), clusterIndexes(nullptr), LSHController(nullptr){
+:io_files(io_files_ref), k(given_k), search_range(100), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), clusterIndexes(nullptr), Clusters(nullptr), LSHController(nullptr){
     silhouetteS.avgSil = nullptr;
 
     if(mthd != __HC_METHOD){
@@ -176,43 +136,16 @@ ClusterComplex::ClusterComplex(FileReader &io_files_ref,int given_k, char mthd, 
 
     this->HCController = new HyperCube(io_files_ref,150,k_hc,hc_probes,1000);
 
-    Clusters2 = new std::unordered_map<std::string, TimeSeries*>[k];
-
+    Clusters = new std::unordered_map<std::string, TimeSeries*>[k];
 
     Medoids = new ClusterObject[k];
     for (int i = 0; i < k; i++)
         Medoids[i] = nullptr;
 
-    initMedoidsPP_LSH_HC();
+    initMedoids();
 
     AssignLSH_HC();
 }
-
-
-// drawRandomMedoid was used for the simple kmeans Lloyd's implimentation (not kmeans++)
-/*ClusterObject ClusterComplex::drawRandomMedoid(const vector<ClusterObject>& all_points){
-    unsigned int randIndex,i;
-    bool foundIndex = false;
-
-    randIndex = randUInt(0,all_points.size()-1);
-    do{
-        foundIndex = true;
-
-        for(i=0; i<random_medoid_size; i++){
-            if( random_medoid_indexes[i] == randIndex){
-                foundIndex = false;
-                randIndex = (randIndex < all_points.size())? randIndex+1 : 0;
-                break;
-            }
-        }
-
-    }while(foundIndex == false);
-
-    random_medoid_size++;
-
-    return all_points.at(randIndex);
-
-}*/
 
 ClusterComplex::~ClusterComplex()
 {
@@ -226,7 +159,6 @@ ClusterComplex::~ClusterComplex()
 
     if(LSHController != nullptr) delete LSHController;
     if(HCController != nullptr) delete HCController;
-    if(Clusters2 != nullptr) delete[] Clusters2;
 
     if(clusterIndexes != nullptr) delete[] clusterIndexes;
 
@@ -272,7 +204,7 @@ double ClusterComplex::minDistance(ClusterObject item, int t){
     return currDist;    
 }
 
-void ClusterComplex::Update(bool first){
+/*void ClusterComplex::Update(bool first){
 
     int i;
     PointPointer pp = {nullptr, 0};
@@ -290,16 +222,15 @@ void ClusterComplex::Update(bool first){
 
     }
 
-}
+}*/
 
-void ClusterComplex::Assign(){
+void ClusterComplex::AssignLloyds(){
 
     int clusterIndex;
     for(long unsigned int i=0; i<points.size(); i++){
         ClusterObject currPoint = points[i];
         clusterIndex = nearestCenter(currPoint);
-        PointPointer pp = {currPoint, 0};
-        Clusters[clusterIndex].Push(pp);
+        Clusters[clusterIndex][currPoint->getId()] = currPoint;
         clusterIndexes[i] = clusterIndex;
     }
 }
@@ -341,20 +272,20 @@ double averageDistance(std::unordered_map<std::string, TimeSeries*> &Cluster, Ti
     return tempDist;
 }
 
-void ClusterComplex::UpdateLSH_HC(){
+void ClusterComplex::Update(){
 
     int i;
     TimeSeries *newMedoid;
 
     for(i=0; i<k; i++){
-        newMedoid = meanVector(Clusters2[i]);
+        newMedoid = meanVector(Clusters[i]);
         if(newMedoid != nullptr){
             delete Medoids[i];
             //if(Medoids[i]->getId() != nullptr) delete Medoids[i];
             Medoids[i] = newMedoid;
         }
 
-        Clusters2[i].clear();
+        Clusters[i].clear();
     }
 
 }
@@ -380,42 +311,45 @@ void ClusterComplex::AssignLSH_HC(){
         case __LSH_METHOD:
             allPoints = &(LSHController->getAllPoints());
             break;
-        default:
+        case __HC_METHOD:
             allPoints = &(HCController->getAllPoints());
             break;
+        default:
+            cerr << "Ivalid method in AssignLSH_HC!" << endl;
+            exit(4);
     }
 
-    R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters2,k,allPoints->size());
+    R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters,k,allPoints->size());
     while(R_A_T_Value < THRESHOLD && R_A_T_Value != R_A_T_Value_old){
         switch (this->method){
             case __LSH_METHOD:
                 for(i=0; i<k; i++){
-                    LSHController->reverseRangeSearch(local_search_range,Clusters2,k,i,Medoids);
+                    LSHController->reverseRangeSearch(local_search_range,Clusters,k,i,Medoids);
                 }
                 break;
             default:
                 for(i=0; i<k; i++){
-                    HCController->reverseRangeSearch(local_search_range,Clusters2,k,i,Medoids,this->M_hc);
+                    HCController->reverseRangeSearch(local_search_range,Clusters,k,i,Medoids,this->M_hc);
                 }
                 break;
         }
         local_search_range *= 2;
         R_A_T_Value_old = R_A_T_Value;
-        R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters2,k,allPoints->size());
+        R_A_T_Value = ReverseAssignLSH_HCThreshold(Clusters,k,allPoints->size());
     }
 
 
     for(auto point: *allPoints){
         found = false;
         for(i=0; i<k; i++){
-            if( Clusters2[i].find(point->getId()) != Clusters2[i].end() ){
+            if( Clusters[i].find(point->getId()) != Clusters[i].end() ){
                 found = true;
                 break;
             }
         }
         if(found == false){
             clusterIndex = nearestCenter(point);
-            Clusters2[clusterIndex][point->getId()]=point;
+            Clusters[clusterIndex][point->getId()]=point;
         }
     }
 }
@@ -423,26 +357,24 @@ void ClusterComplex::AssignLSH_HC(){
 void ClusterComplex::kMeans(int epochs){
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
-    bool first = true;
     for (int i=0; i<epochs; i++){
         switch (this->method){
             case __CLASIC_METHOD:
-                Update(first);
-                Assign();
+                Update();
+                AssignLloyds();
                 break;
             default:
-                UpdateLSH_HC();
+                Update();
                 AssignLSH_HC();
                 break;
         }
-        first = false;
     }
 
     clustering_time = (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
 
 }
 
-silhouetteStats *ClusterComplex::Silhouette(){
+/*silhouetteStats *ClusterComplex::Silhouette(){
 
     double a_i, b_i;
     double s_i;
@@ -467,9 +399,9 @@ silhouetteStats *ClusterComplex::Silhouette(){
     silhouetteS.OSC = silhouetteS.OSC/(double)points.size();
 
     return &silhouetteS;
-}
+}*/
 
-silhouetteStats *ClusterComplex::umapSilhouette(){
+silhouetteStats *ClusterComplex::Silhouette(){
 
     double a_i, b_i;
     double s_i;
@@ -482,15 +414,21 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
         case __LSH_METHOD:
             allPoints = &(LSHController->getAllPoints());
             break;
-        default:
+        case __HC_METHOD:
             allPoints = &(HCController->getAllPoints());
             break;
+        case __CLASIC_METHOD:
+            allPoints = &(points);
+            break;
+        default:
+            cerr << "Ivalid method in Silhouette!" << endl;
+            exit(4);
     }
 
     for(long unsigned int i=0; i<allPoints->size(); i++){
         int clusterIndex = findClusterIndex(allPoints->at(i));
-        a_i = averageDistance(Clusters2[clusterIndex], allPoints->at(i));
-        b_i = averageDistance(Clusters2[nearestCenter(allPoints->at(i), true)],allPoints->at(i));
+        a_i = averageDistance(Clusters[clusterIndex], allPoints->at(i));
+        b_i = averageDistance(Clusters[nearestCenter(allPoints->at(i), true)],allPoints->at(i));
         if(a_i == b_i)
             s_i = 0;
         else if(a_i < b_i)
@@ -502,7 +440,7 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
     }
 
     for(int i=0; i<k; i++){
-        silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters2[i].size();
+        silhouetteS.avgSil[i] = silhouetteS.avgSil[i]/(double)Clusters[i].size();
     }
     silhouetteS.OSC = silhouetteS.OSC/(double)allPoints->size();
 
@@ -511,7 +449,7 @@ silhouetteStats *ClusterComplex::umapSilhouette(){
 
 int ClusterComplex::findClusterIndex(TimeSeries *p){
   for(int i=0; i<k; i++){
-    if( Clusters2[i].find(p->getId()) != Clusters2[i].end() ){
+    if( Clusters[i].find(p->getId()) != Clusters[i].end() ){
       return i;
     }
   }

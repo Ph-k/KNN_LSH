@@ -26,7 +26,7 @@ class SimpleList{
 
         // RangeSearch for clustering
         int reverseRangeSearch(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M);
-        TimeSeries* meanVector();
+        //TimeSeries* meanVector();
         inline unsigned int size(){ return T;}
         ~SimpleList();
         void empty();

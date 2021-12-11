@@ -7,14 +7,19 @@ search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R
 search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 3 -M 150 -algorithm Hypercube
 search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6
 
+cluster_flags = -i ../input_small_id -c ./cluster.conf -o ./output.clustering -m LSH
+
 search_exe = search
+cluster_exe = cluster
 
 sourcePath = ./
 
 OperationControllersLocation = $(sourcePath)OperationControllers/
 OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
 
-Objects = $(sourcePath)mainA.cpp
+ObjectsA = $(sourcePath)mainA.cpp
+
+ObjectsB = $(sourcePath)mainCluster.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
@@ -35,10 +40,13 @@ CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesO
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(search_exe)
+all: $(search_exe) $(cluster_exe)
 
-$(search_exe): $(CommonObejects) $(Objects)
-	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(Objects) -o $@
+$(search_exe): $(CommonObejects) $(ObjectsA)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsA) -o $@
+
+$(cluster_exe): $(CommonObejects) $(ObjectsB)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsB) -o $@
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
@@ -66,6 +74,9 @@ rScube: $(search_exe)
 
 rSdfr: $(search_exe)
 	./$(search_exe) $(search_flags_dfr)
+
+rCluster: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags)
 
 val: $(search_exe)
 	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags)

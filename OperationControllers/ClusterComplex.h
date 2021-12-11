@@ -31,16 +31,14 @@ class ClusterComplex{
         int k_lsh, l_lsh, search_range, M_hc, k_hc, hc_probes;
         ClusterObject *Medoids;
         std::vector<ClusterObject> points;
-        SimpleList *Clusters;
         int *clusterIndexes;
         int clustering_time;
-        std::unordered_map<std::string, TimeSeries*> *Clusters2;
-        void Update(bool first = true);
-        void UpdateLSH_HC();
-        void Assign();
+        std::unordered_map<std::string, TimeSeries*> *Clusters;
+        //void Update(bool first = true);
+        void Update();
+        void AssignLloyds();
         void AssignLSH_HC();
-        //ClusterObject drawRandomMedoid(const std::vector<ClusterObject>& all_points);
-        void initMedoidsPP_LSH_HC();
+        void initMedoids();
         char method;
         LSH* LSHController;
         HyperCube* HCController;
@@ -55,11 +53,10 @@ class ClusterComplex{
         int nearestCenter(ClusterObject item, bool sec=false);
         double minDistance(ClusterObject item, int t);
         void kMeans(int epochs);
-        inline SimpleList *getClustersList(){return Clusters;};
-        inline std::unordered_map<std::string, TimeSeries*> *getClustersUmap(){return Clusters2;};
+        inline std::unordered_map<std::string, TimeSeries*> *getClusters(){return Clusters;};
         inline ClusterObject *getMedoids(){return Medoids;};
         inline int getClusteringTimes(){return clustering_time;};
+        //silhouetteStats *Silhouette();
         silhouetteStats *Silhouette();
-        silhouetteStats *umapSilhouette();
 };
 
