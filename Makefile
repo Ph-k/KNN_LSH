@@ -15,11 +15,11 @@ cluster_exe = cluster
 sourcePath = ./
 
 OperationControllersLocation = $(sourcePath)OperationControllers/
-OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterComplex.o
+OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(OperationControllersLocation)LSH.o $(OperationControllersLocation)HyperCube.o $(OperationControllersLocation)ClusterInterface.o $(OperationControllersLocation)ClusterLSH.o $(OperationControllersLocation)ClusterHC.o $(OperationControllersLocation)ClusterLloyds.o
 
 ObjectsA = $(sourcePath)mainA.cpp
 
-ObjectsB = $(sourcePath)mainCluster.cpp
+# ObjectsB = $(sourcePath)mainCluster.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
@@ -40,7 +40,7 @@ CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesO
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(search_exe) $(cluster_exe)
+all: $(search_exe) #$(cluster_exe)
 
 $(search_exe): $(CommonObejects) $(ObjectsA)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsA) -o $@

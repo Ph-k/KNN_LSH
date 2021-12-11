@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-#include "ClusterComplex.h"
+#include "ClusterInterface.h"
 
 #define WORD_SEPERATOR ' '
 
