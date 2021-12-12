@@ -2,8 +2,8 @@
 
 using namespace std;
 
-ClusterLSH::ClusterLSH(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject),int k_lsh, int l_lsh)
-:ClusterInterface(io_files_ref, given_k, metric_func), k_lsh(k_lsh), l_lsh(l_lsh), search_range(100)
+ClusterLSH::ClusterLSH(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject),int k_lsh, int l_lsh, char update_metric)
+:ClusterInterface(io_files_ref, given_k, metric_func, update_metric), k_lsh(k_lsh), l_lsh(l_lsh), search_range(100)
 {
     this->LSHController = new LSH(io_files_ref,150,k_lsh,l_lsh,1000);
 

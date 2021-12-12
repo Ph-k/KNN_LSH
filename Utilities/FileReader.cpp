@@ -187,7 +187,7 @@ TimeSeries* FileReader::getQuery(string id){
     return p->second;
 }
 
-int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, char mode, char fr_mode){
+int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, char mode, double &MAF, char fr_mode){
     char const *method = "Unknown";
     switch (mode){
         case __LSH_MODE:
@@ -216,15 +216,16 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
                         << "distanceAproximate: -\n"
                         << "distanceTrue: " << bruteForce[i].distance << "\n\n";
         }
+        MAF = max( MAF, knn[i].distance / bruteForce[i].distance );
     }
 
     return 0;
 }
 
-int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count){
+int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count, double MAF){
     output_file << "tAproximateAverage: " << timeAprx/count << "ms\n"
                 << "tTrueAverage: " << timeBF/count << "ms\n"
-                << "MAF: " << "To-Do" << '\n' << endl;
+                << "MAF: " << MAF << '\n' << endl;
 
     return 0;
 }

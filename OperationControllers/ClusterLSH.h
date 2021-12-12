@@ -10,6 +10,6 @@ private:
     LSH *LSHController;
     void Assign();
 public:
-    ClusterLSH(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject),int k_lsh, int l_lsh);
+    ClusterLSH(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject),int k_lsh, int l_lsh,char update_metric);
     ~ClusterLSH();
 };

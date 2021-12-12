@@ -6,33 +6,34 @@
 #include "LSH.h"
 #include "FileReader.h"
 #include "HyperCube.h"
+#include "CurveArray.h"
 
 using namespace std;
 
-ClusterInterface::ClusterInterface(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject))
+TimeSeries *meanVector(std::unordered_map<std::string, TimeSeries*> &Cluster); //F.D.
+
+TimeSeries *meanCurve(std::unordered_map<std::string, TimeSeries*> &Cluster); //F.D.
+
+
+ClusterInterface::ClusterInterface(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject), char update_metric)
 :io_files(io_files_ref), k(given_k), metric_func(metric_func),Clusters(nullptr){
     silhouetteS.avgSil = nullptr;
-
-    // We start by reading the input
-    // TimeSeries* p = io_files.ReadPoint();
-    // while( p != nullptr){
-
-    //     this->points.push_back(p);
-
-    //     p = io_files.ReadPoint();
-    // }
 
     Clusters = new std::unordered_map<std::string, TimeSeries*>[k];
 
     Medoids = new ClusterObject[k];
     for (int i = 0; i < k; i++)
         Medoids[i] = nullptr;
-    
-    // clusterIndexes = new int[points.size()];
 
-    // initMedoids();
+    switch (update_metric){
+        case __MEAN_VEC_UPDATE:
+            this->mean_func = &meanVector;
+            break;
+        case __MEAN_FR_UPDATE:
+            this->mean_func = &meanCurve;
+            break;
+    }
 
-    //AssignLloyds();
 }
 
 void ClusterInterface::initMedoids(){
@@ -132,12 +133,17 @@ TimeSeries *meanVector(std::unordered_map<std::string, TimeSeries*> &Cluster){
 
     std::vector<__TIMESERIES_X_TYPE> *meanVec = new std::vector<__TIMESERIES_X_TYPE>;
     for(int i=0; i<tempVecSize; i++)
-        meanVec->push_back((int)tempVec[i]);
+        meanVec->push_back(tempVec[i]);
     std::string *no_s = nullptr;
     TimeSeries *meanP = new TimeSeries(meanVec, no_s);
 
     delete[] tempVec;
     return meanP;
+}
+
+TimeSeries *meanCurve(std::unordered_map<std::string, TimeSeries*> &Cluster){
+    CurveArray ca(Cluster);
+    return ca.postOrderTraversal();
 }
 
 double averageDistance(std::unordered_map<std::string, TimeSeries*> &Cluster, TimeSeries *item){
@@ -159,7 +165,7 @@ void ClusterInterface::Update(){
     TimeSeries *newMedoid;
 
     for(i=0; i<k; i++){
-        newMedoid = meanVector(Clusters[i]);
+        newMedoid = this->mean_func(Clusters[i]);
         if(newMedoid != nullptr){
             delete Medoids[i];
             Medoids[i] = newMedoid;

@@ -4,7 +4,7 @@
 using namespace std;
 
 ClusterHC::ClusterHC(FileReader &io_files_ref,int given_k, int M_hc, int k_hc, int hc_probes)
-:ClusterInterface(io_files_ref, given_k, &euclidean_distance), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), search_range(100)
+:ClusterInterface(io_files_ref, given_k, &euclidean_distance, __MEAN_VEC_UPDATE), M_hc(M_hc), k_hc(k_hc), hc_probes(hc_probes), search_range(100)
 {
     this->HCController = new HyperCube(io_files_ref,150,k_hc,hc_probes,1000);
 

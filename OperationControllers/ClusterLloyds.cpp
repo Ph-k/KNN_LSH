@@ -2,8 +2,8 @@
 #include "Utilities.h"
 #include "FileReader.h"
 
-ClusterLloyds::ClusterLloyds(FileReader &io_files_ref,int given_k)
-:ClusterInterface(io_files_ref, given_k, &euclidean_distance)
+ClusterLloyds::ClusterLloyds(FileReader &io_files_ref,int given_k, char update_metric)
+:ClusterInterface(io_files_ref, given_k, &euclidean_distance, update_metric)
 {
     // We start by reading the input
     TimeSeries* p = io_files.ReadPoint();

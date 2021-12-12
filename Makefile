@@ -7,7 +7,7 @@ search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R
 search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 3 -M 150 -algorithm Hypercube
 search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6
 
-cluster_flags = -i ../input_small_id -c ./cluster.conf -o ./output.clustering -m LSH
+cluster_flags = -i ../input.csv -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Frechet
 
 search_exe = search
 cluster_exe = cluster
@@ -19,10 +19,10 @@ OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(O
 
 ObjectsA = $(sourcePath)mainA.cpp
 
-# ObjectsB = $(sourcePath)mainCluster.cpp
+ObjectsB = $(sourcePath)mainCluster.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
-DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o
+DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o $(DataStructuresLocation)CurveArray.o
 
 UtilitiesLocation = $(sourcePath)Utilities/
 UtilitiesObjects = $(UtilitiesLocation)Utilities.o $(UtilitiesLocation)FileReader.o $(UtilitiesLocation)TimeSeries.o
@@ -40,7 +40,7 @@ CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesO
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(search_exe) #$(cluster_exe)
+all: $(search_exe) $(cluster_exe)
 
 $(search_exe): $(CommonObejects) $(ObjectsA)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsA) -o $@
@@ -78,11 +78,11 @@ rSdfr: $(search_exe)
 rCluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
 
-val: $(search_exe)
-	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags)
+val: $(cluster_exe)
+	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
 
-gdb: $(search_exe)
-	gdb ./$(search_exe)
+gdb: $(cluster_exe)
+	gdb ./$(cluster_exe)
 
 clean:
 	rm $(CommonObejects) $(search_exe)

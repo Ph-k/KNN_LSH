@@ -3,7 +3,12 @@
 #define __CLASIC_METHOD 0
 #define __LSH_METHOD 1
 #define __HC_METHOD 2
-#define __INVALID_METHOD 3
+#define __LSH_FR_METHOD 3
+#define __INVALID_METHOD 4
+
+#define __MEAN_FR_UPDATE 5
+#define __MEAN_VEC_UPDATE 6
+#define __INVALID_UPDATE 7
 
 #include <unordered_map>
 
@@ -44,8 +49,9 @@ protected:
         silhouetteStats silhouetteS;
         int findClusterIndex(TimeSeries *p);
         virtual std::vector<TimeSeries*>* getAllPoints() = 0;
+        TimeSeries* (*mean_func)(std::unordered_map<std::string, TimeSeries*> &);
 public:
-    ClusterInterface(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject));
+    ClusterInterface(FileReader &io_files_ref,int given_k, double (*metric_func)(ClusterObject, ClusterObject), char update_metric);
     virtual ~ClusterInterface();
     void Insert(ClusterObject item);
     int nearestCenter(ClusterObject item, bool sec=false);

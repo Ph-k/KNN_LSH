@@ -150,7 +150,8 @@ int main(int argc, char const *argv[]){
 
 
     unsigned int index = 0;
-    double time_aprx = 0.0, time_brute_force = 0.0;
+    long double time_brute_force = 0.0;
+    double time_aprx = 0.0, MAF = -1.0;
     PD *knn = nullptr, *brute_force = nullptr;
     unordered_map<string, TimeSeries*> r_neighbors;
 
@@ -161,7 +162,7 @@ int main(int argc, char const *argv[]){
 
         time_brute_force += nanosecToMilliSec(operations->bruteForceNN(query.second,L,1,&brute_force));
 
-        io_files.writeQuery(query.first, knn, brute_force, 1, method);
+        io_files.writeQuery(query.first, knn, brute_force, 1, method,MAF);
 
         /*operations->rangeSearch(radius, r_neighbors, query.second);
 
@@ -169,7 +170,7 @@ int main(int argc, char const *argv[]){
         index++;
     }
 
-    io_files.writeQueryTimes(time_aprx, time_brute_force, index);
+    io_files.writeQueryTimes(time_aprx, time_brute_force, index, MAF);
 
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;
