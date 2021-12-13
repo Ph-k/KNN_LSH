@@ -23,11 +23,11 @@ Curve::Curve(const Points &points, const std::string &name) : Points(points), vs
     #endif
 }
 
-Curve::Curve(const py::array_t<coordinate_t> &in, const std::string &name) : Points(in.request().shape[0], in.request().ndim > 1 ? in.request().shape[1] : 1), name{name}, vstart{0}, vend{Points::size() - 1} {
+/*Curve::Curve(const py::array_t<coordinate_t> &in, const std::string &name) : Points(in.request().shape[0], in.request().ndim > 1 ? in.request().shape[1] : 1), name{name}, vstart{0}, vend{Points::size() - 1} {
     const auto array_dim = in.ndim();
     
     if (array_dim > 2){
-        std::cerr << "A Curve requires a 1- or 2-dimensional numpy array of type " << typeid(coordinate_t).name() << "." << std::endl;
+        //std::cerr << "A Curve requires a 1- or 2-dimensional numpy array of type " << typeid(coordinate_t).name() << "." << std::endl;
         std::cerr << "Current dimensions: " << array_dim << std::endl;
         std::cerr << "WARNING: constructed empty curve" << std::endl;
         return;
@@ -55,7 +55,7 @@ Curve::Curve(const py::array_t<coordinate_t> &in, const std::string &name) : Poi
         std::cerr << "WARNING: constructed empty curve" << std::endl;
     return; 
     }
-}
+}*/
 
 Curves Curves::simplify(const curve_size_t l, const bool approx = false) {
     Curves result(size(), l, Curves::dimensions());
