@@ -17,13 +17,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sstream>
 #include <type_traits>
 
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
+// #include <pybind11/pybind11.h>
+// #include <pybind11/numpy.h>
 
 #include "types.hpp"
 #include "interval.hpp"
 
-namespace py = pybind11;
+// namespace py = pybind11;
 
 class Point : public Coordinates {
 public:    
@@ -184,13 +184,13 @@ public:
         return Interval(std::max(parameter_t(0), lambda1), std::min(parameter_t(1), lambda2));
     }
     
-     inline auto as_ndarray() const {
-        py::list l;
-        for (const coordinate_t &elem : *this) {
-            l.append(elem);
-        }
-        return py::array_t<coordinate_t>(l);
-    }
+    //  inline auto as_ndarray() const {
+    //     py::list l;
+    //     for (const coordinate_t &elem : *this) {
+    //         l.append(elem);
+    //     }
+    //     return py::array_t<coordinate_t>(l);
+    // }
     
     std::string str() const;
     
@@ -236,13 +236,13 @@ public:
         return dim;
     }
     
-    inline auto as_ndarray() const {
-        py::list l;
-        for (const Point &elem : *this) {
-            l.append(elem.as_ndarray());
-        }
-        return py::array_t<coordinate_t>(l);
-    }
+    // inline auto as_ndarray() const {
+    //     py::list l;
+    //     for (const Point &elem : *this) {
+    //         l.append(elem.as_ndarray());
+    //     }
+    //     return py::array_t<coordinate_t>(l);
+    // }
     
     std::string str() const;
     
