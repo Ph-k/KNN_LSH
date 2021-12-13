@@ -40,7 +40,7 @@ CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesO
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(search_exe) $(cluster_exe)
+all: $(search_exe) $(cluster_exe) fredLib
 
 $(search_exe): $(CommonObejects) $(ObjectsA)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsA) -o $@
@@ -66,6 +66,11 @@ $(LSHHashFuncsLocation)%.o: $(LSHHashFuncsLocation)%.cpp
 $(OperationControllersLocation)%.o: $(OperationControllersLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
+fredLib:
+	cd ./FredLib && make && cd ..
+
+.PHONY: fredLib
+
 rSlsh: $(search_exe)
 	./$(search_exe) $(search_flags_lsh)
 
@@ -85,4 +90,4 @@ gdb: $(cluster_exe)
 	gdb ./$(cluster_exe)
 
 clean:
-	rm $(CommonObejects) $(search_exe)
+	rm $(CommonObejects) $(search_exe) && cd ./FredLib && make clean && cd ..
