@@ -7,18 +7,13 @@ using namespace std;
 
 LSH::LSH(
     FileReader &io_files_ref,
-    int w, int k, int l,int delta, int hash_table_size, char metric
+    int w, int k, int l,double delta, int hash_table_size, char metric
 /*good practice https://stackoverflow.com/questions/4162021/is-it-ok-to-call-a-function-in-constructor-initializer-list*/
 ):MappingMethod(io_files_ref),L(l), metric(metric){
 
     this->hash_tables = new HashTable*[l];
     for(int i=0; i<l; i++){
-        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(), metric);
-    }
-    if(metric == __FRECHET_DISCRETE_MODE){
-        Frechet = new HashDF(delta ,io_files.getDimension()); // delta must be given!!!!!!
-    }else{
-        Frechet = nullptr;
+        this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(), metric, delta);
     }
 
     vector<__TIMESERIES_X_TYPE> *q_vec;
@@ -26,22 +21,10 @@ LSH::LSH(
     TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){
 
-        if(metric == __FRECHET_DISCRETE_MODE){
-            q_vec = Frechet->Snap(p->getXs());
-
-            this->points.push_back(p);
-            for(int i=0; i<l; i++){
-                this->hash_tables[i]->InsertQ(p,*q_vec);
-            }
-
-            delete q_vec;
-
-        }else{
-            this->points.push_back(p);
-            for(int i=0; i<l; i++){
-                this->hash_tables[i]->Insert(p);
-            }
-        }
+    this->points.push_back(p);
+    for(int i=0; i<l; i++){
+        this->hash_tables[i]->Insert(p);
+    }
 
         p = io_files.ReadPoint();
     }

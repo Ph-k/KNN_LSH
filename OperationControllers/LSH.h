@@ -18,7 +18,7 @@ class LSH: public MappingMethod{
     public:
         LSH(
             FileReader &io_files_ref,
-            int w, int k, int l, int delta, int hash_table_size=10, char metric = __LSH_MODE
+            int w, int k, int l, double delta, int hash_table_size=10, char metric = __LSH_MODE
         );
         int kNN_Search(int L, int k, PD **b, std::string &id);
         int kNN_Search(int L, int k, PD **b, TimeSeries *q);

@@ -4,17 +4,18 @@
 #include "HashHC.h"
 #include <stdio.h>
 #include <iostream>
+#include "./FredLib/FredLibWrapper.h"
 
 using namespace std;
 
 
-HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, int probes)
+HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, double delta)
 :table_size(given_table_size)
 {
-    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE){
-        hashing = new HashLSH(w,k,given_table_size,vecSize);
+    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE || type==__FRECHET_CONTINUOUS_MODE){
+        hashing = new HashLSH(w,k,given_table_size,vecSize,type,delta);
     }else if ( type == __H_CUBE_MODE) {
-        hashing = new HashHC(w,k,given_table_size,vecSize,probes);
+        cerr << "wrong constructor for requested method in hashtable!" << endl; exit(2);
     }else {cerr << "no mode specified to hashtable!" << endl; exit(2);};
 
     this->bucket = new SimpleList[given_table_size];
@@ -23,21 +24,29 @@ HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, c
     if( type == __FRECHET_DISCRETE_MODE )
         for(unsigned int i=0; i<given_table_size; i++)
             (this->bucket[i]).alterDistanceMetric(&dfr_distance);
+    else if(type == __FRECHET_CONTINUOUS_MODE){
+        for(unsigned int i=0; i<given_table_size; i++)
+            (this->bucket[i]).alterDistanceMetric(&cfr_distance);
+    }
+
+}
+
+HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, int probes)
+:table_size(given_table_size)
+{
+    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE || type==__FRECHET_CONTINUOUS_MODE){
+        cerr << "wrong constructor for requested method in hashtable!" << endl; exit(2);
+    }else if ( type == __H_CUBE_MODE) {
+        hashing = new HashHC(w,k,given_table_size,vecSize,probes);
+    }else {cerr << "no mode specified to hashtable!" << endl; exit(2);};
+
+    this->bucket = new SimpleList[given_table_size];
+    if(this->bucket == nullptr) cerr << "Not enough memory to create hashtable!" << endl;
 
 }
 
 int HashTable::Insert(HashItem item){
     int Id_p = hashing->Hash(item->getXs());
-    struct PointPointer pp = { item, Id_p };
-
-    int *hash_indexes = hashing->HashIndex(pp.Id,true);
-    if( bucket[hash_indexes[0]].Push(pp) != 0) return -1;
-    delete[] hash_indexes;
-    return 0;
-}
-
-int HashTable::InsertQ(HashItem item, vector<__TIMESERIES_X_TYPE> &q_vec){
-    int Id_p = hashing->Hash(q_vec);
     struct PointPointer pp = { item, Id_p };
 
     int *hash_indexes = hashing->HashIndex(pp.Id,true);

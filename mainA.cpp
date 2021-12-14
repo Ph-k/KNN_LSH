@@ -13,7 +13,8 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
 
-    int i, K=-1, L=-1, number_of_nearest=-1, radius=-1, M=-1, probes=-1, delta=-1;
+    int i, K=-1, L=-1, number_of_nearest=-1, radius=-1, M=-1, probes=-1;
+    double delta = -1.0;
     char method=-1;
     char const *input_file  = nullptr, *query_file = nullptr, *output_file = nullptr, *method_string = nullptr, *frechet_method_string = nullptr;
 
@@ -37,7 +38,7 @@ int main(int argc, char const *argv[]){
 		}else if( strcmp(argv[i],"-probes") == 0){
 			probes = atoi(argv[++i]);
 		}else if( strcmp(argv[i],"-delta") == 0){
-			delta = atoi(argv[++i]);
+			delta = atof(argv[++i]);
 		}else if( strcmp(argv[i],"-algorithm") == 0){
 			method_string = argv[++i];
 
@@ -113,9 +114,9 @@ int main(int argc, char const *argv[]){
     }
 
     if( method == __FRECHET_DISCRETE_MODE || method == __FRECHET_CONTINUOUS_MODE ){
-        if(delta == -1){
+        if(delta == -1.0){
             cout << "search: using default value for argument delta" << endl;
-            delta = 5;
+            delta = 5.0;
         }
     }
 

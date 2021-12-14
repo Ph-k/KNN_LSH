@@ -5,7 +5,8 @@ valgrindFlags = --leak-check=full
 
 search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 3 -L 3 -algorithm LSH
 search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 3 -M 150 -algorithm Hypercube
-search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6
+search_flags_dfr = -i ../input.csv -q ../query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
+search_flags_cfr = -i ../input.csv -q ../query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2
 
 cluster_flags = -i ../input.csv -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Frechet
 
@@ -36,11 +37,17 @@ CubeHashFuncsObjects = $(CubeHashFuncsLocation)HashHC.o
 HashInterfacesLocation = $(sourcePath)HashFunctions/
 HashInterfacesObjects = $(HashInterfacesLocation)HashInterface.o $(HashInterfacesLocation)HashDF.o $(HashInterfacesLocation)Hhashing.o
 
-CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects)
+CommonObejects =  $(DataStructuresObjects) $(UtilitiesObjects) $(HashInterfacesObjects) $(LSHHashFuncsObjects) $(CubeHashFuncsObjects) $(OperationControllersObjects) $(FredLibObjects)
+
+FREDCC = g++
+fred_cflags = -march=native -Ofast -static-libgcc -static-libstdc++ -std=c++14 -fpermissive -fPIC -ffast-math -fno-trapping-math -ftree-vectorize
+
+FredLibLocation = $(sourcePath)FredLib/
+FredLibObjects = $(FredLibLocation)config.o $(FredLibLocation)curve.o $(FredLibLocation)frechet.o $(FredLibLocation)interval.o $(FredLibLocation)point.o $(FredLibLocation)simplification.o $(FredLibLocation)FredLibWrapper.o
 
 includePaths = -I./  -I$(DataStructuresLocation) -I$(CubeHashFuncsLocation) -I$(LSHHashFuncsLocation) -I$(UtilitiesLocation) -I$(OperationControllersLocation)
 
-all: $(search_exe) $(cluster_exe) fredLib
+all: $(search_exe) $(cluster_exe)
 
 $(search_exe): $(CommonObejects) $(ObjectsA)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsA) -o $@
@@ -63,13 +70,11 @@ $(CubeHashFuncsLocation)%.o: $(CubeHashFuncsLocation)%.cpp
 $(LSHHashFuncsLocation)%.o: $(LSHHashFuncsLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
+$(FredLibLocation)%.o: $(FredLibLocation)%.cpp
+	$(FREDCC) $(fred_cflags) -c $< -o $@
+
 $(OperationControllersLocation)%.o: $(OperationControllersLocation)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
-
-fredLib:
-	cd ./FredLib && make && cd ..
-
-.PHONY: fredLib
 
 rSlsh: $(search_exe)
 	./$(search_exe) $(search_flags_lsh)
@@ -79,6 +84,9 @@ rScube: $(search_exe)
 
 rSdfr: $(search_exe)
 	./$(search_exe) $(search_flags_dfr)
+
+rScfr: $(search_exe)
+	./$(search_exe) $(search_flags_cfr)
 
 rCluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
@@ -90,4 +98,4 @@ gdb: $(cluster_exe)
 	gdb ./$(cluster_exe)
 
 clean:
-	rm $(CommonObejects) $(search_exe) && cd ./FredLib && make clean && cd ..
+	rm $(CommonObejects) $(search_exe) $(FredLibObjects) $(cluster_exe)

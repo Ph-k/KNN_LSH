@@ -1,5 +1,5 @@
 #include <vector>
-#include "TimeSeries.h"
+#include "../Utilities/TimeSeries.h"
 
 
 std::vector<__TIMESERIES_X_TYPE> *Simplify(const std::vector<__TIMESERIES_X_TYPE> &p);
