@@ -186,7 +186,7 @@ public:
     //     //return py::array_t<coordinate_t>(l);
     // }
     
-    Curves simplify(const curve_size_t, const bool);
+    //Curves simplify(const curve_size_t, const bool);
     
     std::string str() const;
     

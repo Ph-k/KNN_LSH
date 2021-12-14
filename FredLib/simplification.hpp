@@ -120,6 +120,6 @@ public:
 };
 
 Curve approximate_minimum_link_simplification(const Curve&, const distance_t);
-Curve approximate_minimum_error_simplification(const Curve&, const curve_size_t);
+//Curve approximate_minimum_error_simplification(const Curve&, const curve_size_t);
  
 };

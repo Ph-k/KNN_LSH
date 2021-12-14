@@ -57,7 +57,7 @@ Curve::Curve(const Points &points, const std::string &name) : Points(points), vs
     }
 }*/
 
-Curves Curves::simplify(const curve_size_t l, const bool approx = false) {
+/*Curves Curves::simplify(const curve_size_t l, const bool approx = false) {
     Curves result(size(), l, Curves::dimensions());
     for (curve_number_t i = 0; i < size(); ++i) {
         if (approx) {
@@ -75,7 +75,7 @@ Curves Curves::simplify(const curve_size_t l, const bool approx = false) {
         #endif
     }
     return result;
-}
+}*/
 
 std::string Curve::repr() const {
     std::stringstream ss;

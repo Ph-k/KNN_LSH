@@ -68,7 +68,7 @@ Curve Simplification::approximate_minimum_link_simplification(const Curve &pcurv
     return simplification;
 }
 
-Curve Simplification::approximate_minimum_error_simplification(const Curve &curve, const curve_size_t ell) {
+/*Curve Simplification::approximate_minimum_error_simplification(const Curve &curve, const curve_size_t ell) {
     if (Config::verbosity > 1) std::cout << "ASIMPL: computing approximate minimum error simplification" << std::endl;
     Curve simplification(curve.dimensions()), segment(2, curve.dimensions());
     
@@ -107,4 +107,4 @@ Curve Simplification::approximate_minimum_error_simplification(const Curve &curv
         --diff;
     }
     return simplification;
-}
+}*/
