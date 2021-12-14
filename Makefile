@@ -94,8 +94,8 @@ rCluster: $(cluster_exe)
 val: $(cluster_exe)
 	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
 
-gdb: $(cluster_exe)
-	gdb ./$(cluster_exe)
+gdb: $(search_exe)
+	gdb ./$(search_exe)
 
 clean:
-	rm $(CommonObejects) $(search_exe) $(FredLibObjects) $(cluster_exe)
+	rm $(CommonObejects) $(search_exe) $(cluster_exe)

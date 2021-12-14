@@ -28,6 +28,14 @@ vector<__TIMESERIES_X_TYPE> *FredPointToPointVector(Point& simplified_fred_point
 
 vector<__TIMESERIES_X_TYPE> *Simplify(const std::vector<__TIMESERIES_X_TYPE> &p){
     vector<__TIMESERIES_X_TYPE> *q_vec = new vector<__TIMESERIES_X_TYPE>(p);
+    size_t i,size = q_vec->size();
+    for(i=1; i<size-1; i++){
+        if( abs( q_vec->at(i-1)-q_vec->at(i) ) <= epsilon && abs( q_vec->at(i)-q_vec->at(i+1) ) <= epsilon ){
+            q_vec->erase(q_vec->begin() + i);
+            i--;
+            size = q_vec->size();
+        }
+    }
     return q_vec;
 }
 
