@@ -2,7 +2,7 @@
 #include <string.h>
 #include <unordered_map>
 
-#include "Timeseries.h"
+#include "TimeSeries.h"
 #include "Utilities.h"
 #include "FileReader.h"
 #include "ClusterLloyds.h"

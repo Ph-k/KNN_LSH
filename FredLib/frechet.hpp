@@ -41,18 +41,18 @@ namespace Continuous {
     distance_t _greedy_upper_bound(const Curve&, const Curve&);
     distance_t _projective_lower_bound(const Curve&, const Curve&);
 }
-namespace Discrete {
+// namespace Discrete {
     
-    struct Distance {
-        distance_t value;
-        double time;
+//     struct Distance {
+//         distance_t value;
+//         double time;
         
-        std::string repr() const;
-    };
+//         std::string repr() const;
+//     };
     
-    Distance distance(const Curve&, const Curve&);
+//     Distance distance(const Curve&, const Curve&);
     
-    distance_t _dp(std::vector<Distances> &a, const curve_size_t i, const curve_size_t j, 
-            const Curve &curve1, const Curve &curve2);
-}
+//     distance_t _dp(std::vector<Distances> &a, const curve_size_t i, const curve_size_t j, 
+//             const Curve &curve1, const Curve &curve2);
+// }
 }
