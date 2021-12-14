@@ -41,6 +41,6 @@ double cfr_distance(TimeSeries *p1, TimeSeries *p2){
     delete fred_curve1; delete fred_curve2;
     delete fred_dummy_points1; delete fred_dummy_points2;
     delete fred_p1; delete fred_p2;
-
+    std::cout << "Distance = " << fred_dist.value << std::endl; 
     return fred_dist.value;
 }

@@ -36,7 +36,7 @@ Distance distance(const Curve &curve1, const Curve &curve2){
         return result;
     }
     if (curve1.dimensions() != curve2.dimensions()) {
-        std::cerr << "WARNING: comparison possible only for curves of equal number of dimensions" << std::endl;
+        std::cerr << "WARNING: comparison possible only for curves of equal number of dimensions" << curve1.dimensions()<< "vs" << curve2.dimensions() << std::endl;
         Distance result;
         result.value = std::numeric_limits<distance_t>::signaling_NaN();
         return result;

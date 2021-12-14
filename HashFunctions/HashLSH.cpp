@@ -33,7 +33,7 @@ unsigned int HashLSH::Hash(const std::vector<__TIMESERIES_X_TYPE> &p){
 				res += r*hVec[i]->hash(*q_vec);
 				break;
 			case __FRECHET_CONTINUOUS_MODE:
-				q_vec = Simplify(p);
+				q_vec = discreteFrechet->Snap(p);
 				res += r*hVec[i]->hash(*q_vec);
 				break;
 			default:

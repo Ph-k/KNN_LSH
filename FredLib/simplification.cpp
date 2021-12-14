@@ -68,43 +68,43 @@ Curve Simplification::approximate_minimum_link_simplification(const Curve &pcurv
     return simplification;
 }
 
-/*Curve Simplification::approximate_minimum_error_simplification(const Curve &curve, const curve_size_t ell) {
-    if (Config::verbosity > 1) std::cout << "ASIMPL: computing approximate minimum error simplification" << std::endl;
-    Curve simplification(curve.dimensions()), segment(2, curve.dimensions());
+// Curve Simplification::approximate_minimum_error_simplification(const Curve &curve, const curve_size_t ell) {
+//     if (Config::verbosity > 1) std::cout << "ASIMPL: computing approximate minimum error simplification" << std::endl;
+//     Curve simplification(curve.dimensions()), segment(2, curve.dimensions());
     
-    segment[0] = curve.front();
-    segment[1] = curve.back();
+//     segment[0] = curve.front();
+//     segment[1] = curve.back();
     
-    if (ell <= 2) return segment;
+//     if (ell <= 2) return segment;
     
-    distance_t min_distance = 0, max_distance = Frechet::Discrete::distance(curve, segment).value + 1, mid_distance;
+//     distance_t min_distance = 0, max_distance = Frechet::Discrete::distance(curve, segment).value + 1, mid_distance;
     
-    Curve new_simplification = Simplification::approximate_minimum_link_simplification(curve, max_distance);
+//     Curve new_simplification = Simplification::approximate_minimum_link_simplification(curve, max_distance);
 
-    if (Config::verbosity > 1) std::cout << "ASIMPL: computing upper bound for error by exponential search" << std::endl;
-    while (new_simplification.complexity() > ell) {
-        max_distance *= 2.;
-        new_simplification = Simplification::approximate_minimum_link_simplification(curve, max_distance);
-    }
+//     if (Config::verbosity > 1) std::cout << "ASIMPL: computing upper bound for error by exponential search" << std::endl;
+//     while (new_simplification.complexity() > ell) {
+//         max_distance *= 2.;
+//         new_simplification = Simplification::approximate_minimum_link_simplification(curve, max_distance);
+//     }
     
-    if (Config::verbosity > 1) std::cout << "ASIMPL: binary search using upper bound" << std::endl;
-    const distance_t epsilon = std::max(min_distance * Frechet::Continuous::error / 100, std::numeric_limits<distance_t>::epsilon());
-    while (max_distance - min_distance > epsilon) {
-        mid_distance = (min_distance + max_distance) / distance_t(2);
-        if (mid_distance == max_distance or mid_distance == min_distance) break;
-        new_simplification = Simplification::approximate_minimum_link_simplification(curve, mid_distance);
+//     if (Config::verbosity > 1) std::cout << "ASIMPL: binary search using upper bound" << std::endl;
+//     const distance_t epsilon = std::max(min_distance * Frechet::Continuous::error / 100, std::numeric_limits<distance_t>::epsilon());
+//     while (max_distance - min_distance > epsilon) {
+//         mid_distance = (min_distance + max_distance) / distance_t(2);
+//         if (mid_distance == max_distance or mid_distance == min_distance) break;
+//         new_simplification = Simplification::approximate_minimum_link_simplification(curve, mid_distance);
         
-        if (new_simplification.complexity() > ell) min_distance = mid_distance;
-        else {
-            simplification = new_simplification;
-            max_distance = mid_distance;
-        }
-    }
-    if (Config::verbosity > 1) std::cout << "ASIMPL: backwards construction of simplification" << std::endl;
-    curve_size_t diff = ell - simplification.complexity();
-    while (diff > 0) {
-        simplification.push_back(simplification.back());
-        --diff;
-    }
-    return simplification;
-}*/
+//         if (new_simplification.complexity() > ell) min_distance = mid_distance;
+//         else {
+//             simplification = new_simplification;
+//             max_distance = mid_distance;
+//         }
+//     }
+//     if (Config::verbosity > 1) std::cout << "ASIMPL: backwards construction of simplification" << std::endl;
+//     curve_size_t diff = ell - simplification.complexity();
+//     while (diff > 0) {
+//         simplification.push_back(simplification.back());
+//         --diff;
+//     }
+//     return simplification;
+// }
