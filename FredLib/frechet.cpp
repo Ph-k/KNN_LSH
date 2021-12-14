@@ -28,7 +28,7 @@ std::string Distance::repr() const {
     return ss.str();
 }
 
-Distance distance(const Curve &curve1, const Curve &curve2) {
+Distance distance(const Curve &curve1, const Curve &curve2){
     if ((curve1.complexity() < 2) or (curve2.complexity() < 2)) {
         std::cerr << "WARNING: comparison possible only for curves of at least two points" << std::endl;
         Distance result;
