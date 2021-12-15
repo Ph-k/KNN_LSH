@@ -8,7 +8,7 @@ search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 
 search_flags_dfr = -i ../small_input.csv -q ../one_query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
 search_flags_cfr = -i ../small_input.csv -q ../one_query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2 -no_brute_force
 
-cluster_flags = -i ../input.csv -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Frechet
+cluster_flags = -i ../input.csv -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Vector
 
 search_exe = search
 cluster_exe = cluster
@@ -94,8 +94,8 @@ rCluster: $(cluster_exe)
 val: $(search_exe)
 	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags_cfr)
 
-gdb: $(search_exe)
-	gdb ./$(search_exe)
+gdb: $(cluster_exe)
+	gdb ./$(cluster_exe)
 
 clean:
 	rm $(CommonObejects) $(search_exe) $(cluster_exe)
