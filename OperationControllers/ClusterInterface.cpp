@@ -240,7 +240,5 @@ ClusterInterface::~ClusterInterface()
     // if(LSHController != nullptr) delete LSHController;
     // if(HCController != nullptr) delete HCController;
 
-    if(clusterIndexes != nullptr) delete[] clusterIndexes;
-
     if(silhouetteS.avgSil != nullptr) delete silhouetteS.avgSil;
 }

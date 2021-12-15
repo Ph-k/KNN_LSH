@@ -13,7 +13,6 @@ CurveArray::CurveArray(std::unordered_map<std::string, TimeSeries*> &gCluster)
     for(auto item: gCluster){
         array[i++] = item.second;
     }
-    std::cout << "Constructed curve array.\n";
     //shuffle here
 }
 
@@ -27,6 +26,7 @@ std::vector<__TIMESERIES_X_TYPE> *createMeanVec(const std::vector<__TIMESERIES_X
 }
 
 TimeSeries *CurveArray::postOrderTraversal(){
+    if(Cluster.empty()) return nullptr;
     
     recursivePostOrderTraversal(0);
     return array[0];
@@ -35,8 +35,8 @@ TimeSeries *CurveArray::postOrderTraversal(){
 void CurveArray::recursivePostOrderTraversal(unsigned int node_index){
 
     if(node_index >= arrSize)return;
-    unsigned int left_node_index = (node_index+1)*2;
-    unsigned int right_node_index = (node_index+1)*2 + 1;
+    unsigned int left_node_index = (2*node_index)+1;
+    unsigned int right_node_index = (2*node_index)+2;
     recursivePostOrderTraversal(left_node_index);
     recursivePostOrderTraversal(right_node_index);
     std::vector<__TIMESERIES_X_TYPE> *mean_vec = nullptr;
@@ -44,10 +44,11 @@ void CurveArray::recursivePostOrderTraversal(unsigned int node_index){
     if(left_node_index < arrSize && right_node_index < arrSize){
         mean_vec = createMeanVec((array[left_node_index])->getXs(),(array[right_node_index])->getXs());
     }else if(left_node_index < arrSize && right_node_index >= arrSize){
-        mean_vec = new std::vector<__TIMESERIES_X_TYPE>((array[left_node_index])->getXs());
+        mean_vec = new std::vector<__TIMESERIES_X_TYPE>;
+        for(auto X: (array[left_node_index])->getXs() )
+            mean_vec->push_back(X);
     }else if(left_node_index >= arrSize && right_node_index < arrSize){
-        std::cout << "Node = " << node_index << std::endl;
-        std::cerr << "Illegal move to right node!\n";
+        std::cerr << "Node = " << node_index << std::endl;
     }else if(left_node_index >= arrSize && right_node_index >=arrSize){
         return;
     }
@@ -55,6 +56,8 @@ void CurveArray::recursivePostOrderTraversal(unsigned int node_index){
 }
 
 CurveArray::~CurveArray(){
-    std::cout << "Destructor called\n";
+    for(size_t i=1; i<arrSize-Cluster.size(); i++)
+        delete array[i];
+
     delete[] array;
 }
