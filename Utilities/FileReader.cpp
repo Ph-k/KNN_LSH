@@ -207,25 +207,31 @@ int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int 
     output_file << "Query: " << query_id << "\nAlgorithm: " << method << '\n';
     for(int i=0; i<k; i++){
         if( knn[i].p != nullptr ){
-            output_file << "Aproximate Nearest neighbor: " << knn[i].p->getId() << '\n'
-                        << "True Nearest neighbor: " << bruteForce[i].p->getId() << '\n'
-                        << "distanceAproximate: " << knn[i].distance << '\n'
-                        << "distanceTrue: " << bruteForce[i].distance << "\n\n";
-        }else{
-            output_file << "Nearest neighbor: none\n"
-                        << "distanceAproximate: -\n"
-                        << "distanceTrue: " << bruteForce[i].distance << "\n\n";
+            output_file << "Aproximate Nearest neighbor: " << knn[i].p->getId() << '\n';
+        }else output_file << "Aproximate Nearest neighbor: -\n";
+        if(bruteForce!=nullptr){
+            output_file  << "True Nearest neighbor: " << bruteForce[i].p->getId() << '\n';
         }
-        MAF = max( MAF, knn[i].distance / bruteForce[i].distance );
+        if( knn[i].p != nullptr ){
+            output_file << "distanceAproximate: " << knn[i].distance << '\n';
+        }else output_file << "distanceAproximate: -\n";
+        if(bruteForce!=nullptr){
+            output_file << "distanceTrue: " << bruteForce[i].distance << "\n";
+        }
+        output_file << '\n';
+        if(bruteForce!=nullptr)
+            MAF = max( MAF, knn[i].distance / bruteForce[i].distance );
     }
 
     return 0;
 }
 
-int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count, double MAF){
-    output_file << "tAproximateAverage: " << timeAprx/count << "ms\n"
-                << "tTrueAverage: " << timeBF/count << "ms\n"
-                << "MAF: " << MAF << '\n' << endl;
+int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count, double MAF, bool bruteForce){
+    output_file << "tAproximateAverage: " << timeAprx/count << "s\n";
+    if(bruteForce){
+        output_file << "tTrueAverage: " << timeBF/count << "s\n"
+                    << "MAF: " << MAF << '\n' << endl;
+    }
 
     return 0;
 }

@@ -8,6 +8,9 @@
 #define __FRECHET_DISCRETE_MODE 2
 #define __FRECHET_CONTINUOUS_MODE 3
 
+//std::chrono scale
+#define __CRHONO_TIME_SCALE milliseconds
+
 class TimeSeries;
 
 struct PD{

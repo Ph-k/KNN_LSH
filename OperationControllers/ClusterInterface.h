@@ -37,7 +37,6 @@ protected:
         double (*metric_func)(ClusterObject, ClusterObject);
         //int k_lsh, l_lsh, search_range, M_hc, k_hc, hc_probes;
         ClusterObject *Medoids;
-        int *clusterIndexes;
         int clustering_time;
         std::unordered_map<std::string, TimeSeries*> *Clusters;
         void Update();

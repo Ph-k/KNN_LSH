@@ -17,6 +17,7 @@ int main(int argc, char const *argv[]){
     double delta = -1.0;
     char method=-1;
     char const *input_file  = nullptr, *query_file = nullptr, *output_file = nullptr, *method_string = nullptr, *frechet_method_string = nullptr;
+    bool brute_force_flag = true;
 
 	for(i=1; i<argc; i++){
 		if( strcmp(argv[i], "-i") == 0 ){
@@ -59,8 +60,9 @@ int main(int argc, char const *argv[]){
                 }
                 
             }
-
-		}else{
+        }else if( strcmp(argv[i],"-no_brute_force") == 0){
+            brute_force_flag = false;
+        }else{
             cout << "Argument '" << argv[i] << "' is invalid!" << endl;
         }
 	}
@@ -127,7 +129,8 @@ int main(int argc, char const *argv[]){
          << "\n\tK: " << K
          << "\n\tnumber_of_nearest: " << number_of_nearest
          << "\n\tradius: " << radius
-         << "\n\talgorithm: " << method_string;
+         << "\n\talgorithm: " << method_string
+         << "\n\tbrute force: " << (brute_force_flag? "enabled" : "disabled");
 
     if(method == __LSH_MODE){
         cout << "\n\tL: " << L;
@@ -151,17 +154,18 @@ int main(int argc, char const *argv[]){
 
 
     unsigned int index = 0;
-    long double time_brute_force = 0.0;
-    double time_aprx = 0.0, MAF = -1.0;
+    long double time_brute_force = 0.0, time_aprx = 0.0;
+    double MAF = -1.0;
     PD *knn = nullptr, *brute_force = nullptr;
     unordered_map<string, TimeSeries*> r_neighbors;
 
     const unordered_map<string, TimeSeries*> &queries = io_files.getQueries();
     for(auto &query: queries){
 
-        time_aprx += nanosecToMilliSec(operations->kNN_Search(L,1,&knn,query.second));
+        time_aprx += millisecToSec(operations->kNN_Search(L,1,&knn,query.second));
 
-        time_brute_force += nanosecToMilliSec(operations->bruteForceNN(query.second,L,1,&brute_force));
+        if(brute_force_flag)
+            time_brute_force += millisecToSec(operations->bruteForceNN(query.second,L,1,&brute_force));
 
         io_files.writeQuery(query.first, knn, brute_force, 1, method,MAF);
 
@@ -171,7 +175,7 @@ int main(int argc, char const *argv[]){
         index++;
     }
 
-    io_files.writeQueryTimes(time_aprx, time_brute_force, index, MAF);
+    io_files.writeQueryTimes(time_aprx, time_brute_force, index, MAF, brute_force_flag);
 
     if(knn != nullptr) delete[] knn;
     if(brute_force != nullptr) delete[] brute_force;

@@ -40,7 +40,7 @@ int HyperCube::kNN_Search(int L, int k, PD **b, TimeSeries* q){
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
     hash_table.knn_search_bucket(k, q, *b, M);
 
-    return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
+    return (chrono::duration_cast<chrono::__CRHONO_TIME_SCALE>( chrono::steady_clock::now() - startTime )).count();
 }
 
 int HyperCube::bruteForceNN(string &id, int L, int k, PD **b){
@@ -64,7 +64,7 @@ int HyperCube::bruteForceNN(TimeSeries *q, int L, int k, PD **b){
 
     hash_table.bruteForceNN(k, q, *b);
 
-    return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
+    return (chrono::duration_cast<chrono::__CRHONO_TIME_SCALE>( chrono::steady_clock::now() - startTime )).count();
 }
 
 int HyperCube::rangeSearch(int r, std::unordered_map<std::string, TimeSeries*> &r_neighbors, std::string &id){
@@ -81,7 +81,7 @@ int HyperCube::rangeSearch(int r, std::unordered_map<std::string, TimeSeries*> &
 
     hash_table.rangeSearchBucket(r, q, r_neighbors, M);
 
-    return (chrono::duration_cast<chrono::nanoseconds>( chrono::steady_clock::now() - startTime )).count();
+    return (chrono::duration_cast<chrono::__CRHONO_TIME_SCALE>( chrono::steady_clock::now() - startTime )).count();
 }
 
 int HyperCube::reverseRangeSearch(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
