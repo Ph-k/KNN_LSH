@@ -12,6 +12,7 @@ cluster_flags = -i ../input.csv -c ./cluster.conf -o ./output.clustering -assign
 
 search_exe = search
 cluster_exe = cluster
+unitTest_exe = unitTest
 
 sourcePath = ./
 
@@ -55,6 +56,9 @@ $(search_exe): $(CommonObejects) $(ObjectsA)
 $(cluster_exe): $(CommonObejects) $(ObjectsB)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsB) -o $@
 
+$(unitTest_exe): $(CommonObejects) UnitTestingMain.cpp
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) UnitTestingMain.cpp -o $@ -lgtest -lpthread 
+
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
 
@@ -91,11 +95,14 @@ rScfr: $(search_exe)
 rCluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
 
+rUnitTest: $(unitTest_exe)
+	./$(unitTest_exe)
+
 val: $(cluster_exe)
 	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
 
-gdb: $(search_exe)
-	gdb ./$(search_exe)
+gdb: $(unitTest_exe)
+	gdb ./$(unitTest_exe)
 
 clean:
-	rm $(CommonObejects) $(search_exe) $(cluster_exe)
+	rm $(CommonObejects) $(search_exe) $(cluster_exe) $(unitTest_exe)
