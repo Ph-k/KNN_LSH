@@ -43,6 +43,7 @@ void ClusterLSH::Assign(){
     for(auto point: *allPoints){
         found = false;
         for(i=0; i<k; i++){
+    
             if( Clusters[i].find(point->getId()) != Clusters[i].end() ){
                 found = true;
                 break;

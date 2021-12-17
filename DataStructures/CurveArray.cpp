@@ -5,14 +5,19 @@
 #include "TimeSeries.h"
 
 CurveArray::CurveArray(std::unordered_map<std::string, TimeSeries*> &gCluster)
-:array( new TimeSeries*[2*gCluster.size()-1] ), arrSize(2*gCluster.size()-1), Cluster(gCluster){
-    std::cout << "size of array: "  << arrSize << std::endl;
-    size_t i=0;
-    for(i=0; i<arrSize; i++)
-        array[i] = nullptr;
-    i = arrSize-gCluster.size();
-    for(auto item: gCluster){
-        array[i++] = item.second;
+:/*array(new TimeSeries*[2*gCluster.size()-1] ),*/ arrSize(2*gCluster.size()-1), Cluster(gCluster){
+    if (gCluster.size() == 0){
+        array = nullptr;
+    }else{
+        array = new TimeSeries*[2*gCluster.size()-1];
+        std::cout << "size of array: "  << arrSize << std::endl;
+        size_t i=0;
+        for(i=0; i<arrSize; i++)
+            array[i] = nullptr;
+        i = arrSize-gCluster.size();
+        for(auto item: gCluster){
+            array[i++] = item.second;
+        }
     }
     //shuffle here
 }
@@ -27,7 +32,7 @@ std::vector<__TIMESERIES_X_TYPE> *createMeanVec(const std::vector<__TIMESERIES_X
 }
 
 TimeSeries *CurveArray::postOrderTraversal(){
-    if(Cluster.empty()){
+    if(!array){
         return nullptr;
     }else if(Cluster.size() == 1){// Edge case, imposible to traverse tree of size 1
         std::vector<__TIMESERIES_X_TYPE> *mean_vec = new std::vector<__TIMESERIES_X_TYPE>;
@@ -66,9 +71,10 @@ void CurveArray::recursivePostOrderTraversal(unsigned int node_index){
 }
 
 CurveArray::~CurveArray(){
-    if(Cluster.size() != 1)
-        for(size_t i=1; i<arrSize-Cluster.size(); i++)
-            if( array[i] != nullptr ) delete array[i];
-
-    delete[] array;
+    if(array == nullptr)
+        return;
+    // if(Cluster.size() != 1)
+    //     for(size_t i=1; i<arrSize-Cluster.size(); i++)
+    //         if( array[i] != nullptr ) delete array[i];
+    // delete[] array;
 }
