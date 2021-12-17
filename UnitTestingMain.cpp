@@ -61,12 +61,24 @@ TEST(KNN,Hyper_Cube){
 }
 
 TEST(Clustering,Lloyds){
-     FileReader *io_files;
+    FileReader *io_files;
     ClusterInterface *clustering;
     unsigned int clustered_items;
 
     io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
     clustering = new ClusterLloyds(*io_files,K_cluster,__MEAN_VEC_UPDATE);
+    clustering->kMeans(epochs);
+    clustered_items = 0;
+    for(int i=0; i<K_cluster; i++)
+        clustered_items += clustering->getClusters()[i].size();
+
+    EXPECT_EQ (9 , clustered_items);
+
+    delete clustering;
+    delete io_files;
+
+    io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
+    clustering = new ClusterLloyds(*io_files,K_cluster,__MEAN_FR_UPDATE);
     clustering->kMeans(epochs);
     clustered_items = 0;
     for(int i=0; i<K_cluster; i++)
@@ -96,7 +108,7 @@ TEST(Clustering,LSH){
     delete io_files;
 
     io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
-    clustering = new ClusterLSH(*io_files,K_cluster,&dfr_distance,K,L,__MEAN_VEC_UPDATE);
+    clustering = new ClusterLSH(*io_files,K_cluster,&dfr_distance,K,L,__MEAN_FR_UPDATE);
     clustering->kMeans(epochs);
     clustered_items = 0;
     for(int i=0; i<K_cluster; i++)

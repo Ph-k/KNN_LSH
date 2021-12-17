@@ -8,7 +8,11 @@ search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 
 search_flags_dfr = -i ../small_input.csv -q ../small_query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
 search_flags_cfr = -i ../small_input.csv -q ../one_query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2 -no_brute_force
 
-cluster_flags = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Frechet
+cluster_flags_llov = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Classic -update Mean_Vector
+cluster_flags_llof = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Classic -update Mean_Frechet
+cluster_flags_lshf = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Vector
+cluster_flags_lshff = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH_Frechet -update Mean_Frechet
+cluster_flags_hc = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Hypercube -update Mean_Vector
 
 search_exe = search
 cluster_exe = cluster
@@ -97,14 +101,29 @@ rScfr: $(search_exe)
 rCluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
 
-rUnitTest: $(cluster_exe)
-	./$(cluster_exe)
+rCllov: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags_llov)
+
+rCllof: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags_llof)
+
+rClshf: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags_lshf)
+
+rClshff: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags_lshff)
+
+rChc: $(cluster_exe)
+	./$(cluster_exe) $(cluster_flags_hc)
+
+rUnitTest: $(unitTest_exe)
+	./$(unitTest_exe)
 
 val: $(cluster_exe)
-	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)  > log.txt 2>&1
+	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
 
 gdb: $(cluster_exe)
-	lldb ./$(cluster_exe)
+	gdb ./$(cluster_exe)
 
 clean:
 	rm $(CommonObejects) $(search_exe) $(cluster_exe) $(unitTest_exe)

@@ -160,23 +160,18 @@ double averageDistance(std::unordered_map<std::string, TimeSeries*> &Cluster, Ti
 }
 
 void ClusterInterface::Update(){
-    vector<TimeSeries*>* allPoints = this->getAllPoints();
-    int i, n=allPoints->size();
+
+    int i;
     TimeSeries *newMedoid;
 
     for(i=0; i<k; i++){
         newMedoid = this->mean_func(Clusters[i]);
-        if(newMedoid != nullptr && Medoids[i] != nullptr){
+        if(newMedoid != nullptr){
             delete Medoids[i];
             Medoids[i] = newMedoid;
-            Clusters[i].clear();
-        }else{
-            int randIndex = randUInt(0, n-1);
-            Medoids[i] = allPoints->at(randIndex);
-            // Clusters[i].clear();
-            // Clusters[i][Medoids[i]->getId()] = Medoids[i];
         }
-        
+
+        Clusters[i].clear();
     }
 
 }
@@ -185,11 +180,8 @@ void ClusterInterface::kMeans(int epochs){
     chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
     for (int i=0; i<epochs; i++){
-        cout << "Updating...\n";
         Update();
-        cout << "Assigning...\n";
         this->Assign();
-        cout << "Done\n";
     }
 
     clustering_time = (chrono::duration_cast<chrono::milliseconds>( chrono::steady_clock::now() - startTime )).count();
@@ -239,7 +231,7 @@ int ClusterInterface::findClusterIndex(ClusterObject p){
 
 ClusterInterface::~ClusterInterface()
 {
-    if(Clusters != nullptr)delete[] Clusters;
+    if(Clusters != nullptr) delete[] Clusters;
 
     for (int i = 0; i < k; i++)
         if(Medoids[i] != nullptr) delete Medoids[i];
