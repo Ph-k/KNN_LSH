@@ -1,3 +1,5 @@
+#pragma once
+
 #include "HashTable.h"
 #include "FileReader.h"
 #include "Utilities.h"

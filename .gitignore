@@ -4,3 +4,4 @@ output.*
 *.o
 search
 cluster
+unitTest

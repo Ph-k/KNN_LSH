@@ -55,6 +55,6 @@ void ClusterLSH::Assign(){
     }
 }
 
-ClusterLSH::~ClusterLSH()
-{
+ClusterLSH::~ClusterLSH(){
+    if(LSHController != nullptr) delete LSHController;
 }

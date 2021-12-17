@@ -8,7 +8,7 @@ search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 
 search_flags_dfr = -i ../small_input.csv -q ../one_query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
 search_flags_cfr = -i ../small_input.csv -q ../one_query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2 -no_brute_force
 
-cluster_flags = -i ../small_input.csv -c ./cluster.conf -o ./output.clustering -assignment Classic -update Mean_Frechet
+cluster_flags = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Vector
 
 search_exe = search
 cluster_exe = cluster
@@ -22,6 +22,8 @@ OperationControllersObjects = $(OperationControllersLocation)MappingMethod.o $(O
 ObjectsA = $(sourcePath)mainA.cpp
 
 ObjectsB = $(sourcePath)mainCluster.cpp
+
+ObjectsUnitTesting = $(sourcePath)UnitTestingMain.cpp
 
 DataStructuresLocation = $(sourcePath)DataStructures/
 DataStructuresObjects = $(DataStructuresLocation)HashTable.o $(DataStructuresLocation)SimpleList.o $(DataStructuresLocation)CurveArray.o
@@ -56,8 +58,8 @@ $(search_exe): $(CommonObejects) $(ObjectsA)
 $(cluster_exe): $(CommonObejects) $(ObjectsB)
 	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsB) -o $@
 
-$(unitTest_exe): $(CommonObejects) UnitTestingMain.cpp
-	$(CC) $(cflags) $(includePaths) $(CommonObejects) UnitTestingMain.cpp -o $@ -lgtest -lpthread 
+$(unitTest_exe): $(CommonObejects) $(ObjectsUnitTesting)
+	$(CC) $(cflags) $(includePaths) $(CommonObejects) $(ObjectsUnitTesting) -o $@ -lgtest -lpthread 
 
 $(sourcePath)%.o: $(sourcePath)%.cpp
 	$(CC) $(cflags) $(includePaths) -c $< -o $@
@@ -95,14 +97,14 @@ rScfr: $(search_exe)
 rCluster: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags)
 
-rUnitTest: $(unitTest_exe)
-	./$(unitTest_exe)
+rUnitTest: $(cluster_exe)
+	./$(cluster_exe)
 
 val: $(cluster_exe)
-	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
+	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)  > log.txt 2>&1
 
-gdb: $(unitTest_exe)
-	gdb ./$(unitTest_exe)
+gdb: $(cluster_exe)
+	gdb ./$(cluster_exe)
 
 clean:
 	rm $(CommonObejects) $(search_exe) $(cluster_exe) $(unitTest_exe)

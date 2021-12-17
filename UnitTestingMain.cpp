@@ -5,17 +5,20 @@
 #include "LSH.h"
 #include "Utilities.h"
 #include "HyperCube.h"
+#include "ClusterHC.h"
 #include "FileReader.h"
 #include "TimeSeries.h"
+#include "ClusterLSH.h"
+#include "ClusterLloyds.h"
 
-static const int K = 14, L = 3, M = 10, probes = 2;
+static const int K = 14, L = 3, M = 10, probes = 2, epochs = 10, K_cluster = 3, M_hc = 10, k_hc = 3, hc_probes = 2;
 static const double delta = 5.0;
 
 #define __MY_KNN_TEST_INIT FileReader io_files("./UnitTestingInput","./UnitTestingInputQuery","./output.UnitTesting"); \
     PD *brute_force = nullptr; \
     const std::unordered_map<std::string, TimeSeries*> &queries = io_files.getQueries();
 
-TEST(Lsh, ClassicTest){
+TEST(KNN, Classic_LSH){
     __MY_KNN_TEST_INIT
 
     LSH lsh(io_files,150,K,L,delta,1000, __LSH_MODE);
@@ -26,7 +29,7 @@ TEST(Lsh, ClassicTest){
 }
 
 
-TEST(Lsh, FRECHET_DISCRETE){
+TEST(KNN, FRECHET_DISCRETE){
     __MY_KNN_TEST_INIT
 
     LSH lsh(io_files,150,K,L,delta,1000, __FRECHET_DISCRETE_MODE);
@@ -36,7 +39,7 @@ TEST(Lsh, FRECHET_DISCRETE){
     if(brute_force != nullptr) delete[] brute_force;
 }
 
-TEST(Lsh,FRECHET_CONTINUOUS){
+TEST(KNN,FRECHET_CONTINUOUS){
     __MY_KNN_TEST_INIT
 
     LSH lsh(io_files,150,K,L,delta,1000, __FRECHET_CONTINUOUS_MODE);
@@ -46,7 +49,7 @@ TEST(Lsh,FRECHET_CONTINUOUS){
     if(brute_force != nullptr) delete[] brute_force;
 }
 
-TEST(HyperCube,HyperCube){
+TEST(KNN,Hyper_Cube){
     __MY_KNN_TEST_INIT
 
     HyperCube HC(io_files,150,K,M,probes,pow(2,K));
@@ -57,9 +60,67 @@ TEST(HyperCube,HyperCube){
     if(brute_force != nullptr) delete[] brute_force;
 }
 
-/*TEST (SquareRootTest, ZeroAndNegativeNos) { 
-    ASSERT_EQ (0.0, square (0.0));
-}*/
+TEST(Clustering,Lloyds){
+     FileReader *io_files;
+    ClusterInterface *clustering;
+    unsigned int clustered_items;
+
+    io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
+    clustering = new ClusterLloyds(*io_files,K_cluster,__MEAN_VEC_UPDATE);
+    clustering->kMeans(epochs);
+    clustered_items = 0;
+    for(int i=0; i<K_cluster; i++)
+        clustered_items += clustering->getClusters()[i].size();
+
+    EXPECT_EQ (9 , clustered_items);
+
+    delete clustering;
+    delete io_files;
+
+}
+
+TEST(Clustering,LSH){
+    FileReader *io_files;
+    ClusterInterface *clustering;
+    unsigned int clustered_items;
+
+    io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
+    clustering = new ClusterLSH(*io_files,K_cluster,&euclidean_distance,K,L,__MEAN_VEC_UPDATE);
+    clustering->kMeans(epochs);
+    clustered_items = 0;
+    for(int i=0; i<K_cluster; i++)
+        clustered_items += clustering->getClusters()[i].size();
+
+    EXPECT_EQ (9 , clustered_items);
+    delete clustering;
+    delete io_files;
+
+    io_files = new FileReader("./UnitTestingInput",nullptr,"./output.UnitTesting");
+    clustering = new ClusterLSH(*io_files,K_cluster,&dfr_distance,K,L,__MEAN_VEC_UPDATE);
+    clustering->kMeans(epochs);
+    clustered_items = 0;
+    for(int i=0; i<K_cluster; i++)
+        clustered_items += clustering->getClusters()[i].size();
+
+    EXPECT_EQ (9 , clustered_items);
+    delete clustering;
+    delete io_files;
+
+}
+
+TEST(Clustering,Hyper_Cube){
+    FileReader io_files("./UnitTestingInput",nullptr,"./output.UnitTesting");
+    ClusterHC clustering(io_files,K_cluster,M_hc,k_hc,hc_probes);
+    unsigned int clustered_items;
+
+    clustering.kMeans(epochs);
+    clustered_items = 0;
+    for(int i=0; i<K_cluster; i++)
+        clustered_items += clustering.getClusters()[i].size();
+
+    EXPECT_EQ (9 , clustered_items);
+
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
