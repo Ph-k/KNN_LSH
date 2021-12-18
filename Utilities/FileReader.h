@@ -34,7 +34,6 @@ class FileReader{
         int writeQueryTimes(double timeAprx, double timeBF, int count, double MAF, bool bruteForce);
         int writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
-        int writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
         int writeClusterPoints(std::unordered_map<std::string, TimeSeries*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
         int writeSilhouette(silhouetteStats *silhouetteS, int k);
         ~FileReader();

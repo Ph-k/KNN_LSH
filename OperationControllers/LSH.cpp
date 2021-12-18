@@ -16,7 +16,6 @@ LSH::LSH(
         this->hash_tables[i] = new HashTable(hash_table_size,w,k,io_files.getDimension(), metric, delta);
     }
 
-    vector<__TIMESERIES_X_TYPE> *q_vec;
     // We start by reading the input
     TimeSeries* p = io_files.ReadPoint();
     while( p != nullptr){

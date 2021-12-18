@@ -55,6 +55,6 @@ void ClusterHC::Assign(){
     }
 }
 
-ClusterHC::~ClusterHC()
-{
+ClusterHC::~ClusterHC(){
+    delete HCController;
 }

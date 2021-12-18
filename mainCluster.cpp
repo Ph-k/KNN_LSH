@@ -117,7 +117,7 @@ int main(int argc, char const *argv[]){
 
     clustering->kMeans(epochs);
 
-    io_files.writeClusterPoints(clustering->getClusters(), clustering->getClusteringTimes() ,clustering->getMedoids(), K, "To-Do" , complete);
+    io_files.writeClusterPoints(clustering->getClusters(), clustering->getClusteringTimes() ,clustering->getMedoids(), K, algorithmString(method,update).c_str() , complete);
 
     if(silhouette)
         io_files.writeSilhouette(clustering->Silhouette(),K);

@@ -47,3 +47,6 @@ inline long double nanosecToSec(int nanosec){ return ((long double)nanosec)/1000
 inline double nanosecToMilliSec(int nanosec){ return ((double)nanosec)/1000000.0; }
 
 inline double millisecToSec(int nanosec){ return ((double)nanosec)/1000.0; }
+
+// Returns the correct algorithm string acording to the method and update arguments
+std::string algorithmString(const char& method, const char& update);

@@ -245,32 +245,6 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*>
     return 0;
 }
 
-int FileReader::writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
-    output_file << "Algorithm: " << algorithm << '\n';
-    for(int i=0; i<k; i++){
-        output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
-        for(auto X: Medoids[i]->getXs())
-            output_file << ' ' << X;
-        output_file << "}\n";
-    }
-
-    if(complete){
-        for(int i=0; i<k; i++){
-            output_file << "CLUSTER-" << i << " {";
-            for(auto X: Medoids[i]->getXs())
-                output_file << ' ' << X;
-            output_file <<  " ,";
-
-
-            Clusters->Traverse( &printPointIdInList , &output_file);
-            output_file << "}\n";
-        }
-    }
-
-    output_file << "clustering_time: " << millisecToSec(clustering_times) << endl;
-    return 0;
-}
-
 int FileReader::writeClusterPoints(std::unordered_map<std::string, TimeSeries*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
     output_file << "Algorithm: " << algorithm << '\n';
     for(int i=0; i<k; i++){

@@ -154,3 +154,38 @@ void printPointIdInList(struct PointPointer* pp, void* output_f){
         *output_file << ' ' << X;
     *output_file << ", ";
 }
+
+string algorithmString(const char& method, const char& update){
+    string algorithmString("A");
+    switch(method){
+        case __CLASIC_METHOD:
+            algorithmString += "Lloyds";
+            break;
+        case __LSH_METHOD:
+            algorithmString += "LSH";
+            break;
+        case __LSH_FR_METHOD:
+            algorithmString += "LSH_Frechet";
+            break;
+        case __HC_METHOD:
+            algorithmString += "Hypercube";
+            break;
+        default:
+            algorithmString += "x";
+    }
+
+    algorithmString += "U";
+
+    switch(update){
+        case __MEAN_FR_UPDATE:
+            algorithmString += "Mean_Frechet";
+            break;
+        case __MEAN_VEC_UPDATE:
+            algorithmString += "Mean_Vector";
+            break;
+        default:
+            algorithmString += "x";
+    }
+
+    return algorithmString;
+}

@@ -3,16 +3,16 @@ cflags = -Wall -g3 -std=c++14
 
 valgrindFlags = --leak-check=full
 
-search_flags_lsh = -i ../input.csv -q ../query.csv -o ./output.LSHsearch -N 3 -R 300 -k 3 -L 3 -algorithm LSH
-search_flags_cube = -i ../input.csv -q ../query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 3 -M 150 -algorithm Hypercube
-search_flags_dfr = -i ../small_input.csv -q ../small_query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
-search_flags_cfr = -i ../small_input.csv -q ../one_query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2 -no_brute_force
+search_flags_lsh = -i ../nasd_input.csv -q ../nasd_query.csv -o ./output.LSHsearch -N 3 -R 300 -k 3 -L 3 -algorithm LSH
+search_flags_cube = -i ../nasd_input.csv -q ../nasd_query.csv -o ./output.CUBEsearch -N 3 -R 300 -k 3 -probes 3 -M 150 -algorithm Hypercube
+search_flags_dfr = -i ../nasd_input.csv -q ../nasd_query.csv -o ./output.DFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric discrete -delta 6.2
+search_flags_cfr = -i ../nasd_input.csv -q ../nasd_query.csv -o ./output.CFRsearch -N 3 -R 300 -k 3 -L 3 -algorithm Frechet -metric continuous -delta 6.2 -no_brute_force
 
-cluster_flags_llov = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Classic -update Mean_Vector
-cluster_flags_llof = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Classic -update Mean_Frechet
-cluster_flags_lshf = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH -update Mean_Vector
-cluster_flags_lshff = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment LSH_Frechet -update Mean_Frechet
-cluster_flags_hc = -i ./UnitTestingInput -c ./cluster.conf -o ./output.clustering -assignment Hypercube -update Mean_Vector
+cluster_flags_llov = -i ../nasd_input.csv -c ./cluster.conf -o ./output.clusteringLLOV -assignment Classic -update Mean_Vector
+cluster_flags_llof = -i ../nasd_input.csv -c ./cluster.conf -o ./output.clusteringLLOF -assignment Classic -update Mean_Frechet
+cluster_flags_lshf = -i ../nasd_input.csv -c ./cluster.conf -o ./output.clusteringLSHF -assignment LSH -update Mean_Vector
+cluster_flags_lshff = -i ../nasd_input.csv -c ./cluster.conf -o ./output.clusteringLSHFF -assignment LSH_Frechet -update Mean_Frechet
+cluster_flags_hc = -i ../nasd_input.csv -c ./cluster.conf -o ./output.clusteringHC -assignment Hypercube -update Mean_Vector
 
 search_exe = search
 cluster_exe = cluster
@@ -98,9 +98,6 @@ rSdfr: $(search_exe)
 rScfr: $(search_exe)
 	./$(search_exe) $(search_flags_cfr)
 
-rCluster: $(cluster_exe)
-	./$(cluster_exe) $(cluster_flags)
-
 rCllov: $(cluster_exe)
 	./$(cluster_exe) $(cluster_flags_llov)
 
@@ -119,8 +116,8 @@ rChc: $(cluster_exe)
 rUnitTest: $(unitTest_exe)
 	./$(unitTest_exe)
 
-val: $(cluster_exe)
-	valgrind $(valgrindFlags) ./$(cluster_exe) $(cluster_flags)
+val: $(search_exe)
+	valgrind $(valgrindFlags) ./$(search_exe) $(search_flags_cube)
 
 gdb: $(cluster_exe)
 	gdb ./$(cluster_exe)
