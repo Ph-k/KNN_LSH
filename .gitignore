@@ -1,9 +1,7 @@
 .DS_Store
 .vscode
-output.lsh
-output.cube
-output.clustering
+output.*
 *.o
-lsh
-cube
+search
 cluster
+unitTest
