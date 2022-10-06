@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#define ItemType int
+#define ItemType double
 
 class Hhash{
 	public:

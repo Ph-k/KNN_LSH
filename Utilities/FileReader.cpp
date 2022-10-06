@@ -33,9 +33,9 @@ FileReader::FileReader(char const *input_f, char const *query_f, char const *out
         {cout << "Error: invalid file format!" << endl; exit(-1);}
 
 
-    Point *p = ReadPoint('q');
+    TimeSeries *p = ReadPoint('q');
     while( p != nullptr ){
-        pair<string, Point*> temp(p->getId(),p);
+        pair<string, TimeSeries*> temp(p->getId(),p);
         queries.insert( temp );
         p = ReadPoint('q');
     }
@@ -61,7 +61,7 @@ int FileReader::find_dimension_from_input(char const *input_f){
     return s-1;
 }
 
-Point* FileReader::ReadPoint(char file_mode){
+TimeSeries* FileReader::ReadPoint(char file_mode){
 
     ifstream *file = nullptr;
     switch (file_mode){
@@ -84,15 +84,15 @@ Point* FileReader::ReadPoint(char file_mode){
 
     istringstream line_stream(line);
 
-    vector<int> *given_Xs = new vector<int>;
+    vector<__TIMESERIES_X_TYPE> *given_Xs = new vector<__TIMESERIES_X_TYPE>;
 
-    int Xnum;
+    double Xnum;
     string Xstring, *item_id = new string;
     line_stream >> *item_id;
     while (line_stream >> Xstring){
 
         try {
-            Xnum = stoi(Xstring);
+            Xnum = stod(Xstring);
         }catch(...) {
             cout << "Error: invalid input file format! not valid Xij numerical value!" << endl;
             delete given_Xs;
@@ -103,7 +103,7 @@ Point* FileReader::ReadPoint(char file_mode){
         given_Xs->push_back(Xnum);
     }
 
-    Point *p = new Point(given_Xs,item_id);
+    TimeSeries *p = new TimeSeries(given_Xs,item_id);
 
     return p;
 }
@@ -181,34 +181,62 @@ int FileReader::readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, in
     return 0;
 }
 
-Point* FileReader::getQuery(string id){
-    return queries.find(id)->second;
+TimeSeries* FileReader::getQuery(string id){
+    auto p = queries.find(id);
+    if( p == queries.end() ) return nullptr;
+    return p->second;
 }
 
-int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode){
-    static char const *method = (mode == __LSH_MODE ? "LSH" : "Hypercube" );
+int FileReader::writeQuery(const string& query_id, PD *knn, PD* bruteForce, int k, char mode, double &MAF, char fr_mode){
+    char const *method = "Unknown";
+    switch (mode){
+        case __LSH_MODE:
+            method = "LSH_Vector";
+            break;
+        case __H_CUBE_MODE:
+            method = "Hypercube";
+            break;
+        case __FRECHET_DISCRETE_MODE:
+            method = "LSH_Frechet_Discrete";
+            break;
+        case __FRECHET_CONTINUOUS_MODE:
+            method = "LSH_Frechet_Continuous";
+            break;
+    }
 
-    output_file << "Query: " << query_id << '\n';
+    output_file << "Query: " << query_id << "\nAlgorithm: " << method << '\n';
     for(int i=0; i<k; i++){
         if( knn[i].p != nullptr ){
-            output_file << "Nearest neighbor-" << i+1 << ": " << knn[i].p->getId() << '\n'
-                        << "distance"<< method << ":" << knn[i].distance << '\n'
-                        << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
-                        << "tTrue:" << nanosecToMilliSec(timeBF) << "ms" << '\n'; 
-        }else{
-            output_file << "Nearest neighbor-" << i+1 << ": none\n"
-                        << "distanceLSH: -\n"
-                        << "distanceTrue: " << bruteForce[i].distance << '\n'
-                        << "t"<< method << ": " << nanosecToMilliSec(timeLSH) << "ms" << '\n'
-                        << "tTrue:"  << nanosecToMilliSec(timeBF) << "ms" << endl; 
+            output_file << "Aproximate Nearest neighbor: " << knn[i].p->getId() << '\n';
+        }else output_file << "Aproximate Nearest neighbor: -\n";
+        if(bruteForce!=nullptr){
+            output_file  << "True Nearest neighbor: " << bruteForce[i].p->getId() << '\n';
         }
+        if( knn[i].p != nullptr ){
+            output_file << "distanceAproximate: " << knn[i].distance << '\n';
+        }else output_file << "distanceAproximate: -\n";
+        if(bruteForce!=nullptr){
+            output_file << "distanceTrue: " << bruteForce[i].distance << "\n";
+        }
+        output_file << '\n';
+        if(bruteForce!=nullptr)
+            MAF = max( MAF, knn[i].distance / bruteForce[i].distance );
     }
 
     return 0;
 }
 
-int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors){
+int FileReader::writeQueryTimes(double timeAprx, double timeBF, int count, double MAF, bool bruteForce){
+    output_file << "tAproximateAverage: " << timeAprx/count << "s\n";
+    if(bruteForce){
+        output_file << "tTrueAverage: " << timeBF/count << "s\n"
+                    << "MAF: " << MAF << '\n' << endl;
+    }
+
+    return 0;
+}
+
+int FileReader::writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*> neighbors){
     output_file << "R-near neighbors:" << '\n';
     for(auto neighbor: neighbors){
         output_file << neighbor.second->getId() << '\n';
@@ -217,33 +245,7 @@ int FileReader::writeRangeNeighbors(std::unordered_map<std::string, Point*> neig
     return 0;
 }
 
-int FileReader::writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
-    output_file << "Algorithm: " << algorithm << '\n';
-    for(int i=0; i<k; i++){
-        output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";
-        for(auto X: Medoids[i]->getXs())
-            output_file << ' ' << X;
-        output_file << "}\n";
-    }
-
-    if(complete){
-        for(int i=0; i<k; i++){
-            output_file << "CLUSTER-" << i << " {";
-            for(auto X: Medoids[i]->getXs())
-                output_file << ' ' << X;
-            output_file <<  " ,";
-
-
-            Clusters->Traverse( &printPointIdInList , &output_file);
-            output_file << "}\n";
-        }
-    }
-
-    output_file << "clustering_time: " << millisecToSec(clustering_times) << endl;
-    return 0;
-}
-
-int FileReader::writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
+int FileReader::writeClusterPoints(std::unordered_map<std::string, TimeSeries*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete){
     output_file << "Algorithm: " << algorithm << '\n';
     for(int i=0; i<k; i++){
         output_file << "CLUSTER-" << i << " {size: " << Clusters[i].size() << " centroid:";

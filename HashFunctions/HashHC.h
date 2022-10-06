@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Hhashing.h"
 #include "HashInterface.hpp"
+#include "TimeSeries.h"
 
 class HashHC: public HashInterface{
     private:
@@ -13,7 +14,7 @@ class HashHC: public HashInterface{
     public:
         HashHC(int w, int k, int TableSize, int vecSize, int probes);
         ~HashHC();
-        unsigned int Hash(const std::vector<int> &p);
+        unsigned int Hash(const std::vector<__TIMESERIES_X_TYPE> &p);
         int *HashIndex(unsigned int ID, bool insertingMode=false);
         std::vector<int> HammingNeighbors(int index, int probes);
 };

@@ -1,7 +1,9 @@
 #include "FileReader.h"
 #include "Utilities.h"
-#include "Point.h"
+#include "TimeSeries.h"
 
+#include <iostream>
+#include <algorithm> // std::max
 #include <random>
 #include <time.h>
 
@@ -23,6 +25,19 @@ vector<int>* uniform_vec(int dimensions){
     return v;
 }
 
+// Create a vector object with floating numbers taken from the normal distribution
+vector<double>* uniformD_vec(int dimensions){
+    if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
+    normal_distribution<double> normal_distribution(0.0,1.0);
+
+    vector<double> *v = new vector<double>;
+
+    for(int i=0; i<dimensions; i++)
+        v->push_back((double)normal_distribution(randomness));
+
+    return v;
+}
+
 // Choose random floating point number in the inerval (0,w] from uniform distribution
 float random_float(float l, float h){
     if(seeded == false) { randomness.seed(time(NULL)); seeded=true; }
@@ -31,11 +46,11 @@ float random_float(float l, float h){
     return uniform_distribution(randomness);
 }
 
-double euclidean_distance(Point *p1, Point *p2){
-    const vector<int>& Xs_p1 = p1->getXs();
-    const vector<int>& Xs_p2 = p2->getXs();
+double euclidean_distance(TimeSeries *p1, TimeSeries *p2){
+    const vector<__TIMESERIES_X_TYPE>& Xs_p1 = p1->getXs();
+    const vector<__TIMESERIES_X_TYPE>& Xs_p2 = p2->getXs();
 
-    if(Xs_p1.size() != Xs_p2.size()) exit(1);//Consider removing it for speed
+    if(Xs_p1.size() != Xs_p2.size()) exit(1);
 
     double sum = 0;
 
@@ -51,13 +66,62 @@ double euclidean_distance(Point *p1, Point *p2){
     return sqrt(sum);
 }
 
+double dfr_distance(TimeSeries *p1, TimeSeries *p2){
+    const vector<__TIMESERIES_X_TYPE>& Xs_p1 = p1->getXs();
+    const vector<__TIMESERIES_X_TYPE>& Xs_p2 = p2->getXs();
+
+    long unsigned int i,j;
+    double **opt = new double*[Xs_p1.size()];
+    for(i=0; i<Xs_p1.size(); i++)
+        opt[i] = new double[Xs_p2.size()];
+
+
+    opt[0][0] = abs(Xs_p1.at(0) - Xs_p2.at(0));
+
+    //calculate first row
+    j = 1;
+    while( j < Xs_p2.size() ){
+        opt[0][j] = max(opt[0][j-1],abs(Xs_p1.at(0) - Xs_p2.at(j)) );
+        j++;
+    }
+
+    //calculate the rest rows of the table
+    for(i=1; i<Xs_p1.size(); i++){
+        //first cell of row (edge case)
+        j = 0;
+        opt[i][j] = max(opt[i-1][j],abs(Xs_p1.at(i) - Xs_p2.at(j)) );
+        j++;
+
+        //rest cells of row
+        while( j < Xs_p2.size() ){
+            opt[i][j] = max( 
+                min( opt[i-1][j-1], min(opt[i-1][j],opt[i][j-1]) ),
+                abs(Xs_p1.at(i) - Xs_p2.at(j))
+            );
+            j++;
+        }
+    }
+
+    double ret = opt[Xs_p1.size()-1][Xs_p2.size()-1];
+
+    for(i=0; i<Xs_p1.size(); i++)
+        delete[] opt[i];
+    delete[] opt;
+
+    return ret;
+}
+
 // Our own function to calculate dot product of two vector objects
-int dot_product(const vector<int> &x,const vector<int> &y){
-	if (x.size() != y.size())
-		exit(1);
-	int n = x.size();
-	int dp=0;
-	for (int i=0; i<n; i++)
+int dot_product(const vector<double> &x,const vector<double> &y){
+    unsigned int i,n;
+    if( x.size() <= y.size() ){
+        n = x.size();
+    }else{
+        n = y.size();
+    }
+
+	double dp=0;
+	for (i=0; i<n; i++)
 		dp += x[i]*y[i];
 	return dp;
 }
@@ -89,4 +153,39 @@ void printPointIdInList(struct PointPointer* pp, void* output_f){
     for(auto X: pp->point->getXs())
         *output_file << ' ' << X;
     *output_file << ", ";
+}
+
+string algorithmString(const char& method, const char& update){
+    string algorithmString("A");
+    switch(method){
+        case __CLASIC_METHOD:
+            algorithmString += "Lloyds";
+            break;
+        case __LSH_METHOD:
+            algorithmString += "LSH";
+            break;
+        case __LSH_FR_METHOD:
+            algorithmString += "LSH_Frechet";
+            break;
+        case __HC_METHOD:
+            algorithmString += "Hypercube";
+            break;
+        default:
+            algorithmString += "x";
+    }
+
+    algorithmString += "U";
+
+    switch(update){
+        case __MEAN_FR_UPDATE:
+            algorithmString += "Mean_Frechet";
+            break;
+        case __MEAN_VEC_UPDATE:
+            algorithmString += "Mean_Vector";
+            break;
+        default:
+            algorithmString += "x";
+    }
+
+    return algorithmString;
 }

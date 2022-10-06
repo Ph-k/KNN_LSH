@@ -2,27 +2,47 @@
 #include "Utilities.h"
 #include "HashLSH.h"
 #include "HashHC.h"
-#include "Point.h"
 #include <stdio.h>
 #include <iostream>
+#include "./FredLib/FredLibWrapper.h"
 
 using namespace std;
 
 
+HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, double delta)
+:table_size(given_table_size)
+{
+    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE || type==__FRECHET_CONTINUOUS_MODE){
+        hashing = new HashLSH(w,k,given_table_size,vecSize,type,delta);
+    }else if ( type == __H_CUBE_MODE) {
+        cerr << "wrong constructor for requested method in hashtable!" << endl; exit(2);
+    }else {cerr << "no mode specified to hashtable!" << endl; exit(2);};
+
+    this->bucket = new SimpleList[given_table_size];
+    if(this->bucket == nullptr) cerr << "Not enough memory to create hashtable!" << endl;
+
+    if( type == __FRECHET_DISCRETE_MODE )
+        for(unsigned int i=0; i<given_table_size; i++)
+            (this->bucket[i]).alterDistanceMetric(&dfr_distance);
+    else if(type == __FRECHET_CONTINUOUS_MODE){
+        for(unsigned int i=0; i<given_table_size; i++)
+            (this->bucket[i]).alterDistanceMetric(&cfr_distance);
+    }
+
+}
+
 HashTable::HashTable(unsigned int given_table_size, int w, int k, int vecSize, char type, int probes)
 :table_size(given_table_size)
 {
-    switch (type){
-    case __LSH_MODE:
-        hashing = new HashLSH(w,k,given_table_size,vecSize);
-        break;
-    default:
+    if( type==__LSH_MODE || type==__FRECHET_DISCRETE_MODE || type==__FRECHET_CONTINUOUS_MODE){
+        cerr << "wrong constructor for requested method in hashtable!" << endl; exit(2);
+    }else if ( type == __H_CUBE_MODE) {
         hashing = new HashHC(w,k,given_table_size,vecSize,probes);
-        break;
-    }
+    }else {cerr << "no mode specified to hashtable!" << endl; exit(2);};
 
     this->bucket = new SimpleList[given_table_size];
-    if(this->bucket == nullptr) perror("Not enough memory to create hashtable!");
+    if(this->bucket == nullptr) cerr << "Not enough memory to create hashtable!" << endl;
+
 }
 
 int HashTable::Insert(HashItem item){
@@ -35,7 +55,7 @@ int HashTable::Insert(HashItem item){
     return 0;
 }
 
-int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest, int M){
+int HashTable::knn_search_bucket(int k, TimeSeries *q, struct PD* nearest, int M){
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();
@@ -46,7 +66,7 @@ int HashTable::knn_search_bucket(int k, Point *q, struct PD* nearest, int M){
     return 0;
 }
 
-int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
+int HashTable::bruteForceNN(int k, TimeSeries *q, struct PD* nearest){
     int res;
 
     for (unsigned int i=0; i<table_size; i++){
@@ -55,7 +75,7 @@ int HashTable::bruteForceNN(int k, Point *q, struct PD* nearest){
     return res;
 }
 
-int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Point*> &r_neighbors, int M){
+int HashTable::rangeSearchBucket(int r, TimeSeries *q, unordered_map<string, TimeSeries*> &r_neighbors, int M){
     r_neighbors.empty();
     int Id_q = hashing->Hash(q->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
@@ -67,7 +87,7 @@ int HashTable::rangeSearchBucket(int r, Point *q, std::unordered_map<string, Poi
     return 0;
 }
 
-int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+int HashTable::reverseRangeSearchBucket(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
     int Id_q = hashing->Hash(Medoids[k_index]->getXs());
     int *hash_indexes = hashing->HashIndex( Id_q );
     int probes = hashing->getNumProbes();

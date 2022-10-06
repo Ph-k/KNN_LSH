@@ -6,7 +6,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "Point.h"
+#include "TimeSeries.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ struct ListNode{
     struct ListNode* next;
 };
 
-SimpleList::SimpleList(): head(nullptr), T(0){}
+SimpleList::SimpleList(): head(nullptr), T(0), metric_func(&euclidean_distance){}
 
 int SimpleList::Push(SimpleListItemType item){
     //std::cout << "Listed got a push!" << std::endl;
@@ -70,23 +70,23 @@ void SimpleList::Traverse( void (*fun)(SimpleListItemType *item, void* privateIt
     }
 }
 
-int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M, bool brute_force){
+int SimpleList::knn_search(int k, TimeSeries *q, int Id_q, struct PD* nearest, int M, bool brute_force){
     ListNode* node = head;
-    double l1;
+    double Lx;
     int i,j,M_i=0;
 
     while(node != nullptr && ( M==-1 || M_i<M ) ){
         if(brute_force || Id_q == node->item.Id){
-            l1 = euclidean_distance(node->item.point,q);
+            Lx = (*metric_func)(node->item.point,q);
 
             for(i=0; i<k; i++){
                 if( nearest[i].p == nullptr ){
                     nearest[i].p = node->item.point;
-                    nearest[i].distance = l1;
+                    nearest[i].distance = Lx;
                     break;
                 }else if(nearest[i].p == node->item.point){
                     break;
-                }else if(nearest[i].distance > l1){
+                }else if(nearest[i].distance > Lx){
                     //Shifting arrey
                     for(j=k-1; j>i; j--){
                         nearest[j].p = nearest[j-1].p;
@@ -96,7 +96,7 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M,
                     /*cout << nearest[i].p << " vs " << node->item << ' ' << nearest[i].distance << "vs" << l1 << ' ' << endl;
                     nearest[i].p->print(); node->item->print();*/
                     nearest[i].p = node->item.point;
-                    nearest[i].distance = l1;
+                    nearest[i].distance = Lx;
                     break;
                 }
             }
@@ -109,15 +109,15 @@ int SimpleList::knn_search(int k, Point *q, int Id_q, struct PD* nearest, int M,
     return 0;
 }
 
-int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_neighbors, int M){
+int SimpleList::rangeSearch(int r, TimeSeries *q, unordered_map<string, TimeSeries*> &r_neighbors, int M){
     ListNode* node = head;
     int i = 0;
-    double l1;
+    double Lx;
 
     while(node != nullptr && ( M==-1 || i<M ) ){
-        l1 = euclidean_distance(node->item.point,q);
+        Lx = (*metric_func)(node->item.point,q);
 
-        if(l1 < r && r_neighbors.find(node->item.point->getId()) == r_neighbors.end() )
+        if(Lx < r && r_neighbors.find(node->item.point->getId()) == r_neighbors.end() )
             r_neighbors[node->item.point->getId()]=node->item.point;
 
         node = node->next;
@@ -127,23 +127,23 @@ int SimpleList::rangeSearch(int r, Point *q, unordered_map<string, Point*> &r_ne
     return 0;
 }
 
-int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*> *Clusters, int k, int k_index, Point **Medoids, int M){
+int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, TimeSeries*> *Clusters, int k, int k_index, TimeSeries **Medoids, int M){
     ListNode* node = head;
     int i=0,j;
     bool add;
-    double l1,l1_t;
+    double Lx,Lx_t;
 
     while(node != nullptr && ( M==-1 || i<M ) ){
-        l1 = euclidean_distance(node->item.point,Medoids[k_index]);
+        Lx = (*metric_func)(node->item.point,Medoids[k_index]);
 
-        if(l1 < r){
+        if(Lx < r){
             add = true;
             for(j=0; j<k; j++){
                 if(j != k_index){
                     if( Clusters[j].find(node->item.point->getId()) != Clusters[j].end() ){
-                        l1_t = euclidean_distance(node->item.point,Medoids[j]);
+                        Lx_t = (*metric_func)(node->item.point,Medoids[j]);
 
-                        if(l1_t > l1){
+                        if(Lx_t > Lx){
                             Clusters[j].erase(node->item.point->getId());
                         }else add = false;
                     }
@@ -161,7 +161,7 @@ int SimpleList::reverseRangeSearch(int r, std::unordered_map<std::string, Point*
     return 0;
 }
 
-Point* SimpleList::meanVector(){
+/*TimeSeries* SimpleList::meanVector(){
     ListNode* node = head;
 
     int tempVecSize = node->item.point->getXs().size();
@@ -169,23 +169,23 @@ Point* SimpleList::meanVector(){
 
     memset(tempVec,0.0,tempVecSize*sizeof(double));
 
-    const std::vector<int>* vec;
+    const std::vector<__TIMESERIES_X_TYPE>* vec;
     while(node != nullptr){
         vec = &(node->item.point->getXs());
         for(int i=0; i<tempVecSize; i++)
-            tempVec[i] +=  ( (double)vec->at(i) ) / ((double)T);
+            tempVec[i] +=  ( (__TIMESERIES_X_TYPE)vec->at(i) ) / ((double)T);
         node = node->next;
     }
 
-    std::vector<int> *meanVec = new std::vector<int>;
+    std::vector<__TIMESERIES_X_TYPE> *meanVec = new std::vector<__TIMESERIES_X_TYPE>;
     for(int i=0; i<tempVecSize; i++)
-        meanVec->push_back((int)tempVec[i]);
+        meanVec->push_back((__TIMESERIES_X_TYPE)tempVec[i]);
     std::string *no_s = nullptr;
-    Point *meanP = new Point(meanVec, no_s);
+    TimeSeries *meanP = new TimeSeries(meanVec, no_s);
 
     delete[] tempVec;
     return meanP;
-}
+}*/
 
 void SimpleList::empty(){
     ListNode* temp;
@@ -204,12 +204,12 @@ SimpleList::~SimpleList(){
     this->empty();
 }
 
-double SimpleList::averageDistance(Point *item){
+double SimpleList::averageDistance(TimeSeries *item){
     ListNode* node = head;
 
     double tempDist = 0.0;
     while(node != nullptr){
-        tempDist += euclidean_distance(node->item.point, item);
+        tempDist += (*metric_func)(node->item.point, item);
         node = node->next;
     }
     tempDist = tempDist/(double)T;

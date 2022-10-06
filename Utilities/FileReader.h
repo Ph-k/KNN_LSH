@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-#include "ClusterComplex.h"
+#include "ClusterInterface.h"
 
 #define WORD_SEPERATOR ' '
 
@@ -19,7 +19,7 @@ class FileReader{
         std::ifstream configuration_file;
         int dimension;
         int find_dimension_from_input(char const *input_f);
-        std::unordered_map<std::string, Point*> queries;
+        std::unordered_map<std::string, TimeSeries*> queries;
     public:
         FileReader(
             char const *input_f,
@@ -27,14 +27,14 @@ class FileReader{
             char const *output_f,
             char const *configuration_f = nullptr);
         int getDimension(){ return dimension; }
-        Point* ReadPoint(char file='i');
-        Point* getQuery(std::string id);
-        inline const std::unordered_map<std::string, Point*>& getQueries() {return queries;}
-        int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, double timeLSH, double timeBF, char mode);
-        int writeRangeNeighbors(std::unordered_map<std::string, Point*> neighbors);
+        TimeSeries* ReadPoint(char file='i');
+        TimeSeries* getQuery(std::string id);
+        inline const std::unordered_map<std::string, TimeSeries*>& getQueries() {return queries;}
+        int writeQuery(const std::string& query_id, PD *knn, PD* bruteForce, int k, char mode, double &MAF, char fr_mode = -1);
+        int writeQueryTimes(double timeAprx, double timeBF, int count, double MAF, bool bruteForce);
+        int writeRangeNeighbors(std::unordered_map<std::string, TimeSeries*> neighbors);
         int readConfigFile(int &K, int &L, int &k_lsh, int &M, int &k_hc, int &probes);
-        int writeClusterPoints(SimpleList *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
-        int writeClusterPoints(std::unordered_map<std::string, Point*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
+        int writeClusterPoints(std::unordered_map<std::string, TimeSeries*> *Clusters, int clustering_times, ClusterObject *Medoids, int k, const char* algorithm, bool complete = false);
         int writeSilhouette(silhouetteStats *silhouetteS, int k);
         ~FileReader();
 };
